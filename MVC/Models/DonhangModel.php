@@ -81,12 +81,17 @@ public function GetDonhangByID($mahd) {
 
     public function CapNhatTrangThai($mahd, $trangthai) {
         $trangthai = (int)$trangthai;
-        if (!in_array($trangthai, [2, 3, 4], true)) return false;
-        $stmt = mysqli_prepare($this->con, 'UPDATE Donhang SET TrangThai = ? WHERE MaHD = ? AND TrangThai + 1 = ?');
+        if (!in_array($trangthai, [1, 2, 3, 4], true)) return false;
+        
+        // Cho phép Admin cập nhật trạng thái tự do (trừ khi đơn đã hủy = 5)
+        $stmt = mysqli_prepare($this->con, 'UPDATE Donhang SET TrangThai = ? WHERE MaHD = ? AND TrangThai != 5');
         if (!$stmt) return false;
+        
         $mahd = (int)$mahd;
-        mysqli_stmt_bind_param($stmt, 'iii', $trangthai, $mahd, $trangthai);
-        return mysqli_stmt_execute($stmt) && mysqli_stmt_affected_rows($stmt) === 1;
+        mysqli_stmt_bind_param($stmt, 'ii', $trangthai, $mahd);
+        
+        // Chạy câu lệnh update và trả về true nếu thành công (kể cả chọn lại trạng thái cũ)
+        return mysqli_stmt_execute($stmt);
     }
 }
 ?>

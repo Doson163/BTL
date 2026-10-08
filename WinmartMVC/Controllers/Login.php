@@ -22,7 +22,7 @@ class Login extends Controller {
             session_regenerate_id(true);
             unset($_SESSION['user_login']);
             $_SESSION['shop_customer']=['MaKH'=>$account['MaKH'],'TenKH'=>$account['TenKH']];
-            header('Location: http://localhost/BaitaplonSale/'); exit;
+            header('Location: http://localhost/Baitaplon/store.php'); exit;
         }
         if ($role==='manager') {
             $account=$identity!=='' && $password!=='' ? $userModel->CheckLogin($identity,$password) : false;
@@ -44,3 +44,4 @@ class Login extends Controller {
     }
 }
 ?>
+

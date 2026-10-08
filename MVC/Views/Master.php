@@ -48,7 +48,7 @@
     <div class="main-content">
         <header>
             <div class="page-title">
-                <h3>Dashboard</h3> </div>
+                <h3></h3> </div>
 <div class="user-info">
                 <span>Xin chào, <b><?php echo isset($_SESSION['user_login']['hoten']) ? $_SESSION['user_login']['hoten'] : 'Admin' ?></b></span>
                 
