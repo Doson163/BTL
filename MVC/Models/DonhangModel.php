@@ -4,7 +4,7 @@ class DonhangModel extends connectDB {
     // 1. Lấy danh sách đơn hàng (CÓ TÌM KIẾM)
     public function DanhSach($keyword = "") {
         // Kết nối bảng Donhang với Khachhang và Nhanvien để lấy tên
-        $sql = "SELECT Donhang.*, Khachhang.TenKH, Nhanvien.HoTen 
+        $sql = "SELECT Donhang.*, Khachhang.TenKH, Nhanvien.HoTen
                 FROM Donhang
                 LEFT JOIN Khachhang ON Donhang.MaKH = Khachhang.MaKH
                 LEFT JOIN Nhanvien ON Donhang.MaNV = Nhanvien.MaNV";
@@ -32,10 +32,11 @@ class DonhangModel extends connectDB {
 
 public function GetDonhangByID($mahd) {
     // Thêm Khachhang.DiaChi vào danh sách cột cần lấy (SELECT)
-    $sql = "SELECT Donhang.*, Khachhang.TenKH, Khachhang.DienThoai, Khachhang.DiaChi, Nhanvien.HoTen 
+    $sql = "SELECT Donhang.*, Khachhang.TenKH, Khachhang.DienThoai, Khachhang.DiaChi, Nhanvien.HoTen, Phuongthucthanhtoan.TenPT AS TenPhuongThuc
             FROM Donhang
             LEFT JOIN Khachhang ON Donhang.MaKH = Khachhang.MaKH
             LEFT JOIN Nhanvien ON Donhang.MaNV = Nhanvien.MaNV
+            LEFT JOIN Phuongthucthanhtoan ON Donhang.MaPT = Phuongthucthanhtoan.MaPT
             WHERE MaHD = '$mahd'";
     return mysqli_query($this->con, $sql);
 }

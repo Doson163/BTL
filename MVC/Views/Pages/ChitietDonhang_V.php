@@ -253,12 +253,12 @@
         <div class="info-col">
             <div class="info-title">KHÁCH HÀNG</div>
             <div class="info-content">
-                <p><strong>Tên:</strong> <?php echo $data['donhang']['TenKH']; ?></p>
-                <p><strong>SĐT:</strong> <?php echo $data['donhang']['DienThoai']; ?></p>
+                <p><strong>Ng&#432;&#7901;i nh&#7853;n:</strong> <?php echo htmlspecialchars((!empty($data['donhang']['TenNguoiNhan']) ? $data['donhang']['TenNguoiNhan'] : $data['donhang']['TenKH']), ENT_QUOTES, 'UTF-8'); ?></p>
+                <p><strong>S&#7889; &#273;i&#7879;n tho&#7841;i:</strong> <?php echo htmlspecialchars((!empty($data['donhang']['DienThoaiNhan']) ? $data['donhang']['DienThoaiNhan'] : $data['donhang']['DienThoai']), ENT_QUOTES, 'UTF-8'); ?></p>
                 
                 <p><strong>Địa chỉ:</strong> 
                     <?php 
-                        $dc = $data['donhang']['DiaChi'];
+                        $dc = !empty($data['donhang']['DiaChiGiaoHang']) ? $data['donhang']['DiaChiGiaoHang'] : $data['donhang']['DiaChi'];
                         echo ($dc != "") ? $dc : "Tại cửa hàng"; 
                     ?>
                 </p>
@@ -269,7 +269,7 @@
             <div class="info-content">
                 <p><strong>Nhân viên bán:</strong> <?php echo $data['donhang']['HoTen']; ?></p>
                 <p><strong>Ngày lập:</strong> <?php echo date('d/m/Y H:i', strtotime($data['donhang']['NgayLap'])); ?></p>
-                <p><strong>Phương thức TT:</strong> Tiền mặt / Chuyển khoản</p>
+                <p><strong>Ph&#432;&#417;ng th&#7913;c thanh to&#225;n:</strong> <?php echo htmlspecialchars($data['donhang']['TenPhuongThuc'] ?? 'N/A', ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
         </div>
     </div>
