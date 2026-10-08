@@ -1,4 +1,6 @@
 RewriteEngine On
+# Let the nested management app handle its own routes and rewrite rules.
+RewriteRule ^WinmartMVC(?:/|$) - [L]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.+)$ index.php?url=$1

@@ -33,7 +33,7 @@ class CustomerAuth extends controller {
     }
     public function Logout() {
         $this->validPost(); unset($_SESSION['shop_customer']); session_regenerate_id(true);
-        header('Location: http://localhost/WinmartMVC/Login'); exit;
+        header('Location: http://localhost/Baitaplon/WinmartMVC/Login'); exit;
     }
     public function Profile() {
         $this->requireCustomer(); $profile=$this->accountModel->GetProfile($_SESSION['shop_customer']['MaKH']);
