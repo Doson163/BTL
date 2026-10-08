@@ -19,10 +19,13 @@ class CustomerAccountModel extends connectDB {
     }
 
     public function Authenticate($identity) {
-        $column = filter_var($identity, FILTER_VALIDATE_EMAIL) ? 'a.Email' : 'a.DienThoai';
-        $stmt = mysqli_prepare($this->con, 'SELECT a.MaKH, a.Email, a.DienThoai, a.MatKhauHash, k.TenKH FROM TaiKhoanKhachHang a JOIN Khachhang k ON k.MaKH = a.MaKH WHERE ' . $column . ' = ? LIMIT 1');
+        $email = strtolower(trim((string)$identity));
+        $phoneDigits = preg_replace('/\D+/', '', (string)$identity);
+        $phoneLocal = $phoneDigits;
+        if (substr($phoneLocal, 0, 2) === '84' && strlen($phoneLocal) === 11) $phoneLocal = '0' . substr($phoneLocal, 2);
+        $stmt = mysqli_prepare($this->con, "SELECT a.MaKH, a.Email, a.DienThoai, a.MatKhauHash, k.TenKH FROM TaiKhoanKhachHang a JOIN Khachhang k ON k.MaKH = a.MaKH WHERE LOWER(a.Email) = ? OR REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(a.DienThoai, '+', ''), ' ', ''), '-', ''), '(', ''), ')', ''), '.', '') IN (?, ?) LIMIT 1");
         if (!$stmt) return null;
-        mysqli_stmt_bind_param($stmt, 's', $identity);
+        mysqli_stmt_bind_param($stmt, 'sss', $email, $phoneDigits, $phoneLocal);
         if (!mysqli_stmt_execute($stmt)) return null;
         return mysqli_fetch_assoc(mysqli_stmt_get_result($stmt)) ?: null;
     }
