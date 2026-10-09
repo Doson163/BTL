@@ -6,10 +6,10 @@
     <title>WinMart Clone</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background-color: #f5f5f5; }
+        body { font-family: Arial, sans-serif; margin: 0; background: linear-gradient(135deg, #fcf4f4 0%, #f7e4e6 48%, #fcf3ef 100%); }
         
         /* HEADER - Màu đỏ WinMart */
-        header { background-color: #e31d2b; padding: 15px 0; color: white; }
+        header { background-color: #f21d35; padding: 15px 0; color: white; }
         .container { width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
         
         .logo { font-size: 30px; font-weight: bold; display: flex; align-items: center; }
@@ -80,6 +80,7 @@
             </a>
             <?php } ?>
             
+            <?php if (isset($_SESSION['user_login']) || $data['Page'] !== 'Login_v') { ?>
             <div class="action-item">
                 <i class="fas fa-user-circle"></i> 
                 <?php if(isset($_SESSION['user_login'])) { ?>
@@ -93,6 +94,7 @@
                     <a href="<?php echo BASE_URL ?>Login" style="text-decoration: none; color: white;">&#272;&#259;ng nh&#7853;p</a>
                 <?php } ?>
             </div>
+            <?php } ?>
         </div>
     </div>
 </header>
