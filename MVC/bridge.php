@@ -1,4 +1,5 @@
 <?php
+    header('Content-Type: text/html; charset=utf-8');
     // Lấy đường dẫn gốc của dự án (Thư mục cha của thư mục MVC)
     // Ví dụ: D:/Xampp/htdocs/Baitaplon
     $baseDir = dirname(__DIR__); 

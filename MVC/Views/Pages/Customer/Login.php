@@ -249,14 +249,14 @@
     }
 </style>
 
-<!-- Bao g?m thu vi?n FontAwesome n?u CustomerMaster chua c� -->
+<!-- Bao gồm thư viện FontAwesome nếu CustomerMaster chưa có -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <div class="login-wrapper">
     <div class="login-card">
         <div class="login-header">
-            <h2>�ANG NH?P <span>.</span></h2>
-            <p>Ch�o m?ng b?n quay tr? l?i WinMart</p>
+            <h2>ĐĂNG NHẬP <span>.</span></h2>
+            <p>Chào mừng bạn quay trở lại WinMart</p>
         </div>
 
         <?php if(!empty($data['notice'])) { ?>
@@ -271,23 +271,23 @@
             
             <div class="floating-group">
                 <input id="identity" type="text" name="identity" class="floating-input" placeholder=" " required autocomplete="username">
-                <label class="floating-label" for="identity">S? di?n tho?i ho?c Email</label>
+                <label class="floating-label" for="identity">Số điện thoại hoặc Email</label>
                 <i class="fas fa-user floating-icon"></i>
             </div>
             
             <div class="floating-group">
                 <input id="password" type="password" name="password" class="floating-input" placeholder=" " required autocomplete="current-password">
-                <label class="floating-label" for="password">M?t kh?u</label>
+                <label class="floating-label" for="password">Mật khẩu</label>
                 <i class="fas fa-lock floating-icon"></i>
             </div>
             
             <button class="btn-login" type="submit">
-                �ang nh?p
+                Đăng nhập
             </button>
         </form>
 
         <div class="register-link">
-            Chua c� t�i kho?n? <a href="store.php?url=CustomerAuth/Register">�ang k� t?i d�y</a>
+            Chưa có tài khoản? <a href="store.php?url=CustomerAuth/Register">Đăng ký tại đây</a>
         </div>
     </div>
 </div>

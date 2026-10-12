@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class CustomerOrders extends controller {
     private $orders;
     public function __construct() { $this->orders = $this->model('CustomerOrderModel'); }

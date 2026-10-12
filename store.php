@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('Content-Type: text/html; charset=utf-8');
 if (!isset($_SESSION['shop_cart']) || !is_array($_SESSION['shop_cart'])) $_SESSION['shop_cart']=[];
 if (empty($_SESSION['shop_csrf'])) $_SESSION['shop_csrf']=bin2hex(random_bytes(32));
 $url=isset($_GET['url'])?trim((string)$_GET['url'],'/'):'Storefront/Get_data';

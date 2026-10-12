@@ -1,0 +1,1171 @@
+TRƯỜNG ĐẠI HỌC CÔNG NGHỆ GIAO THÔNG VẬN TẢI
+KHOA CÔNG NGHỆ THÔNG TIN
+-------------------------------------
+BÁO CÁO BÀI TẬP NHÓM MÔN HỌC
+ĐỒ ÁN XÂY DỰNG VÀ  PHÁT TRIỂN PHẦN MỀM
+ĐỀ TÀI : 
+Xây dựng hệ thống website thương mại điện tử và quản lý bán lẻ cho cửa hàng tiện lợi
+Giảng viên hướng dẫn :Phạm Thị Thuận
+Nhóm sinh viên thực hiện :Trần Anh Vũ
+Nguyễn Hồng Mạnh
+Nguyễn Phúc Ánh
+Đỗ Khắc Sơn
+           Nhóm :06
+Lớp :74DCTT25
+Hà Nội 2026
+LỜI CẢM ƠN
+Trong quá trình học tập và hoàn thành học phần đồ án xây dựng và phát triển phần mềm , nhóm chúng em xin gửi lời cảm ơn chân thành đến cô Phạm Thị Thuận. Trong suốt quá trình thực hiện bài tập lớn môn học với đề tài " Xây dựng hệ thống website thương mại điện tử và quản lý bán lẻ cho cửa hàng tiện lợi ". Cô đã luôn dành sự quan tâm sâu sát, tận tình định hướng đề tài, giải đáp những vướng mắc về mặt kiến trúc hệ thống và đưa ra những chỉ dẫn chuyên môn quý giá giúp nhóm định hình tốt luồng nghiệp vụ và hoàn thành sản phẩm theo đúng tiến độ.
+Mặc dù cả nhóm đã nỗ lực hết mình để vận dụng kiến thức lý thuyết đã học vào phân tích khảo sát thực tế và hiện thực hóa chương trình, song do kinh nghiệm thực tế còn hạn chế và thời gian thực hiện học phần có hạn nên đồ án khó tránh khỏi những điểm thiếu sót nhất định. Nhóm chúng em rất mong nhận được những lời nhận xét, góp ý và chỉ dẫn của cô để nhóm rút ra thêm nhiều bài học kinh nghiệm, từ đó hoàn thiện hơn các kỹ năng chuyên môn trong các môn học tiếp theo.
+Nhóm chúng em xin kính chúc cô luôn dồi dào sức khỏe, niềm vui, hạnh phúc và gặt hái được nhiều thành công hơn nữa trong sự nghiệp giảng dạy!
+Nhóm em xin chân thành cảm ơn !
+MỤC LỤC
+LỜI CẢM ƠN2
+DANH MỤC TỪ VIẾT TẮT5
+DANH MỤC HÌNH ẢNH7
+DANH MỤC BẢNG BIỂU9
+LỜI MỞ ĐẦU10
+CHƯƠNG 1 : GIỚI THIỆU TỔNG QUAN12
+1.1. Lý do chọn đề tài12
+1.2. Mục tiêu của đề tài12
+1.3. Giới hạn và phạm vi của đề tài13
+1.4. Kết quả dự kiến đạt được13
+CHƯƠNG 2 : KIẾN THỨC NỀN TÀNG14
+2.1. Cơ sở lý thuyết14
+2.1.1. Cơ sở lý thuyết về thương mại điện tử và hệ thống bán hàng trực tuyến14
+2.1.2. Cơ sở lý thuyết về mô hình kiến trúc MVC14
+2.1.3. Cơ sở lý thuyết về kiến trúc Client – Server và giao thức HTTP/HTTPS16
+2.1.4. Cơ sở lý thuyết về RESTful API và định dạng trao đổi dữ liệu JSON17
+2.1.5. Cơ sở lý thuyết về Cơ sở dữ liệu quan hệ (RDBMS) và tính chất ACID17
+2.1.6. Cơ chế xác thực, phân quyền và quản lý phiên làm việc (Session & JWT)18
+2.1.7. Tổng quan về các ngôn ngữ và công nghệ lập trình Web18
+2.2. Công cụ và môi trường phát triển19
+2.2.1. Môi trường phát triển tích hợp Visual Studio Code19
+2.2.2. Môi trường máy chủ cục bộ XAMPP20
+2.2.3. Hệ quản trị cơ sở dữ liệu MySQL20
+2.2.4. Công cụ kiểm thử và phát triển API Postman21
+2.2.5. Hệ thống quản lý phiên bản Git và nền tảng lưu trữ GitHub22
+2.2.7. Công cụ thiết kế mô hình hệ thống Draw.io và PlantUML23
+CHƯƠNG 3 : PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG25
+3.1. Khảo sát hệ thống và đặc tả nghiệp vụ25
+3.1.1. Giới thiệu về hệ thống25
+3.1.2. Cách thức khảo sát30
+3.1.3. Đánh giá hiện trạng36
+3.1.4. Xác định yêu cầu hệ thống42
+3.2. Phân tích và thiết kế hệ thống46
+3.2.1. Xác định các tác nhân46
+3.2.2. Usecase tổng quát47
+3.2.3. Use case thành phần47
+3.2.4. Biểu đồ tuần tự58
+3.2.5. Biểu đồ hoạt động66
+3.3. Thiết kế về cơ sở dữ liệu74
+3.3.1. Biểu đồ lớp74
+3.3.2. Xây dựng bảng cơ sở dữ liệu75
+DANH MỤC TỪ VIẾT TẮT
+Từ viết tắt
+Tên tiếng Anh đầy đủ
+Giải nghĩa tiếng Việt
+API
+Application Programming Interface
+Giao diện lập trình ứng dụng
+B2B
+Business-to-Business
+Mô hình thương mại điện tử Doanh nghiệp với Doanh nghiệp
+B2C
+Business-to-Consumer
+Mô hình thương mại điện tử Doanh nghiệp với Người tiêu dùng
+BCE
+Boundary - Control - Entity
+Bộ ba thành phần kiến trúc phân tích (Giao diện - Điều khiển - Thực thể)
+C2C
+Consumer-to-Consumer
+Mô hình thương mại điện tử Người tiêu dùng với Người tiêu dùng
+CSS
+Cascading Style Sheets
+Ngôn ngữ định kiểu và tạo phong cách hiển thị cho tài liệu Web
+CSDL
+Cơ sở dữ liệu
+Hệ thống lưu trữ dữ liệu có cấu trúc
+DVCS
+Distributed Version Control System
+Hệ thống quản lý phiên bản phân tán
+HTML
+HyperText Markup Language
+Ngôn ngữ đánh dấu siêu văn bản
+HTTP
+HyperText Transfer Protocol
+Giao thức truyền tải siêu văn bản
+HTTPS
+HyperText Transfer Protocol Secure
+Giao thức truyền tải siêu văn bản bảo mật (có mã hóa SSL/TLS)
+IDE
+Integrated Development Environment
+Môi trường phát triển tích hợp
+IP
+Internet Protocol
+Giao thức mạng Internet (Địa chỉ định danh thiết bị mạng)
+JSON
+JavaScript Object Notation
+Định dạng tiêu chuẩn để trao đổi dữ liệu dạng chuỗi văn bản
+JWT
+JSON Web Token
+Tiêu chuẩn mã hóa chuỗi token dùng để xác thực và phân quyền
+MVC
+Model - View - Controller
+Mô hình kiến trúc phần mềm (Dữ liệu - Hiển thị - Điều khiển)
+OS
+Operating System
+Hệ điều hành
+PHP
+PHP: Hypertext Preprocessor
+Ngôn ngữ lập trình kịch bản mã nguồn mở chạy phía máy chủ
+RDBMS
+Relational Database Management System
+Hệ thống quản trị cơ sở dữ liệu quan hệ
+REST
+Representational State Transfer
+Kiểu kiến trúc phần mềm thiết kế dịch vụ web
+SQL
+Structured Query Language
+Ngôn ngữ truy vấn dữ liệu có cấu trúc
+SSL
+Secure Sockets Layer
+Giao thức mã hóa bảo mật truyền thông mạng
+UI
+User Interface
+Giao diện người dùng
+UML
+Unified Modeling Language
+Ngôn ngữ mô hình hóa thống nhất
+URL
+Uniform Resource Locator
+Chuỗi định vị tài nguyên duy nhất trên Internet
+UX
+User Experience
+Trải nghiệm người dùng
+VS Code
+Visual Studio Code
+Trình biên tập mã nguồn của Microsoft
+DANH MỤC HÌNH ẢNH
+Hình 2.1. Mô hình kiến trúc MVC15
+Hình 2.2. Mô hình Client & Server16
+Hình 3.1. Giao diện trang chủ website thương mại điện tử WinMart25
+Hình 3.2. Usecase tổng quát32
+Hình 3.3. Use Case đăng nhập33
+Hình  3.4. Use case quản lý đăng ký34
+Hình 3.5. Use case thêm danh mục35
+Hình 3.6. Use case sửa danh mục36
+Hình 3.7. Use case xóa danh mục37
+Hình 3.8. Use case thêm sản phẩm38
+Hình 3.9. Use case sửa sản phẩm39
+Hình 3.10. Use case thanh toán40
+Hình 3.11. Use case theo dõi trạng thái đơn hàng41
+Hình 3.12. Use case hủy đơn hàng42
+Hình 3.13. Biểu đồ tuần tự đăng nhập44
+Hình 3.14. Biểu đồ tuần tự đăng ký45
+Hình 3.15. Biểu đồ tuần tự đặt hàng46
+Hình 3.16. Biểu đồ tuần tự hủy đơn hàng46
+Hình 3.17. Biểu đồ tuần tự thêm sản phẩm47
+Hình 3.18. Biểu đồ tuần tự sửa sản phẩm47
+Hình 3.19. Biểu đồ tuần tự xóa sản phẩm48
+Hình 3.20. Biểu đồ tuần tự thêm danh mục48
+Hình 3.21. Biểu đồ tuần tự sửa danh mục49
+Hình 3.22. Biểu đồ tuần tự xóa danh mục50
+Hình 3.23. Biểu đồ tuần tự áp dụng mã khuyến mãi50
+Hình 3.24. Biểu đồ tuần tự thêm giỏ hàng51
+Hình 3.25. Biểu đồ tuần tự thanh toán51
+Hình 3.26. Biểu đồ hoạt động đăng nhập52
+Hình 3.27. Biểu đồ hoạt động đăng ký52
+Hình 3.28. Biểu đồ hoạt động thêm sản phẩm53
+Hình 3.29. Biểu đồ hoạt động sửa sản phẩm53
+Hình 3.30. Biểu đồ hoạt động xóa sản phẩm54
+Hình 3.31. Biểu đồ hoạt động thêm danh mục54
+Hình 3.32. Biểu đồ hoạt động sửa danh mục55
+Hình 3.33. Biểu đồ hoạt động xóa danh mục55
+Hình 3.34. Biểu đồ hoạt động thêm giỏ hàng56
+Hình 3.35. Biểu đồ hoạt động đặt hàng57
+Hình 3.36. Biểu đồ hoạt động hủy đơn hàng58
+Hình 3.37. Biểu đồ hoạt động thanh toán59
+Hình 3.38. Biểu đồ hoạt động quản lý khuyến mãi59
+Hình 3.39. Biểu đồ lớp60
+DANH MỤC BẢNG BIỂU
+Bảng 3.1. Phiếu phỏng vấn Quản lý/Chủ cửa hàng26
+Bảng 3.2. Phiếu phỏng vấn Khách hàng27
+Bảng 3.3. Nội dung quan sát và trải nghiệm28
+Bảng 3.4. Các yêu cầu chức năng29
+Bảng 3.5. Xác định tác nhân và Use Case31
+Bảng 3.6. Đặc tả Use case đăng nhập33
+Bảng 3.7. Đặc tả Use case quản lý đăng ký34
+Bảng 3.8. Đặc tả Use case thêm danh mục35
+Bảng 3.9. Đặc tả Use case sửa danh mục36
+Bảng 3.10. Đặc tả Use case xóa danh mục37
+Bảng 3.11. Đặc tả Use case thêm sản phẩm38
+Bảng 3.12. Đặc tả Use case sửa sản phẩm39
+Bảng 3.13. Đặc tả Use case thanh toán40
+Bảng 3.14. Đặc tả Use case theo dõi trạng thái đơn hàng41
+Bảng 3.15. Đặc tả Use case hủy đơn hàng42
+Bảng 3.16. Bảng taikhoan61
+Bảng 3.17. Bảng Khachhang61
+Bảng 3.18. Bảng Nhanvien61
+Bảng 3.19. Bảng Danhmuc62
+Bảng 3.20. Bảng nhacungcap62
+Bảng 3.21. Bảng Sanpham62
+Bảng 3.22. Bảng phuongthucthanhtoan63
+Bảng 3.23. Bảng Khuyenmai63
+Bảng 3.24. Bảng Donhang63
+Bảng 3.25. Bảng ChitietDonhang64
+Bảng 3.27. Bảng ChitietPhieunhap64
+Bảng 3.28.Bảng phieukiem65
+Bảng 3.29. Bảng chitietkiem65
+LỜI MỞ ĐẦU
+Trong thời đại công nghệ số phát triển mạnh mẽ, thương mại điện tử (E-Commerce) ngày càng khẳng định vai trò thiết yếu và được ứng dụng sâu rộng trong đời sống xã hội. Đặc biệt, xu hướng "đi chợ trực tuyến" đối với các mặt hàng tiêu dùng nhanh (FMCG) và nhu yếu phẩm hàng ngày đang gia tăng vượt bậc, đòi hỏi các nền tảng bán hàng phải đảm bảo tính ổn định, chính xác và phản hồi tức thời trong từng giao dịch.
+Tuy nhiên, việc quản lý và kinh doanh bán lẻ trực tuyến còn tồn tại nhiều thách thức phức tạp như: nguy cơ sai lệch số liệu tồn kho giữa kênh bán hàng online và quầy kệ thực tế, áp lực kiểm soát hạn sử dụng của hàng thực phẩm, cùng quy trình xử lý đơn hàng dễ xảy ra nhầm lẫn nếu quản lý thủ công. Đối với các hệ thống phục vụ số lượng lớn khách hàng với tần suất mua lặp lại liên tục, việc thiếu hụt một giải pháp phần mềm khép kín sẽ làm giảm chất lượng dịch vụ và ảnh hưởng trực tiếp đến trải nghiệm người tiêu dùng.
+Trước nhu cầu đó, việc số hóa mô hình bán lẻ kết hợp kiến trúc phần mềm hiện đại đã trở thành giải pháp cốt lõi. Trong số các mô hình phát triển web hiện nay, kiến trúc MVC (Model - View - Controller) kết hợp cùng chuẩn phân tích BCE (Boundary - Control - Entity) là giải pháp tối ưu giúp phân tách rõ ràng lớp dữ liệu, logic điều khiển và giao diện, mang lại khả năng mở rộng linh hoạt, bảo đảm tính toàn vẹn dữ liệu (ACID) và dễ dàng tích hợp các cổng thanh toán trực tuyến như VNPAY.
+Xuất phát từ thực tiễn đó, đề tài “Xây dựng hệ thống website thương mại điện tử và quản lý bán lẻ cho cửa hàng tiện lợi” được thực hiện nhằm xây dựng một hệ thống bán lẻ trực tuyến hoàn chỉnh dựa trên khảo sát thực tế từ chuỗi siêu thị WinMart, ứng dụng kiến trúc MVC/BCE và hỗ trợ quy trình đặt hàng, kiểm soát tồn kho, áp dụng mã khuyến mãi và thanh toán điện tử an toàn.
+Bố cục của đồ án gồm 4 chương chính:
+Chương 1: Giới thiệu tổng quan
+Chương 2: Kiến thức nền tảng
+Chương 3: Phân tích và thiết kế hệ thống
+Chương 4: Xây dựng chương trình
+Do kiến thức và kinh nghiệm thực tế còn hạn chế, báo cáo khó tránh khỏi những thiếu sót nhất định. Nhóm chúng em rất mong nhận được sự góp ý quý báu từ quý thầy cô và các bạn để đề tài được hoàn thiện hơn.
+CHƯƠNG 1 : GIỚI THIỆU TỔNG QUAN
+1.1. Lý do chọn đề tài
+Trong những năm gần đây, cùng với sự phát triển nhanh chóng của Internet, thói quen mua sắm của người tiêu dùng đã có nhiều thay đổi rõ rệt. Thay vì đến trực tiếp cửa hàng, người dùng có xu hướng lựa chọn các nền tảng trực tuyến để tìm kiếm và mua sản phẩm nhờ sự tiện lợi và linh hoạt mà chúng mang lại.
+Thương mại điện tử đang phát triển nhanh chóng và trở thành xu hướng tất yếu trong hoạt động kinh doanh hiện đại. Đặc biệt, việc xây dựng một hệ thống tích hợp cả bán hàng trực tuyến và quản lý bán hàng giúp doanh nghiệp tối ưu hóa quy trình, từ quản lý kho, theo dõi đơn hàng đến chăm sóc khách hàng.
+Thông qua website, khách hàng có thể dễ dàng tìm kiếm sản phẩm, xem thông tin chi tiết, đặt hàng và thanh toán mọi lúc, mọi nơi. Đối với doanh nghiệp, hệ thống này giúp mở rộng phạm vi kinh doanh, tiếp cận nhiều khách hàng tiềm năng hơn, đồng thời tự động hóa khâu quản lý kho và thống kê doanh thu.
+Về mặt cá nhân, trong quá trình học tập và nghiên cứu chuyên ngành công nghệ thông tin, em có sự quan tâm đến lĩnh vực thương mại điện tử và mong muốn áp dụng các kiến thức về phát triển Web (như HTML/CSS, PHP và quản trị cơ sở dữ liệu) vào việc thiết kế một hệ thống thực tế.
+Xuất phát từ những yêu cầu thực tiễn đó, em lựa chọn đề tài “ Xây dựng hệ thống website thương mại điện tử và quản lý bán lẻ cho cửa hàng tiện lợi” nhằm nghiên cứu và xây dựng một hệ thống toàn diện với các chức năng cơ bản, phục vụ tốt cho cả trải nghiệm mua sắm của khách hàng và công tác vận hành của quản trị viên.
+1.2. Mục tiêu của đề tài 
+Mục tiêu của đề tài là nghiên cứu và xây dựng một hệ thống Web thương mại điện tử và quản lý bán hàng trực tuyến với các chức năng hoàn chỉnh, hỗ trợ người dùng mua sắm trực tuyến và hỗ trợ quản trị viên quản lý hệ thống. Các mục tiêu chính gồm:
+Nghiên cứu mô hình hoạt động của các hệ thống thương mại điện tử hiện nay.
+Tìm hiểu và áp dụng các công nghệ lập trình Web và quản trị cơ sở dữ liệu.
+Thiết kế cơ sở dữ liệu quản lý sản phẩm, kho hàng, người dùng và đơn hàng.
+Xây dựng hệ thống Backend xử lý nghiệp vụ và phát triển giao diện website Frontend thân thiện với người dùng.
+1.3. Giới hạn và phạm vi của đề tài
+Trong phạm vi đề tài này, hệ thống được xây dựng nhằm mô phỏng một website thương mại điện tử với các chức năng cốt lõi phục vụ cho mục đích học tập và nghiên cứu. Cụ thể, đề tài tập trung vào các nội dung sau:
+Xây dựng website cho phép khách hàng thực hiện toàn bộ quy trình từ tìm kiếm, thêm vào giỏ hàng đến đặt hàng và đánh giá.
+Xây dựng phân hệ quản trị viên với các chức năng quản lý danh mục, kho hàng, đơn hàng, khuyến mãi và thống kê doanh thu.
+Phát triển giao diện người dùng (Frontend) kết hợp với hệ thống xử lý phía máy chủ (Backend) và cơ sở dữ liệu.
+1.4. Kết quả dự kiến đạt được
+Website khi hoàn thành dự kiến đạt được các kết quả sau:
+Xây dựng được một website thương mại điện tử và quản lý bán hàng hoàn chỉnh.
+Hệ thống có các chức năng cơ bản cho khách hàng: đăng ký/đăng nhập, tìm kiếm sản phẩm, giỏ hàng, đặt hàng, theo dõi và đánh giá.
+Quản trị viên có thể quản lý sản phẩm, danh mục, kho, khuyến mãi, các đơn hàng và xem thống kê.
+Hoàn thành báo cáo chi tiết đồ án.
+CHƯƠNG 2 : KIẾN THỨC NỀN TÀNG
+2.1. Cơ sở lý thuyết
+2.1.1. Cơ sở lý thuyết về thương mại điện tử và hệ thống bán hàng trực tuyến
+Thương mại điện tử (Electronic Commerce - E-Commerce) là việc ứng dụng công nghệ thông tin và mạng lưới Internet nhằm thực hiện các hoạt động kinh doanh, giao dịch mua bán hàng hóa, trao đổi thông tin tài chính và cung ứng dịch vụ. Các mô hình giao dịch tiêu biểu bao gồm:
+B2B (Business-to-Business): Giao dịch giữa các doanh nghiệp nhằm cung ứng nguồn hàng số lượng lớn.
+C2C (Consumer-to-Consumer): Các cá nhân trao đổi buôn bán trực tiếp trên nền tảng trung gian.
+B2C (Business-to-Consumer): Doanh nghiệp trực tiếp cung cấp hàng hóa, dịch vụ đến người tiêu dùng cuối. Đây chính là mô hình cốt lõi mà đề tài tập trung nghiên cứu và xây dựng.
+Hệ thống bán hàng trực tuyến đóng vai trò cốt lõi trong việc số hóa chuỗi cung ứng và tự động hóa quy trình nghiệp vụ. Chu trình xử lý đơn hàng khép kín bao gồm các bước:
+Tiếp nhận thao tác chọn hàng, thêm giỏ hàng và áp dụng khuyến mãi từ người dùng.
+Kiểm tra tính khả dụng của số lượng tồn kho nhằm chống bán vượt số lượng.
+Xác thực thanh toán thông qua cổng giao dịch trực tuyến hoặc phương thức nhận hàng trả tiền .
+Khởi tạo đơn hàng, cập nhật trừ tồn kho và gửi thông báo xác nhận.
+Theo dõi tiến trình vận chuyển, xử lý các trường hợp hủy đơn - hoàn kho và tiếp nhận đánh giá phản hồi từ khách hàng.
+2.1.2. Cơ sở lý thuyết về mô hình kiến trúc MVC 
+Kiến trúc MVC là giải pháp phân rã hệ thống phần mềm thành ba thành phần độc lập, giảm thiểu độ phụ thuộc và tối ưu hóa khả năng mở rộng:
+Model (Lớp dữ liệu và nghiệp vụ): Đại diện cho cấu trúc dữ liệu, các thực thể (Entity) và quy tắc nghiệp vụ của hệ thống. Model chịu trách nhiệm truy vấn, cập nhật cơ sở dữ liệu và bảo đảm tính toàn vẹn dữ liệu trước khi chuyển giao kết quả.
+View (Lớp giao diện hiển thị): Chịu trách nhiệm trực quan hóa dữ liệu và cung cấp giao diện tương tác (UI/UX) cho người dùng. View nhận dữ liệu từ Controller và hiển thị mà không can thiệp trực tiếp vào dữ liệu gốc.
+Controller (Lớp điều khiển): Đóng vai trò cầu nối, tiếp nhận các yêu cầu (HTTP Requests) từ giao diện View, điều hướng và gọi các phương thức xử lý tương ứng trong Model, sau đó nhận dữ liệu trả về để cập nhật lại View.
+Hình 2.1. Mô hình kiến trúc MVC
+Trong phân tích hướng đối tượng theo UML, cấu trúc MVC tương ứng trực tiếp với bộ ba phân tích BCE (Boundary - Control - Entity):
+Boundary: Tương ứng với View, đại diện cho màn hình giao diện mà Actor tương tác.
+Control: Tương ứng với Controller, điều phối các luồng nghiệp vụ và logic tính toán.
+Entity: Tương ứng với Model, ánh xạ trực tiếp đến các bảng dữ liệu trong hệ thống.
+2.1.3. Cơ sở lý thuyết về kiến trúc Client – Server và giao thức HTTP/HTTPS
+Kiến trúc mạng Khách – Chủ (Client - Server) phân chia hệ thống thành hai vai trò độc lập hoạt động trên môi trường mạng:
+Phía Client (Trình duyệt): Thiết bị đầu cuối của người dùng, thực hiện biên dịch HTML, CSS, JavaScript và gửi yêu cầu đến máy chủ.
+Phía Server (Máy chủ): Nơi lưu trữ tài nguyên, mã nguồn ứng dụng và hệ quản trị cơ sở dữ liệu, có nhiệm vụ xử lý tác vụ ngầm và phản hồi dữ liệu.
+Hình 2.2. Mô hình Client & Server
+Giao tiếp giữa Client và Server được thiết lập dựa trên giao thức truyền tải siêu văn bản (HTTP/HTTPS):
+Cơ chế Request - Response: Client khởi tạo một bản tin HTTP Request chứa Header, URL và Payload (dữ liệu gửi kèm). Server tiếp nhận, phân tích yêu cầu và trả về một bản tin HTTP Response kèm mã trạng thái (HTTP Status Codes như 200 OK, 400 Bad Request, 401 Unauthorized, 404 Not Found, 500 Internal Server Error).
+Bảo mật HTTPS: Sử dụng giao thức mã hóa TLS/SSL để mã hóa toàn bộ đường truyền dữ liệu giữa Client và Server, ngăn chặn nguy cơ đánh cắp thông tin cá nhân và tài khoản thẻ trong quá trình thanh toán trực tuyến.
+2.1.4. Cơ sở lý thuyết về RESTful API và định dạng trao đổi dữ liệu JSON
+REST (Representational State Transfer) là kiểu kiến trúc phần mềm sử dụng giao thức HTTP để quản lý các tài nguyên mạng (Resources). Một hệ thống RESTful API chuẩn mực phải tuân thủ các nguyên tắc:
+Stateless: Mỗi Request từ Client gửi lên Server phải chứa đầy đủ thông tin xác thực để thực thi mà không phụ thuộc vào trạng thái lưu trữ trên Server.
+Sử dụng chuẩn các phương thức HTTP:
+GET: Truy xuất và đọc tài nguyên (ví dụ: lấy danh sách sản phẩm).
+POST: Khởi tạo một tài nguyên mới (ví dụ: tạo đơn hàng, đăng ký tài khoản).
+PUT/PATCH: Cập nhật toàn bộ hoặc một phần tài nguyên sẵn có (ví dụ: sửa thông tin sản phẩm, đổi trạng thái đơn).
+DELETE: Loại bỏ hoặc ẩn một tài nguyên khỏi hệ thống.
+JSON (JavaScript Object Notation): Là định dạng dữ liệu dạng chuỗi văn bản gọn nhẹ, có cấu trúc dạng cặp key: value. JSON đóng vai trò ngôn ngữ chung giúp tầng giao diện (Frontend) và máy chủ (Backend) dễ dàng phân tích cú pháp (parse) và chuyển đổi dữ liệu.
+2.1.5. Cơ sở lý thuyết về Cơ sở dữ liệu quan hệ (RDBMS) và tính chất ACID
+Cơ sở dữ liệu quan hệ tổ chức thông tin dưới dạng các bảng (Tables) 2 chiều gồm các hàng (bản ghi) và các cột (trường thuộc tính). Mối quan hệ giữa các bảng được ràng buộc chặt chẽ thông qua Khóa chính (Primary Key - định danh duy nhất cho bản ghi) và Khóa ngoại (Foreign Key - trỏ đến khóa chính của bảng khác).
+Đối với bài toán bán hàng trực tuyến, tính toàn vẹn dữ liệu được đảm bảo tuyệt đối nhờ việc thực thi chuẩn giao dịch ACID:
+Atomicity (Tính nguyên tử): Một giao dịch (ví dụ: trừ tiền tài khoản, trừ kho, tạo hóa đơn) phải diễn ra trọn vẹn; nếu một thao tác thành phần thất bại, toàn bộ giao dịch sẽ bị thu hồi (Rollback).
+Consistency (Tính nhất quán): Dữ liệu phải luôn tuân thủ các ràng buộc nghiệp vụ (tồn kho không thể âm, mã đơn hàng không bị trùng).
+Isolation (Tính cô lập): Các giao dịch diễn ra đồng thời không được can thiệp hay đọc dữ liệu chưa hoàn tất của nhau.
+Durability (Tính bền vững): Khi một đơn hàng đã được xác nhận ghi nhận thành công vào cơ sở dữ liệu, dữ liệu đó sẽ không bị mất ngay cả khi hệ thống gặp sự cố mất điện.
+2.1.6. Cơ chế xác thực, phân quyền và quản lý phiên làm việc (Session & JWT)
+Để phân định quyền hạn giữa Khách hàng (Customer) và Quản trị viên (Admin), hệ thống sử dụng hai phương thức kiểm soát truy cập:
+Session/Cookie: Sau khi người dùng xác thực thành công, máy chủ tạo một Session ID lưu tại bộ nhớ tạm và gửi về trình duyệt dưới dạng HttpOnly Cookie. Mỗi Request tiếp theo, trình duyệt sẽ tự động gửi kèm Cookie này để máy chủ nhận diện.
+JWT (JSON Web Token): Mã hóa thông tin người dùng dưới dạng chuỗi token gồm 3 phần: Header, Payload và Signature. Token này được lưu trữ phía Client (LocalStorage/SessionStorage) và gửi kèm trong Header Authorization: Bearer , giúp hệ thống kiểm tra quyền hạn một cách linh hoạt, giảm tải cho bộ nhớ máy chủ.
+2.1.7. Tổng quan về các ngôn ngữ và công nghệ lập trình Web
+Xây dựng hệ thống thương mại điện tử hoàn chỉnh đòi hỏi sự kết hợp đồng bộ giữa các tầng công nghệ:
+HTML5: Cung cấp bộ khung cấu trúc ngữ nghĩa (Semantic tags) cho tài liệu web, định nghĩa các khối biểu mẫu nhập liệu và cấu trúc hiển thị nội dung.
+CSS3 & CSS Frameworks (Bootstrap / Tailwind CSS): Định hình giao diện, phối màu, xử lý Responsive Web Design (tương thích giao diện mượt mà trên cả máy tính, máy tính bảng và điện thoại di động).
+JavaScript: Cung cấp khả năng tương tác động phía giao diện người dùng, thực thi xác thực dữ liệu ngay tại Client (Client-side Validation), xử lý các sự kiện bấm nút và gọi API bất đồng bộ (AJAX/Fetch) mà không cần tải lại toàn bộ trang web.
+Ngôn ngữ lập trình phía Server (PHP / JavaScript - Node.js): Xử lý toàn bộ logic nghiệp vụ phía sau, kết nối điều phối cơ sở dữ liệu, mã hóa mật khẩu, kiểm tra tồn kho và tích hợp các dịch vụ bên thứ ba.
+2.2. Công cụ và môi trường phát triển
+2.2.1. Môi trường phát triển tích hợp Visual Studio Code
+Visual Studio Code (VS Code) là trình biên tập mã nguồn mở phát triển bởi Microsoft, xây dựng trên nền tảng Electron Framework. Công cụ này kết hợp giữa sự gọn nhẹ của một Text Editor và các tính năng nâng cao của một môi trường phát triển tích hợp (IDE).
+Đặc điểm và tính năng kỹ thuật:
+Hệ thống IntelliSense: Cung cấp khả năng tự động hoàn thành mã, gợi ý cú pháp thông minh dựa trên ngữ cảnh, kiểu biến và định nghĩa của các hàm.
+Tích hợp Git trực tiếp: Cho phép theo dõi sự thay đổi của từng dòng mã (diff checking), tạo commit, chuyển nhánh và giải quyết xung đột (merge conflicts) trực tiếp trên giao diện soạn thảo.
+Hệ sinh thái Extensions phong phú: Hỗ trợ cài đặt các tiện ích mở rộng phục vụ trực tiếp cho quá trình phát triển web như PHP Intelephense, Prettier (chuẩn hóa định dạng mã), ESLint (bắt lỗi cú pháp JavaScript), và Auto Rename Tag (tối ưu hóa thao tác viết mã HTML).
+Vai trò trong đề tài: Là công cụ soạn thảo mã nguồn chính cho cả hai phân hệ giao diện người dùng (Frontend) và logic máy chủ (Backend).
+2.2.2. Môi trường máy chủ cục bộ XAMPP 
+Để chạy thử nghiệm ứng dụng web trên máy tính cá nhân trước khi đưa lên môi trường Internet, việc thiết lập một máy chủ cục bộ (Localhost) là điều kiện bắt buộc. Các gói phần mềm như XAMPP hoặc Laragon đóng gói toàn bộ các dịch vụ cần thiết vào một chương trình duy nhất.
+Cấu trúc thành phần cốt lõi:
+Apache HTTP Server: Máy chủ web mã nguồn mở, hoạt động theo mô hình hướng module, có nhiệm vụ tiếp nhận các yêu cầu HTTP từ trình duyệt của lập trình viên và điều hướng đến bộ thông dịch.
+PHP Runtime: Bộ xử lý và thông dịch mã nguồn PHP, chịu trách nhiệm thực thi các đoạn mã phía máy chủ, kết nối cơ sở dữ liệu và chuyển đổi thành mã HTML thô để trả về cho máy chủ web.
+phpMyAdmin: Công cụ quản trị cơ sở dữ liệu trực quan dựa trên nền tảng web, cho phép lập trình viên tương tác với hệ cơ sở dữ liệu thông qua giao diện người dùng thay vì phải gõ lệnh qua dòng lệnh (CLI).
+Vai trò trong đề tài: Cung cấp môi trường thực thi cục bộ khép kín, ổn định, giúp kiểm tra nhanh chóng các luồng xử lý và gỡ lỗi mà không phụ thuộc vào kết nối mạng bên ngoài.
+2.2.3. Hệ quản trị cơ sở dữ liệu MySQL
+MySQL là hệ thống quản trị cơ sở dữ liệu quan hệ (RDBMS) mã nguồn mở đa luồng, đa người dùng, hoạt động dựa trên ngôn ngữ truy vấn có cấu trúc (SQL).
+Đặc điểm kiến trúc và vận hành:
+Cơ chế lưu trữ (Storage Engines): Hỗ trợ nhiều engine lưu trữ khác nhau, trong đó nổi bật là InnoDB – cơ chế mặc định hỗ trợ đầy đủ các tính chất ACID, khóa cấp dòng (Row-level Locking) và quản lý toàn vẹn ràng buộc khóa ngoại (Foreign Key Constraints).
+Hiệu năng và chỉ mục (Indexing): Sử dụng cấu trúc cây B-Tree để xây dựng chỉ mục cho các trường dữ liệu thường xuyên tìm kiếm (như mã sản phẩm, email người dùng), giúp tăng tốc độ xử lý truy vấn tìm kiếm dữ liệu lớn.
+Vai trò trong đề tài: Lưu trữ toàn bộ dữ liệu có cấu trúc của hệ thống thương mại điện tử, bao gồm bảng tài khoản, bảng sản phẩm, chi tiết giỏ hàng, hóa đơn thanh toán và các bảng lịch sử giao dịch.
+2.2.4. Công cụ kiểm thử và phát triển API Postman
+Postman là nền tảng chuyên dụng hỗ trợ thiết kế, phát triển và kiểm thử các giao diện lập trình ứng dụng (API). Postman cho phép lập trình viên mô phỏng chính xác các yêu cầu mạng từ phía Client gửi đến Server mà không cần xây dựng giao diện hiển thị.
+Nguyên lý hoạt động và tính năng chính:
+Mô phỏng đa dạng phương thức HTTP: Hỗ trợ tạo và gửi các request GET, POST, PUT, PATCH, DELETE với đầy đủ các cấu hình về Headers, Query Parameters, và Request Body (dạng Form-data, x-www-form-urlencoded hoặc thô - Raw JSON).
+Kiểm tra phản hồi tự động (Assertions): Hỗ trợ viết các đoạn mã JavaScript kiểm thử để đánh giá tự động mã trạng thái trả về (Status Code 200, 400, 404), thời gian phản hồi (Response Time) và cấu trúc dữ liệu JSON phản hồi.
+Quản lý biến môi trường (Environment Variables): Cho phép lưu trữ và chuyển đổi nhanh cấu hình địa chỉ IP máy chủ, Access Token hoặc khóa xác thực giữa môi trường thử nghiệm (Localhost) và môi trường thực tế (Production).
+Vai trò trong đề tài: Được sử dụng để kiểm thử độc lập các API xử lý giỏ hàng, xác thực tài khoản, kiểm tra mã giảm giá và đối soát dữ liệu Webhook từ cổng thanh toán.
+2.2.5. Hệ thống quản lý phiên bản Git và nền tảng lưu trữ GitHub
+Trong quy trình xây dựng phần mềm hiện đại, việc quản lý phiên bản phân tán (Distributed Version Control System - DVCS) đóng vai trò then chốt trong việc bảo vệ dữ liệu và theo dõi tiến độ phát triển.
+Cơ chế vận hành:
+Git (Local Repository): Lưu trữ toàn bộ lịch sử phát triển dưới dạng các ảnh chụp (snapshots) của dự án. Lập trình viên có thể tạo các nhánh (branches) riêng biệt để phát triển tính năng mới mà không làm ảnh hưởng đến nhánh chính (main/master), đồng thời có thể khôi phục lại trạng thái của mã nguồn tại một thời điểm cụ thể bất kỳ (rollback).
+GitHub (Remote Repository): Đóng vai trò là máy chủ lưu trữ dự án trực tuyến, hỗ trợ việc sao lưu mã nguồn lên đám mây, tích hợp các công cụ quản lý lỗi (Issue Tracking) và tự động hóa quy trình triển khai.
+Vai trò trong đề tài: Quản lý toàn bộ vòng đời của mã nguồn, theo dõi chi tiết từng thay đổi trong suốt quá trình thực hiện đồ án, chống mất mát dữ liệu do sự cố phần cứng.
+2.2.6. Nền tảng ảo hóa và đóng gói ứng dụng Docker
+Docker là nền tảng ảo hóa cấp hệ điều hành (Containerization) mã nguồn mở, cho phép lập trình viên tự động hóa quy trình đóng gói, triển khai và vận hành ứng dụng bên trong các môi trường độc lập gọi là Container. Khác với máy ảo truyền thống (Virtual Machine) phải chạy kèm cả một hệ điều hành khách (Guest OS) cồng kềnh, Docker chia sẻ trực tiếp nhân hệ điều hành máy chủ (Host OS Kernel), giúp tiết kiệm tài nguyên bộ nhớ và đạt tốc độ khởi động gần như tức thì.
+Các thành phần cốt lõi của Docker:
+Dockerfile: Tệp văn bản chứa tập hợp các lệnh và chỉ dẫn tuần tự (như chỉ định môi trường gốc, cài đặt thư viện PHP mở rộng, copy mã nguồn, mở cổng mạng) để xây dựng nên một Docker Image.
+Docker Image: Khuôn mẫu tĩnh dạng chỉ đọc (Read-only Template) chứa toàn bộ mã nguồn, môi trường thực thi (runtime), các biến môi trường và tập lệnh phụ thuộc cần thiết để ứng dụng hoạt động.
+Docker Container: Một thực thể chạy độc lập (Running Instance) được tạo ra từ Docker Image. Container hoạt động cô lập hoàn toàn với các tiến trình khác trên máy chủ, ngăn ngừa xung đột phiên bản phần mềm.
+Docker Compose: Công cụ hỗ trợ định nghĩa và vận hành các ứng dụng đa container (Multi-container Docker applications) thông qua một tệp cấu hình duy nhất docker-compose.yml. Thay vì phải khởi chạy thủ công từng dịch vụ bằng dòng lệnh, Docker Compose cho phép liên kết và khởi động đồng thời nhiều container chỉ với một câu lệnh.
+Vai trò trong đề tài:
+Đảm bảo tính nhất quán môi trường: Giải quyết triệt để vấn đề xung đột môi trường phát triển (lỗi kinh điển "chạy được trên máy của tôi nhưng không chạy được trên máy người khác hoặc máy chủ").
+Chuẩn hóa hạ tầng dịch vụ: Dễ dàng thiết lập cấu trúc đa dịch vụ cho website thương mại điện tử bằng Docker Compose, tách biệt máy chủ web (Nginx/Apache), bộ thông dịch backend (PHP) và hệ quản trị cơ sở dữ liệu (MySQL) thành các container riêng biệt nhưng vẫn kết nối mạng nội bộ ổn định.
+Dễ dàng sao lưu và chuyển giao: Dự án có thể được đóng gói và chuyển giao cho giảng viên hướng dẫn hoặc hội đồng nghiệm thu chạy thử nghiệm mà không yêu cầu cài đặt thủ công hàng loạt phần mềm phụ trợ phức tạp lên máy tính thật.
+2.2.7. Công cụ thiết kế mô hình hệ thống Draw.io và PlantUML
+Việc mô hình hóa hệ thống bằng các sơ đồ kỹ thuật giúp trực quan hóa cấu trúc và luồng nghiệp vụ trước khi bước vào giai đoạn viết mã.
+Draw.io: Ứng dụng vẽ sơ đồ đồ họa kéo thả trực quan. Công cụ này cung cấp thư viện biểu tượng chuẩn UML phong phú, hỗ trợ phân chia các làn bơi (swimlanes) rõ ràng, phù hợp cho việc thiết kế sơ đồ ca sử dụng (Use Case Diagram) và sơ đồ hoạt động (Activity Diagram).
+PlantUML: Công cụ mô hình hóa phần mềm bằng mã nguồn (Diagram-as-Code). Bằng việc sử dụng các dòng lệnh mô tả quan hệ, PlantUML tự động tính toán khoảng cách và vị trí các đối tượng, đảm bảo nét vẽ chuẩn xác về mặt kỹ thuật. Công cụ này được dùng làm nền tảng chính để xuất các biểu đồ tuần tự (Sequence Diagram) theo chuẩn kiến trúc BCE (Boundary - Control - Entity) mà không lo bị lệch kích thước.
+Vai trò trong đề tài: Cung cấp đầy đủ các biểu đồ phân tích và thiết kế hệ thống để đưa vào Chương 3 của báo cáo.
+CHƯƠNG 3 : PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+3.1. Khảo sát hệ thống và đặc tả nghiệp vụ
+3.1.1. Giới thiệu đối tượng và phạm vi khảo sát
+Để có cơ sở xác định các yêu cầu cho hệ thống website thương mại điện tử và quản lý bán hàng trực tuyến, nhóm tiến hành khảo sát mô hình bán lẻ theo hình thức B2C (Business-to-Consumer). Đối tượng tham khảo chính là mô hình hoạt động của các hệ thống siêu thị và chuỗi cửa hàng tiện lợi hiện đại WinMart, nơi doanh nghiệp trực tiếp cung cấp hàng hóa đến tay người tiêu dùng thông qua nền tảng trực tuyến.
+Hình 3.1. Giao diện trang chủ website thương mại điện tử WinMart
+Quy trình nghiệp vụ tổng quát được khảo sát bao phủ toàn bộ vòng đời của một giao dịch: từ khâu cửa hàng chuẩn bị dữ liệu (quản lý danh mục, cập nhật sản phẩm, tồn kho, khuyến mãi) đưa lên website; đến khâu khách hàng thao tác (đăng nhập, tìm kiếm, thêm giỏ hàng, đặt hàng, thanh toán); và cuối cùng là quá trình xử lý sau bán hàng (theo dõi đơn, hủy đơn, đánh giá sản phẩm và thống kê doanh thu).
+Qua quá trình tìm hiểu ban đầu, nhóm xác định hai nhóm đối tượng tác nhân (Actor) có liên quan trực tiếp đến hệ thống cần khảo sát:
+Quản lý/Chủ cửa hàng (Quản trị viên): Là người vận hành toàn bộ hệ thống, chịu trách nhiệm thiết lập dữ liệu hàng hóa, quản lý kho, xử lý đơn đặt hàng, tạo khuyến mãi và theo dõi thống kê doanh thu.
+Khách hàng: Là người sử dụng nền tảng để tìm kiếm sản phẩm, quản lý giỏ hàng, thanh toán, theo dõi đơn và đánh giá chất lượng dịch vụ.
+3.1.2. Cách thức khảo sát
+Nhóm sử dụng kết hợp phương pháp phỏng vấn trực tiếp các đối tượng vận hành/mua sắm và phương pháp đóng vai (role-play) trải nghiệm các website thương mại điện tử thực tế.
+3.1.2.1. Phỏng vấn Quản lý/Chủ cửa hàng
+Mục đích: Tìm hiểu nhu cầu về quản trị hàng hóa, xử lý đơn hàng và theo dõi tình hình kinh doanh.
+Bảng 3.1. Phiếu phỏng vấn Quản lý/Chủ cửa hàng
+STT
+Câu hỏi khảo sát
+Kết quả ghi nhận
+1
+Hiện tại, cửa hàng quản lý danh mục và thông tin sản phẩm (thêm/sửa/xóa) như thế nào?
+Việc phân loại hàng hóa thủ công rất dễ nhầm lẫn. Cần một hệ thống phân chia danh mục rõ ràng để dễ dàng thêm mới hoặc cập nhật giá sản phẩm.
+2
+Anh/chị quản lý số lượng tồn kho ra sao khi có đơn hàng mới hoặc khách báo hủy đơn?
+Nhân viên phải tự nhớ để trừ/cộng lại số lượng vào sổ sách. Rất dễ xảy ra tình trạng quên cập nhật dẫn đến sai lệch tồn kho.
+3
+Các chương trình khuyến mãi và mã giảm giá hiện nay được quản lý như thế nào?
+Thường chỉ đăng bài thông báo trên mạng xã hội, chưa có cơ chế tạo mã voucher tự động để khách áp dụng khi thanh toán.
+4
+Anh/chị theo dõi doanh thu và tình hình tiêu thụ sản phẩm bằng cách nào?
+Doanh thu tổng hợp bằng Excel rất mất thời gian. Khó biết chính xác sản phẩm nào đang bán chạy nhất để lên kế hoạch nhập hàng.
+3.1.2.2. Phỏng vấn Khách hàng
+Mục đích: Khảo sát trải nghiệm tìm kiếm, giỏ hàng, đặt đơn, thanh toán và các dịch vụ hậu mãi.
+Bảng 3.2. Phiếu phỏng vấn Khách hàng
+STT
+Câu hỏi khảo sát
+Kết quả ghi nhận
+1
+Khi mua hàng online, bạn thường gặp khó khăn gì khi tìm kiếm sản phẩm?
+Rất khó tìm đúng món đồ nếu website không có thanh tìm kiếm thông minh hoặc bộ lọc theo khoảng giá, danh mục.
+2
+Bạn mong muốn giỏ hàng hỗ trợ những chức năng nào?
+Tôi muốn giỏ hàng lưu lại được các món đồ, cho phép tôi tự do tăng/giảm số lượng hoặc xóa sản phẩm trước khi chốt đơn.
+3
+Bạn muốn sử dụng những hình thức thanh toán nào khi đặt hàng?
+Tôi thích nhận hàng trả tiền (COD), nhưng cũng rất cần web tích hợp thanh toán trực tuyến (như VNPAY/Momo) để tiện lợi hơn.
+4
+Sau khi đặt hàng, bạn có nhu cầu theo dõi và quản lý đơn không?
+Rất cần thiết. Tôi muốn biết đơn đang chờ duyệt hay đang giao. Nếu đổi ý, tôi muốn có nút tự hủy đơn ngay trên web thay vì phải gọi điện cho shop.
+5
+Yếu tố nào giúp bạn tin tưởng quyết định mua một sản phẩm trên website?
+Đánh giá, số sao và nhận xét thực tế từ những người đã mua trước đó giúp tôi tự tin chốt đơn hơn rất nhiều.
+3.1.2.3. Quan sát và trải nghiệm hệ thống thực tế
+Bên cạnh phỏng vấn, nhóm trực tiếp đóng vai khách hàng để trải nghiệm các quy trình mua sắm trên các nền tảng B2C lớn nhằm đối chiếu với nhu cầu thu thập được.
+Bảng 3.3. Nội dung quan sát và trải nghiệm
+STT
+Nội dung thực hiện
+Tính năng hệ thống ghi nhận được
+1
+Xác thực tài khoản
+Quy trình Đăng ký và Đăng nhập bảo mật thông tin.
+2
+Tìm kiếm sản phẩm
+Thanh tìm kiếm kết hợp bộ lọc (danh mục, giá).
+3
+Lựa chọn hàng hóa
+Chức năng Giỏ hàng hỗ trợ Thêm, Sửa số lượng, Xóa.
+4
+Chốt đơn
+Quy trình Đặt hàng và áp dụng mã Khuyến mãi.
+5
+Giao dịch
+Hỗ trợ Thanh toán COD và Thanh toán trực tuyến.
+6
+Quản lý sau mua
+Theo dõi trạng thái đơn hàng, Hủy đơn hàng và Đánh giá sản phẩm.
+3.1.3. Đánh giá hiện trạng
+Dựa trên kết quả khảo sát và quan sát thực tế, nhóm tiến hành đánh giá những hạn chế trong mô hình bán hàng truyền thống/thủ công hiện tại để làm tiền đề xây dựng hệ thống mới.
+3.1.3.1. Hiện trạng và hạn chế phía Cửa hàng (Quản trị viên)
+Quản lý sản phẩm và kho hàng thủ công: Việc thêm, sửa, xóa thông tin hàng hóa chưa được hệ thống hóa. Tồn kho phải cộng/trừ bằng tay dẫn đến nguy cơ sai lệch dữ liệu rất cao khi lượng đơn hàng lớn.
+Xử lý đơn hàng thụ động: Trạng thái đơn hàng không được cập nhật realtime, quản lý dễ bỏ sót yêu cầu hủy đơn từ khách.
+Thiếu công cụ phân tích và marketing: Không có chức năng tạo mã khuyến mãi tự động. Việc thống kê doanh thu và xác định sản phẩm bán chạy bằng Excel làm tốn thời gian và thiếu tính trực quan.
+3.1.3.2. Hiện trạng và hạn chế phía Khách hàng
+Trải nghiệm tìm kiếm kém: Mất nhiều thời gian tìm đúng sản phẩm do thiếu bộ lọc và phân loại danh mục không rõ ràng.
+Khó theo dõi và quản lý đơn hàng: Khách hàng thụ động trong việc nắm bắt lộ trình vận chuyển, thường phải nhắn tin hỏi shop. Quy trình xin hủy đơn phức tạp.
+Hạn chế phương thức thanh toán và niềm tin: Nhiều cửa hàng chỉ hỗ trợ COD hoặc chuyển khoản thủ công. Thiếu hệ thống đánh giá sản phẩm minh bạch khiến khách hàng e ngại về chất lượng.
+3.1.4. Xác định yêu cầu hệ thống
+Từ các hạn chế đã phân tích, nhóm tiến hành chuyển đổi các vấn đề thực tế thành các yêu cầu chức năng (các Use Case) cho hệ thống Website thương mại điện tử mới.
+3.1.4.1. Xác định yêu cầu chức năng 
+Bảng 3.4. Các yêu cầu chức năng
+Vấn đề từ hiện trạng khảo sát
+Chức năng (Use Case) tương ứng trên hệ thống
+Cần bảo mật thông tin và phân biệt Khách hàng/Admin.
+Đăng ký / Đăng nhập
+Hàng hóa lộn xộn, khó phân loại.
+Quản lý danh mục
+Thiếu công cụ cập nhật thông tin hàng hóa.
+Quản lý sản phẩm
+Sai lệch số lượng khi nhập hàng hoặc có đơn hàng.
+Quản lý kho
+Khách hàng khó tìm đúng sản phẩm cần mua.
+Tìm kiếm, lọc sản phẩm
+Khách muốn gom nhiều món hàng trước khi chốt đơn.
+Giỏ hàng
+Cần số hóa quy trình chốt đơn và nhập địa chỉ giao.
+Đặt hàng
+Khách muốn thanh toán linh hoạt (COD, Trực tuyến).
+Thanh toán
+Khách thụ động trong việc biết tình trạng giao hàng.
+Theo dõi trạng thái đơn hàng
+Xử lý thủ công rườm rà khi khách đổi ý không mua.
+Hủy đơn hàng
+Cửa hàng chưa có công cụ tung mã giảm giá tự động.
+Khuyến mãi
+Khách hàng thiếu thông tin để tin tưởng sản phẩm.
+Đánh giá sản phẩm
+Tổng hợp doanh thu thủ công bằng Excel mất thời gian.
+Thống kê doanh thu
+Khó xác định mặt hàng nào đang được ưa chuộng.
+Thống kê sản phẩm bán chạy
+Từ bảng trên, hệ thống được thiết kế với 14 chức năng chính, chia làm 2 nhóm tác nhân: 
+Khách hàng: Đăng ký/đăng nhập; Tìm kiếm ,lọc sản phẩm; Giỏ hàng; Đặt hàng; Thanh toán; Theo dõi trạng thái đơn hàng; Hủy đơn hàng; Đánh giá sản phẩm 
+Quản trị viên: Đăng ký/đăng nhập; Quản lý danh mục; Quản lý sản phẩm; Quản lý kho; Theo dõi trạng thái đơn hàng; Hủy đơn hàng; Khuyến mãi; Thống kê doanh thu; Thống kê sản phẩm bán hàng 
+3.1.4.2. Yêu cầu phi chức năng
+Ngoài các chức năng nghiệp vụ, hệ thống cần đảm bảo các tiêu chuẩn sau:
+Dễ sử dụng: Giao diện trực quan, tương thích hiển thị trên cả máy tính và điện thoại di động (Responsive).
+Bảo mật: Thông tin cá nhân và mật khẩu phải được mã hóa. Người dùng không có quyền không thể truy cập trang quản trị.
+Toàn vẹn dữ liệu: Mọi thao tác đặt hàng, trừ kho, thanh toán và hủy đơn phải được đảm bảo tính toàn vẹn (ACID), không xảy ra tình trạng âm kho.
+Hiệu năng: Hệ thống phản hồi nhanh các tác vụ tìm kiếm, thêm giỏ hàng và xử lý thanh toán.
+3.2. Phân tích và thiết kế hệ thống
+3.2.1. Xác định các tác nhân
+Bảng 3.5. Xác định tác nhân và Use Case
+Tác nhân
+Hoạt động tác nhân
+Use Case
+Khách hàng
+Là người truy cập vào hệ thống website để tìm kiếm, xem thông tin hàng hóa, thực hiện các giao dịch mua sắm, theo dõi tiến trình giao dịch và phản hồi về chất lượng hàng hóa.
+- Đăng ký/đăng nhập 
+- Tìm kiếm, lọc sản phẩm 
+- Giỏ hàng 
+- Đặt hàng
+- Thanh toán 
+- Theo dõi trạng thái đơn hàng 
+- Hủy đơn hàng 
+- Đánh giá sản phẩm 
+Quản trị viên (Admin)
+Là người điều hành và quản lý toàn bộ hoạt động của website. Chịu trách nhiệm thiết lập dữ liệu hàng hóa, xử lý đơn hàng, chạy các chương trình ưu đãi và theo dõi tình hình kinh doanh chung của hệ thống.
+- Đăng ký/đăng nhập 
+- Quản lý danh mục 
+- Quản lý sản phẩm 
+- Quản lý kho 
+- Theo dõi trạng thái đơn hàng 
+- Hủy đơn hàng 
+- Khuyến mãi 
+- Thống kê doanh thu 
+- Thống kê sản phẩm bán chạy 
+- Người dùng bao gồm: + Khách hàng                    
+                                       + Quản trị viên (Admin)
+3.2.2. Usecase tổng quát
+Hình 3.2. Usecase tổng quát
+3.2.3. Use case thành phần
+3.2.3.1. Biểu đồ Use Case Đăng nhập
+Hình 3.3. Use Case đăng nhập
+Bảng 3.6. Đặc tả Use case đăng nhập
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Đăng nhập
+2
+Tác nhân
+Khách hàng, Quản trị viên (Admin)
+3
+Mô tả
+Cho phép người dùng truy cập vào hệ thống bằng tài khoản đã có.
+4
+Tiền điều kiện
+Người dùng đang ở màn hình Đăng nhập.
+5
+Luồng sự kiện chính
+1. Người dùng nhập thông tin (Email/SĐT, Mật khẩu) và nhấn xác nhận.
+2. Hệ thống bắt buộc thực hiện kiểm tra và xác thực thông tin đối chiếu với cơ sở dữ liệu.
+3. Nếu hợp lệ, hệ thống cấp quyền và chuyển hướng người dùng đến giao diện tương ứng.
+6
+Luồng sự kiện phụ
+- Quên mật khẩu: Người dùng có thể tùy chọn chức năng "Quên mật khẩu" để xác minh và cấp lại mật khẩu mới.
+- Sai thông tin: Nếu xác thực thất bại, hệ thống báo lỗi và yêu cầu nhập lại.
+3.2.3.2. Biểu đồ Use Case Đăng ký
+Hình  3.4. Use case quản lý đăng ký
+Bảng 3.7. Đặc tả Use case quản lý đăng ký
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Đăng ký
+2
+Tác nhân
+Khách hàng
+3
+Mô tả
+Cho phép khách hàng tạo tài khoản mới trên hệ thống.
+4
+Tiền điều kiện
+Khách hàng đang ở màn hình Đăng ký.
+5
+Luồng sự kiện chính
+1. Khách hàng nhập các thông tin cá nhân yêu cầu.
+2. Hệ thống bắt buộc kiểm tra tính hợp lệ của dữ liệu (định dạng email/SĐT).
+3. Hệ thống lưu tài khoản mới vào cơ sở dữ liệu và thông báo thành công.
+6
+Luồng sự kiện phụ
+- Trùng thông tin: Nếu Email/SĐT đã tồn tại, hệ thống báo lỗi và yêu cầu sử dụng thông tin khác.
+3.2.3.3. Biểu đồ Use Case Thêm danh mục
+Hình 3.5. Use case thêm danh mục
+Bảng 3.8. Đặc tả Use case thêm danh mục
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Thêm danh mục
+2
+Tác nhân
+Quản trị viên (Admin)
+3
+Mô tả
+Quản trị viên tạo mới một danh mục phân loại hàng hóa trên website.
+4
+Tiền điều kiện
+Quản trị viên đã truy cập trang quản lý danh mục.
+5
+Luồng sự kiện chính
+1. Admin chọn chức năng Thêm danh mục và nhập thông tin (tên, mô tả).
+2. Hệ thống bắt buộc kiểm tra tính hợp lệ của dữ liệu vừa nhập (không để trống, không trùng tên).
+3. Hệ thống lưu danh mục mới vào cơ sở dữ liệu và hiển thị danh sách đã cập nhật.
+6
+Luồng sự kiện phụ
+- Dữ liệu không hợp lệ: Nếu tên danh mục bị trống hoặc trùng, hệ thống hủy thao tác và thông báo lỗi.
+3.2.3.4. Biểu đồ Use Case Sửa danh mục
+Hình 3.6. Use case sửa danh mục
+Bảng 3.9. Đặc tả Use case sửa danh mục
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Sửa danh mục
+2
+Tác nhân
+Quản trị viên (Admin)
+3
+Mô tả
+Quản trị viên chỉnh sửa thông tin của một danh mục đang tồn tại.
+4
+Tiền điều kiện
+Danh mục cần sửa đã tồn tại trên hệ thống.
+5
+Luồng sự kiện chính
+1. Admin chọn danh mục cần sửa và nhập thông tin mới.
+2. Hệ thống bắt buộc kiểm tra tính hợp lệ của dữ liệu thay đổi.
+3. Hệ thống cập nhật thông tin vào cơ sở dữ liệu và báo thành công.
+6
+Luồng sự kiện phụ
+- Trùng tên: Nếu tên mới bị trùng với một danh mục khác, hệ thống chặn lưu và báo lỗi.
+3.2.3.5. Biểu đồ Use Case Xóa danh mục
+Hình 3.7. Use case xóa danh mục
+Bảng 3.10. Đặc tả Use case xóa danh mục
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Xóa danh mục
+2
+Tác nhân
+Quản trị viên (Admin)
+3
+Mô tả
+Quản trị viên loại bỏ một danh mục khỏi hệ thống.
+4
+Tiền điều kiện
+Danh mục cần xóa đang tồn tại.
+5
+Luồng sự kiện chính
+1. Admin chọn danh mục và nhấn Xóa.
+2. Hệ thống bắt buộc kiểm tra ràng buộc xem danh mục đó có đang chứa sản phẩm nào không.
+3. Nếu trống, hệ thống xóa danh mục khỏi cơ sở dữ liệu.
+6
+Luồng sự kiện phụ
+- Ràng buộc dữ liệu: Nếu danh mục đang chứa sản phẩm, hệ thống từ chối xóa và yêu cầu di chuyển sản phẩm trước.
+3.2.3.6. Biểu đồ Use Case Thêm sản phẩm
+Hình 3.8. Use case thêm sản phẩm
+Bảng 3.11. Đặc tả Use case thêm sản phẩm
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Thêm sản phẩm
+2
+Tác nhân
+Quản trị viên (Admin)
+3
+Mô tả
+Quản trị viên đăng tải một sản phẩm mới lên hệ thống.
+4
+Tiền điều kiện
+Quản trị viên đang ở trang quản lý sản phẩm.
+5
+Luồng sự kiện chính
+1. Admin chọn Thêm sản phẩm và điền các thuộc tính (tên, giá, ảnh, danh mục).
+2. Hệ thống bắt buộc kiểm tra định dạng thông tin đầu vào (ví dụ: giá phải là số).
+3. Hệ thống lưu sản phẩm vào cơ sở dữ liệu.
+6
+Luồng sự kiện phụ
+- Lỗi nhập liệu: Nếu dữ liệu sai định dạng hoặc thiếu trường bắt buộc, hệ thống yêu cầu nhập lại.
+3.2.3.7. Biểu đồ Use Case Sửa sản phẩm
+Hình 3.9. Use case sửa sản phẩm
+Bảng 3.12. Đặc tả Use case sửa sản phẩm
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Sửa sản phẩm
+2
+Tác nhân
+Quản trị viên (Admin)
+3
+Mô tả
+Quản trị viên thay đổi thông tin (giá bán, mô tả, hình ảnh) của sản phẩm.
+4
+Tiền điều kiện
+Sản phẩm đang tồn tại trên hệ thống.
+5
+Luồng sự kiện chính
+1. Admin chọn sản phẩm cần chỉnh sửa và thay đổi thông tin.
+2. Hệ thống bắt buộc kiểm tra tính hợp lệ của các trường dữ liệu mới.
+3. Hệ thống cập nhật dữ liệu và hiển thị danh sách mới.
+6
+Luồng sự kiện phụ
+- Dữ liệu trống: Nếu Admin xóa rỗng các trường bắt buộc, hệ thống không cho phép lưu.
+3.2.3.8. Biểu đồ Use Case thanh toán
+Hình 3.10. Use case thanh toán
+Bảng 3.13. Đặc tả Use case thanh toán
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Thanh toán
+2
+Tác nhân
+Khách hàng
+3
+Mô tả
+Thanh toán trực tuyến cho đơn hàng (Ví dụ qua VNPay, Momo).
+4
+Tiền điều kiện
+Khách hàng vừa đặt hàng thành công và chọn thanh toán online.
+5
+Luồng sự kiện chính
+1. Hệ thống chuyển hướng khách hàng sang trang cổng thanh toán.
+2. Khách hàng quét mã QR hoặc nhập thẻ.
+3. Cổng thanh toán xử lý và báo giao dịch thành công.
+4. Hệ thống cập nhật trạng thái đơn thành "Đã thanh toán".
+6
+Luồng sự kiện phụ
+- Tại bước 3: Khách hàng chủ động đóng trang hoặc số dư không đủ, hệ thống chuyển đơn về "Chờ thanh toán".
+3.2.3.9. Biểu đồ Use Case theo dõi trạng thái đơn hàng
+Hình 3.11. Use case theo dõi trạng thái đơn hàng
+Bảng 3.14. Đặc tả Use case theo dõi trạng thái đơn hàng
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Theo dõi trạng thái đơn hàng
+2
+Tác nhân
+Khách hàng, Quản trị viên (Admin)
+3
+Mô tả
+Khách xem tiến độ đơn hàng; Admin cập nhật trạng thái đơn (Chờ xác nhận -> Đang giao -> Hoàn thành).
+4
+Tiền điều kiện
+Đơn hàng đã tồn tại trên hệ thống.
+5
+Luồng sự kiện chính
+1. Khách hàng vào "Đơn hàng của tôi", chọn xem chi tiết đơn.
+2. Hệ thống hiển thị dòng trạng thái hiện tại.
+3. Admin vào "Quản lý đơn hàng", chọn đơn và cập nhật trạng thái mới.
+4. Hệ thống lưu CSDL và hiển thị trạng thái mới cho khách hàng.
+6
+Luồng sự kiện phụ
+Không có.
+3.2.3.10. Biểu đồ Use Case hủy đơn hàng
+Hình 3.12. Use case hủy đơn hàng
+Bảng 3.15. Đặc tả Use case hủy đơn hàng
+TT
+Thuộc tính
+Chi tiết
+1
+Tên Use Case
+Hủy đơn hàng
+2
+Tác nhân
+Khách hàng, Quản trị viên (Admin)
+3
+Mô tả
+Khách hàng hủy đơn khi chưa được xử lý, hoặc Admin hủy đơn do sự cố.
+4
+Tiền điều kiện
+Đơn hàng đang ở trạng thái "Chờ xác nhận" hoặc "Chờ lấy hàng".
+5
+Luồng sự kiện chính
+1. Chọn đơn hàng cần hủy.
+2. Nhấn "Hủy đơn hàng" và chọn lý do.
+3. Hệ thống kiểm tra tính hợp lệ của trạng thái đơn.
+4. Chuyển trạng thái thành "Đã hủy" và tự động cộng lại số lượng tồn kho.
+6
+Luồng sự kiện phụ
+- Tại bước 3: Đơn hàng đã chuyển sang trạng thái "Đang giao", hệ thống ẩn nút Hủy hoặc từ chối thao tác.
+3.2.4. Biểu đồ tuần tự
+3.2.4.1. Biểu đồ tuần tự đăng nhập
+Hình 3.13. Biểu đồ tuần tự đăng nhập
+3.2.4.2. Biểu đồ tuần tự đăng ký
+Hình 3.14. Biểu đồ tuần tự đăng ký
+3.2.4.3. Biểu đồ tuần tự đặt hàng
+Hình 3.15. Biểu đồ tuần tự đặt hàng
+3.2.4.4. Biểu đồ tuần tự hủy đơn hàng
+Hình 3.16. Biểu đồ tuần tự hủy đơn hàng
+3.2.4.5. Biểu đồ tuần tự thêm sản phẩm
+Hình 3.17. Biểu đồ tuần tự thêm sản phẩm
+3.2.4.6. Biểu đồ tuần tự sửa sản phẩm
+Hình 3.18. Biểu đồ tuần tự sửa sản phẩm
+3.2.4.7. Biểu đồ tuần tự xóa sản phẩm
+Hình 3.19. Biểu đồ tuần tự xóa sản phẩm
+3.2.4.8. Biểu đồ tuần tự thêm danh mục
+Hình 3.20. Biểu đồ tuần tự thêm danh mục
+3.2.4.9. Biểu đồ tuần tự sửa danh mục
+Hình 3.21. Biểu đồ tuần tự sửa danh mục
+3.2.4.10. Biểu đồ tuần tự xóa danh mục
+Hình 3.22. Biểu đồ tuần tự xóa danh mục
+3.2.4.11. Biểu đồ tuần tự áp dụng mã khuyến mãi
+Hình 3.23. Biểu đồ tuần tự áp dụng mã khuyến mãi
+3.2.4.12. Biểu đồ tuần tự thêm giỏ hàng
+Hình 3.24. Biểu đồ tuần tự thêm giỏ hàng
+3.2.4.13.Biểu đồ tuần tự thanh toán
+Hình 3.25. Biểu đồ tuần tự thanh toán
+3.2.5. Biểu đồ hoạt động
+3.2.5.1. Chức năng đăng nhập
+Hình 3.26. Biểu đồ hoạt động đăng nhập
+3.2.5.2. Chức năng đăng ký
+Hình 3.27. Biểu đồ hoạt động đăng ký
+3.2.5.3. Chức năng quản lý sản phẩm
+Thêm sản phẩm
+Hình 3.28. Biểu đồ hoạt động thêm sản phẩm
+Sửa sản phẩm
+Hình 3.29. Biểu đồ hoạt động sửa sản phẩm
+Xóa sản phẩm
+Hình 3.30. Biểu đồ hoạt động xóa sản phẩm
+3.2.5.4. Chức năng quản lý danh mục
+Thêm danh mục
+Hình 3.31. Biểu đồ hoạt động thêm danh mục
+Sửa danh mục
+Hình 3.32. Biểu đồ hoạt động sửa danh mục
+Xóa danh mục
+Hình 3.33. Biểu đồ hoạt động xóa danh mục
+3.2.5.5. Chức năng quản lý đơn hàng
+Thêm giỏ hàng
+Hình 3.34. Biểu đồ hoạt động thêm giỏ hàng
+Đặt hàng
+Hình 3.35. Biểu đồ hoạt động đặt hàng
+Hủy đơn hàng
+Hình 3.36. Biểu đồ hoạt động hủy đơn hàng
+Thanh toán
+Hình 3.37. Biểu đồ hoạt động thanh toán
+3.2.5.6. Chức năng quản lý khuyến mãi
+Hình 3.38. Biểu đồ hoạt động quản lý khuyến mãi
+3.3. Thiết kế về cơ sở dữ liệu
+3.3.1. Biểu đồ lớp
+Hình 3.39. Biểu đồ lớp
+3.3.2. Xây dựng bảng cơ sở dữ liệu
+3.3.2.1. Nhóm Người dùng & Phân quyền
+Bảng 3.16. Bảng taikhoan
+Column name
+Data Type
+Allownull
+Primary key
+id
+INT
+False
+Khóa chính
+MaNV
+VARCHAR(50)
+True
+username
+VARCHAR(50)
+False
+password
+VARCHAR(255)
+False
+hoten
+VARCHAR(100)
+True
+role
+INT
+False
+Bảng 3.17. Bảng Khachhang
+Column name
+Data Type
+Allownull
+Primary key
+MaKH
+VARCHAR(50)
+False
+Khóa chính
+TenKH
+VARCHAR(100)
+False
+DienThoai
+VARCHAR(20)
+True
+DiemTichLuy
+INT
+True
+DiaChi
+VARCHAR(255)
+True
+Bảng 3.18. Bảng Nhanvien
+Column name
+Data Type
+Allownull
+Primary key
+MaNV
+VARCHAR(50)
+False
+Khóa chính
+HoTen
+VARCHAR(100)
+False
+Email
+VARCHAR(100)
+True
+ChucVu
+VARCHAR(100)
+True
+3.3.2.2 Nhóm Sản phẩm & Danh mục
+Bảng 3.19. Bảng Danhmuc
+Column name
+Data Type
+Allownull
+Primary key
+MaDM
+INT
+False
+Khóa chính
+MaCode
+VARCHAR(50)
+True
+TenDM
+VARCHAR(255)
+False
+MoTa
+TEXT
+True
+Bảng 3.20. Bảng nhacungcap
+Column name
+Data Type
+Allownull
+Primary key
+MaNCC
+INT
+False
+Khóa chính
+MaCode
+VARCHAR(50)
+True
+TenNCC
+VARCHAR(255)
+False
+DienThoai
+VARCHAR(20)
+True
+DiaChi
+VARCHAR(255)
+True
+Bảng 3.21. Bảng Sanpham
+Column name
+Data Type
+Allownull
+Primary key
+MaSP
+VARCHAR(50)
+False
+Khóa chính
+TenSP
+VARCHAR(255)
+False
+MaDM
+INT
+True
+MaNCC
+INT
+True
+GiaBan
+INT
+False
+SoLuongTon
+INT
+False
+HinhAnh
+VARCHAR(255)
+True
+HanSuDung
+DATE
+True
+3.3.2.3 Nhóm Bán hàng, Thanh toán & Khuyến mãi
+Bảng 3.22. Bảng phuongthucthanhtoan
+Column name
+Data Type
+Allownull
+Primary key
+MaPT
+INT
+False
+Khóa chính
+TenPT
+VARCHAR(100)
+False
+TrangThai
+INT
+True
+HinhAnh
+VARCHAR(255)
+True
+Bảng 3.23. Bảng Khuyenmai
+Column name
+Data Type
+Allownull
+Primary key
+MaKM
+INT
+False
+Khóa chính
+TenMa
+VARCHAR(50)
+False
+SoTiengiam
+INT
+False
+SoLuong
+INT
+False
+TrangThai
+INT
+True
+Bảng 3.24. Bảng Donhang
+Column name
+Data Type
+Allownull
+Primary key
+MaHD
+INT
+False
+Khóa chính
+MaKH
+VARCHAR(50)
+True
+MaNV
+VARCHAR(50)
+True
+MaPT
+INT
+True
+MaKM
+INT
+True
+NgayLap
+DATETIME
+False
+TongTien
+INT
+False
+GiamGia
+INT
+True
+TrangThai
+INT
+False
+Bảng 3.25. Bảng ChitietDonhang
+Column name
+Data Type
+Allownull
+Primary key
+MaHD
+INT
+False
+Khóa chính
+MaSP
+VARCHAR(50)
+False
+Khóa chính
+SoLuong
+INT
+False
+DonGia
+INT
+False
+3.3.2.4 Nhóm Quản lý Kho & Kiểm kê
+Bảng 3.26. Bảng Phieunhap
+Column name
+Data Type
+Allownull
+Primary key
+MaPN
+INT
+False
+Khóa chính
+MaNV
+VARCHAR(50)
+True
+MaNCC
+INT
+True
+NgayNhap
+DATETIME
+False
+TongTien
+INT
+False
+Bảng 3.27. Bảng ChitietPhieunhap
+Column name
+Data Type
+Allownull
+Primary key
+MaPN
+INT
+False
+Khóa chính
+MaSP
+VARCHAR(50)
+False
+Khóa chính
+SoLuong
+INT
+False
+DonGia
+INT
+False
+Bảng 3.28.Bảng phieukiem
+Column name
+Data Type
+Allownull
+Primary key
+MaPK
+INT
+False
+Khóa chính
+NgayKiem
+DATETIME
+False
+GhiChu
+TEXT
+True
+MaNV
+VARCHAR(50)
+True
+Bảng 3.29. Bảng chitietkiem
+Column name
+Data Type
+Allownull
+Primary key
+MaPK
+INT
+False
+Khóa chính
+MaSP
+VARCHAR(50)
+False
+Khóa chính
+TonMay
+INT
+False
+TonThuc
+INT
+False
+LyDo
+TEXT
+True
+3.4.Thiết kế giao diện chương trình
+3.4.1.Giao diện đăng nhập, đăng ký
+Hình 3.40. Giao diện đăng nhập
+Hình 3.41. Giao diện đăng ký
+3.4.2.Giao diện trang chủ
+Hình 3.42. Giao diện trang chủ người dùng
+Hình 3.43. Giao diện trang chủ admin
+3.4.3.Giao diện các trang quản lý
+Hình 3.44. Trang quản lý sản phẩm
+Hình 3.45. Trang quản lý danh mục
+Hình 3.46. Trang quản lý phiếu nhập kho
+Hình 3.47. Trang quản lý khuyến mãi
+Hình 3.48. Trang quản lý đơn hàng
+3.4.4. Giao diện người dùng
+Hình 3.49. Trang chi tiết đơn hàng
+Hình 3.50. Trang giỏ hàng
+Hình 3.51. Trang thanh toán
+CHƯƠNG 4 : XÂY DỰNG CHƯƠNG TRÌNH
+4.1.Xây dựng các moudel chính
+4.2. Kiểm thử và đánh giá hệ thống

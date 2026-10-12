@@ -43,7 +43,7 @@
     </style>
 </head>
 <body>
-<header>
+<header<?php if($data['Page']==='Login_v') echo ' style="display:none;"'; ?>>
     <div class="container">
         <a href="<?php echo BASE_URL ?>Home" class="logo" style="text-decoration: none; color: white;">
             WinMart
@@ -161,7 +161,7 @@
     }
 </style>
 
-    <div style="padding-bottom: 50px;">
+    <div<?php if($data['Page']!=='Login_v') echo ' style="padding-bottom:50px;"'; ?>>
         <?php 
             // Load nội dung trang con (Pages)
             if(file_exists("./Views/Pages/".$data["Page"].".php")){
