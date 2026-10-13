@@ -1,0 +1,4 @@
+/MVC/Config/google-oauth.local.php
+.env
+.env.*
+!.env.example

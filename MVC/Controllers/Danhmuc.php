@@ -35,7 +35,7 @@ class Danhmuc extends controller {
                     return;
                 }
                 $this->dmModel->Sua($id, $macode, $ten, $mota);
-                echo "<script>alert('Đã cập nhật!'); window.location.href='http://localhost/Baitaplon/Danhmuc';</script>";
+                echo "<script>alert('Đã cập nhật!'); window.location.href='/Baitaplon/Danhmuc';</script>";
             } else {
                 // Thêm mới
                 if($this->dmModel->CheckTrungMa($macode) || $this->dmModel->CheckTrungTen($ten)){
@@ -43,7 +43,7 @@ class Danhmuc extends controller {
                     return;
                 }
                 $this->dmModel->Them($macode, $ten, $mota);
-                echo "<script>alert('Thêm mới thành công!'); window.location.href='http://localhost/Baitaplon/Danhmuc';</script>";
+                echo "<script>alert('Thêm mới thành công!'); window.location.href='/Baitaplon/Danhmuc';</script>";
             }
         }
     }
@@ -58,11 +58,11 @@ class Danhmuc extends controller {
 
     public function Xoa($id) {
         if ($this->dmModel->CoSanPham($id)) {
-            echo "<script>alert('Không thể xóa danh mục đang có sản phẩm.'); window.location.href='http://localhost/Baitaplon/Danhmuc';</script>";
+            echo "<script>alert('Không thể xóa danh mục đang có sản phẩm.'); window.location.href='/Baitaplon/Danhmuc';</script>";
             return;
         }
         $this->dmModel->Xoa($id);
-        header("Location: http://localhost/Baitaplon/Danhmuc");
+        header("Location: /Baitaplon/Danhmuc");
     }
 
     // --- 1. XUẤT EXCEL (Chuẩn .xlsx) ---
@@ -148,7 +148,7 @@ class Danhmuc extends controller {
                             $count++;
                         }
                     }
-                    echo "<script>alert('Đã nhập thành công $count danh mục!'); window.location.href='http://localhost/Baitaplon/Danhmuc';</script>";
+                    echo "<script>alert('Đã nhập thành công $count danh mục!'); window.location.href='/Baitaplon/Danhmuc';</script>";
 
                 } catch (Exception $e) {
                     echo "<script>alert('Lỗi: " . $e->getMessage() . "'); window.history.back();</script>";

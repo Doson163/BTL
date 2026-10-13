@@ -247,6 +247,24 @@
         transform: scaleX(1);
         transform-origin: left;
     }
+    .google-login {
+        width: 100%;
+        min-height: 50px;
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 1px solid #d5dce5;
+        border-radius: 14px;
+        background: #fff;
+        color: #303846;
+        font-family: inherit; font-size: 15px; font-weight: 600;
+        text-decoration: none;
+        transition: background .2s, box-shadow .2s;
+    }
+    .google-login:hover { background: #f8fafc; box-shadow: 0 4px 12px rgba(20,40,70,.1); }
+    .google-mark { font: 800 19px Arial,sans-serif; color: #4285f4; }
 </style>
 
 <!-- Bao gồm thư viện FontAwesome nếu CustomerMaster chưa có -->
@@ -266,7 +284,7 @@
             </div>
         <?php } ?>
 
-        <form method="post" action="store.php?url=CustomerAuth/Login">
+        <form method="post" action="/Baitaplon/User/Login">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['shop_csrf'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
             
             <div class="floating-group">
@@ -286,8 +304,10 @@
             </button>
         </form>
 
+        <a class="google-login" href="/Baitaplon/User/GoogleStart"><span class="google-mark" aria-hidden="true">G</span> Đăng nhập bằng Google</a>
+
         <div class="register-link">
-            Chưa có tài khoản? <a href="store.php?url=CustomerAuth/Register">Đăng ký tại đây</a>
+            Chưa có tài khoản? <a href="/Baitaplon/User/Register">Đăng ký tại đây</a>
         </div>
     </div>
 </div>

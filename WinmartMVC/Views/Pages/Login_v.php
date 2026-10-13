@@ -278,8 +278,8 @@
 <div class="adminlogin-wrapper">
     <div class="adminlogin-card">
         <div class="adminlogin-header">
-            <h2>ĐĂNG NHẬP <span>.</span></h2>
-            <p>Chào mừng bạn quay trở lại WinMart</p>
+            <h2>ĐĂNG NHẬP QUẢN TRỊ <span>.</span></h2>
+            <p>Khu vực dành cho quản trị viên</p>
         </div>
 
         <?php if(!empty($data['LoginError'])) { ?>
@@ -289,12 +289,12 @@
         </div>
         <?php } ?>
 
-        <form action="<?php echo BASE_URL; ?>Login/Authentication" method="POST">
+        <form action="/Baitaplon/Admin/Authentication" method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($data['LoginCsrf'], ENT_QUOTES, 'UTF-8'); ?>">
 
             <div class="al-group">
                 <input id="username" type="text" name="username" class="al-input" placeholder=" " required autocomplete="username">
-                <label class="al-label" for="username">Email hoặc số điện thoại đã đăng ký</label>
+                <label class="al-label" for="username">Tài khoản quản trị</label>
                 <i class="fas fa-user al-icon"></i>
             </div>
 
@@ -304,18 +304,9 @@
                 <i class="fas fa-lock al-icon"></i>
             </div>
 
-            <div class="al-role-row">
-                <button type="submit" name="role" value="customer" class="al-btn al-btn-customer">
-                    <i class="fas fa-user"></i> Khách hàng
-                </button>
-                <button type="submit" name="role" value="manager" class="al-btn al-btn-manager">
-                    <i class="fas fa-user-shield"></i> Quản lý
-                </button>
-            </div>
+            <button type="submit" class="al-btn al-btn-manager" style="width:100%;margin-top:20px">
+                <i class="fas fa-user-shield"></i> Đăng nhập quản trị
+            </button>
         </form>
-
-        <div class="al-register-link">
-             <a href="http://localhost/Baitaplon/store.php?url=CustomerAuth/Register">Đăng ký tài khoản khách hàng</a>
-        </div>
     </div>
 </div>

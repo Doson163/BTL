@@ -260,7 +260,7 @@
             <p>Đăng ký để nhận nhiều đặc quyền từ WinMart</p>
         </div>
 
-        <form method="post" action="store.php?url=CustomerAuth/Register">
+        <form method="post" action="/Baitaplon/User/Register">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['shop_csrf'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
             
             <div class="floating-group">
@@ -293,7 +293,7 @@
         </form>
 
         <div class="login-link">
-            Đã có tài khoản? <a href="store.php?url=CustomerAuth/Login">Đăng nhập tại đây</a>
+            Đã có tài khoản? <a href="/Baitaplon/User">Đăng nhập tại đây</a>
         </div>
     </div>
 </div>

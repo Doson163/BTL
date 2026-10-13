@@ -68,7 +68,7 @@ class Khohang extends controller {
             $_SESSION['gio_nhap'][] = $item;
 
             
-            header("Location: http://localhost/Baitaplon/Khohang");
+            header("Location: /Baitaplon/Khohang");
         }
     }
 
@@ -78,7 +78,7 @@ class Khohang extends controller {
             unset($_SESSION['gio_nhap'][$index]); // XÃ³a pháº§n tá»­ táº¡i vá»‹ trÃ­ $index
             $_SESSION['gio_nhap'] = array_values($_SESSION['gio_nhap']); // Sáº¯p xáº¿p láº¡i chá»‰ sá»‘ máº£ng (0,1,2...) trÃ¡nh lá»—i
         }
-        header("Location: http://localhost/Baitaplon/Khohang");
+        header("Location: /Baitaplon/Khohang");
     }
 
     
@@ -104,13 +104,13 @@ class Khohang extends controller {
 
             if($kq) {
                 unset($_SESSION['gio_nhap']); 
-                echo "<script>alert('Nháº­p kho thÃ nh cÃ´ng!'); window.location.href='http://localhost/Baitaplon/Khohang';</script>";
+                echo "<script>alert('Nháº­p kho thÃ nh cÃ´ng!'); window.location.href='/Baitaplon/Khohang';</script>";
             } else {
-                echo "<script>alert('Lá»—i nháº­p kho! Vui lÃ²ng kiá»ƒm tra láº¡i.'); window.location.href='http://localhost/Baitaplon/Khohang';</script>";
+                echo "<script>alert('Lá»—i nháº­p kho! Vui lÃ²ng kiá»ƒm tra láº¡i.'); window.location.href='/Baitaplon/Khohang';</script>";
             }
 
         } else {
-            echo "<script>alert('ChÆ°a chá»n sáº£n pháº©m nÃ o!'); window.location.href='http://localhost/Baitaplon/Khohang';</script>";
+            echo "<script>alert('ChÆ°a chá»n sáº£n pháº©m nÃ o!'); window.location.href='/Baitaplon/Khohang';</script>";
         }
     }
 
@@ -233,7 +233,7 @@ class Khohang extends controller {
                             $count++;
                         }
                     }
-                    echo "<script>alert('ÄÃ£ import thÃ nh cÃ´ng $count phiáº¿u nháº­p!'); window.location.href='http://localhost/Baitaplon/Khohang';</script>";
+                    echo "<script>alert('ÄÃ£ import thÃ nh cÃ´ng $count phiáº¿u nháº­p!'); window.location.href='/Baitaplon/Khohang';</script>";
 
                 } catch (Exception $e) {
                     echo "<script>alert('Lá»—i: " . $e->getMessage() . "'); window.history.back();</script>";
@@ -294,7 +294,7 @@ class Khohang extends controller {
             ];
 
             $_SESSION['gio_kiem'][] = $item;
-            header("Location: http://localhost/Baitaplon/Khohang/KiemKe");
+            header("Location: /Baitaplon/Khohang/KiemKe");
         }
     }
 
@@ -304,7 +304,7 @@ class Khohang extends controller {
             unset($_SESSION['gio_kiem'][$index]);
             $_SESSION['gio_kiem'] = array_values($_SESSION['gio_kiem']);
         }
-        header("Location: http://localhost/Baitaplon/Khohang/KiemKe");
+        header("Location: /Baitaplon/Khohang/KiemKe");
     }
 
     
@@ -331,9 +331,9 @@ class Khohang extends controller {
             }
             
             unset($_SESSION['gio_kiem']);
-            echo "<script>alert('ÄÃ£ cÃ¢n báº±ng kho thÃ nh cÃ´ng!'); window.location.href='http://localhost/Baitaplon/Khohang/KiemKe';</script>";
+            echo "<script>alert('ÄÃ£ cÃ¢n báº±ng kho thÃ nh cÃ´ng!'); window.location.href='/Baitaplon/Khohang/KiemKe';</script>";
         } else {
-            echo "<script>alert('ChÆ°a cÃ³ sáº£n pháº©m nÃ o!'); window.location.href='http://localhost/Baitaplon/Khohang/KiemKe';</script>";
+            echo "<script>alert('ChÆ°a cÃ³ sáº£n pháº©m nÃ o!'); window.location.href='/Baitaplon/Khohang/KiemKe';</script>";
         }
     }
 
@@ -431,7 +431,7 @@ class Khohang extends controller {
                             $count++;
                         }
                     }
-                    echo "<script>alert('ÄÃ£ import $count phiáº¿u kiá»ƒm kÃª!'); window.location.href='http://localhost/Baitaplon/Khohang/KiemKe';</script>";
+                    echo "<script>alert('ÄÃ£ import $count phiáº¿u kiá»ƒm kÃª!'); window.location.href='/Baitaplon/Khohang/KiemKe';</script>";
                 } catch (Exception $e) {
                     echo "<script>alert('Lá»—i: " . $e->getMessage() . "'); window.history.back();</script>";
                 }

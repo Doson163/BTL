@@ -105,15 +105,26 @@
         transition: 0.2s;
     }
     .btn-view:hover { background: #0277bd; transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .order-status-form { display:flex; align-items:center; gap:8px; margin-top:8px; }
+    .order-status-form select { flex:1; width:auto; min-width:145px; height:38px; padding:0 10px; border:1px solid #d5dbea; border-radius:7px; background:#fff; }
+    .order-status-form button, .btn-cancel { min-height:36px; padding:0 13px; border:0; border-radius:6px; background:#1a237e; color:#fff; font-weight:700; cursor:pointer; white-space:nowrap; }
+    .order-status-form button:hover { background:#303f9f; }
+    .order-actions { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px; min-width:150px; }
+    .order-actions form { margin:0; }
+    .btn-cancel { background:#fee2e2; color:#b42330; border:1px solid #fecaca; }
+    .btn-cancel:hover { background:#fecaca; }
+    .order-refresh-note { margin-left:auto; color:rgba(255,255,255,.82); font-size:12px; font-weight:400; }
+    @media (max-width: 640px) { .order-refresh-note { display:none; } }
 </style>
 
 <div class="card-custom">
     <div class="card-header-custom">
         <i class="fas fa-history"></i> Lịch Sử Đơn Hàng
+        <?php if (empty($data['keyword'])) { ?><span class="order-refresh-note">Tự cập nhật mỗi 15 giây</span><?php } ?>
     </div>
     
     <div class="search-box">
-        <form action="http://localhost/Baitaplon/Donhang" method="POST" class="search-form">
+        <form action="/Baitaplon/Donhang" method="POST" class="search-form">
             
             <div class="input-wrapper">
                 <i class="fas fa-search search-icon"></i>
@@ -126,7 +137,7 @@
                 Tìm kiếm
             </button>
             
-            <a href="http://localhost/Baitaplon/Donhang" class="btn-reset" title="Tải lại danh sách">
+            <a href="/Baitaplon/Donhang" class="btn-reset" title="Tải lại danh sách">
                 <i class="fas fa-sync-alt" style="margin-right: 5px;"></i> Tất cả
             </a>
         </form>
@@ -174,25 +185,27 @@
                             echo htmlspecialchars($statusNames[$status] ?? 'Không xác định', ENT_QUOTES, 'UTF-8');
                             if (in_array($status, [1, 2, 3], true)) {
                             ?>
-                                <form method="post" action="http://localhost/Baitaplon/Donhang/CapNhatTrangThai/<?php echo (int)$row['MaHD']; ?>">
-                                    <select name="ddlTrangThai" aria-label="Cập nhật trạng thái">
+                                <form class="order-status-form" method="post" action="/Baitaplon/Donhang/CapNhatTrangThai/<?php echo (int)$row['MaHD']; ?>">
+                                    <select name="ddlTrangThai" aria-label="Cập nhật trạng thái" required>
+                                        <?php if ($status === 1) { ?><option value="" selected disabled>Chờ xác nhận</option><?php } ?>
                                         <option value="2" <?php echo $status === 2 ? 'selected' : ''; ?>>Chờ lấy hàng</option>
                                         <option value="3" <?php echo $status === 3 ? 'selected' : ''; ?>>Đang giao</option>
-                                        <option value="4">Hoàn thành</option>
                                     </select>
                                     <button type="submit">Cập nhật</button>
                                 </form>
                             <?php } ?>
                         </td>
-                        <td style="text-align: center;">
-                            <a href="http://localhost/Baitaplon/Donhang/Chitiet/<?php echo $row['MaHD']; ?>" class="btn-view" title="Xem chi tiết hóa đơn">
+                        <td>
+                            <div class="order-actions">
+                            <a href="/Baitaplon/Donhang/Chitiet/<?php echo $row['MaHD']; ?>" class="btn-view" title="Xem chi tiết hóa đơn">
                                 <i class="fas fa-eye"></i> Chi tiết
                             </a>
                             <?php if (in_array((int)$row['TrangThai'], [1, 2], true)) { ?>
-                                <form method="post" action="http://localhost/Baitaplon/Donhang/Huy/<?php echo (int)$row['MaHD']; ?>" style="display:inline;">
-                                    <button type="submit" onclick="return confirm('Hủy đơn hàng này?')">Hủy đơn</button>
+                                <form method="post" action="/Baitaplon/Donhang/Huy/<?php echo (int)$row['MaHD']; ?>">
+                                    <button class="btn-cancel" type="submit" onclick="return confirm('Hủy đơn hàng này?')">Hủy đơn</button>
                                 </form>
                             <?php } ?>
+                            </div>
                         </td>
                     </tr>
                 <?php 
@@ -208,3 +221,34 @@
         </table>
     </div>
 </div>
+<?php if (empty($data['keyword'])) { ?>
+<script>
+(() => {
+    const intervalMs = 15000;
+    const currentBody = document.querySelector('.table-order tbody');
+    if (!currentBody) return;
+
+    window.setInterval(async () => {
+        const active = document.activeElement;
+        if (document.hidden || (active && active.matches('input, select, textarea, button'))) return;
+
+        try {
+            const response = await fetch(window.location.pathname, {
+                cache: 'no-store',
+                credentials: 'same-origin',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            if (!response.ok) return;
+            const html = await response.text();
+            const nextDocument = new DOMParser().parseFromString(html, 'text/html');
+            const nextBody = nextDocument.querySelector('.table-order tbody');
+            if (nextBody && currentBody.innerHTML !== nextBody.innerHTML) {
+                currentBody.innerHTML = nextBody.innerHTML;
+            }
+        } catch (error) {
+            // Keep the currently displayed list if a background refresh fails.
+        }
+    }, intervalMs);
+})();
+</script>
+<?php } ?>

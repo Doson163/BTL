@@ -3,7 +3,7 @@
 
       if(!isset($_SESSION['user_login'])){
     // Đuổi về trang đăng nhập của WinmartMVC
-    header("Location: http://localhost/Baitaplon/WinmartMVC/Login");
+    header("Location: /Baitaplon/Admin");
     exit;
 }
      include_once './MVC/bridge.php';

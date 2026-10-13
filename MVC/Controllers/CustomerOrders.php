@@ -3,7 +3,11 @@ class CustomerOrders extends controller {
     private $orders;
     public function __construct() { $this->orders = $this->model('CustomerOrderModel'); }
     private function signedIn() {
-        if (empty($_SESSION['shop_customer']['MaKH'])) { header('Location: store.php?url=CustomerAuth/Login'); exit; }
+        if (empty($_SESSION['shop_customer']['MaKH'])) {
+            $_SESSION['shop_notice'] = 'Vui lòng đăng nhập để xem giỏ hàng và đặt hàng.';
+            header('Location: /Baitaplon/User');
+            exit;
+        }
     }
     private function postGuard() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); exit('Phương thức không được hỗ trợ.'); }
@@ -15,7 +19,7 @@ class CustomerOrders extends controller {
     public function Checkout() {
         $this->signedIn();
         $items = $this->model('StorefrontModel')->GetCartProducts($_SESSION['shop_cart'] ?? []);
-        if (!$items) { $_SESSION['shop_notice']='Giỏ hàng đang trống.'; header('Location: store.php?url=Cart/Get_data'); exit; }
+        if (!$items) { $_SESSION['shop_notice']='Giỏ hàng đang trống.'; header('Location: /Baitaplon/store.php?url=Cart/Get_data'); exit; }
         $profile = $this->orders->GetProfile($_SESSION['shop_customer']['MaKH']);
         $methods = $this->orders->GetPaymentMethods();
         $total=0; foreach($items as $item) $total += $item['LineTotal'];
@@ -31,16 +35,16 @@ class CustomerOrders extends controller {
         $method=filter_var($_POST['payment'] ?? null, FILTER_VALIDATE_INT);
         if ($recipient==='' || !preg_match('/^[0-9+(). -]{8,20}$/',$phone) || $address==='' || $method===false) {
             $_SESSION['shop_notice']='Please enter a valid delivery name, phone, and address.';
-            header('Location: store.php?url=CustomerOrders/Checkout'); exit;
+            header('Location: /Baitaplon/store.php?url=CustomerOrders/Checkout'); exit;
         }
         $orderId=$this->orders->CreateOrder($_SESSION['shop_customer']['MaKH'],$recipient,$phone,$address,(int)$method,$_SESSION['shop_cart'] ?? [],$promoCode);
         if ($orderId===false) {
             $_SESSION['shop_notice']='Please enter a valid delivery name, phone, and address.';
-            header('Location: store.php?url=CustomerOrders/Checkout'); exit;
+            header('Location: /Baitaplon/store.php?url=CustomerOrders/Checkout'); exit;
         }
         $_SESSION['shop_cart']=[];
         $_SESSION['shop_notice']='Đặt hàng thành công. Mã đơn hàng #'.$orderId.'.';
-        header('Location: store.php?url=CustomerOrders/Detail/'.$orderId); exit;
+        header('Location: /Baitaplon/store.php?url=CustomerOrders/Detail/'.$orderId); exit;
     }
     public function Get_data() {
         $this->signedIn();
@@ -54,12 +58,15 @@ class CustomerOrders extends controller {
     }
     public function Cancel($id) {
         $this->signedIn(); $this->postGuard();
-            $_SESSION['shop_notice']='Unable to place order. Check stock, promotion code, and COD method.';
-        header('Location: store.php?url=CustomerOrders/Detail/'.(int)$id); exit;
+        $ok=$this->orders->CancelOrder($_SESSION['shop_customer']['MaKH'],(int)$id);
+        $_SESSION['shop_notice']=$ok?'Đã hủy đơn hàng.':'Không thể hủy đơn hàng này.';
+        header('Location: /Baitaplon/store.php?url=CustomerOrders/Detail/'.(int)$id); exit;
+    }
+
+    public function Received($id) {
+        $this->signedIn(); $this->postGuard();
+        $ok=$this->orders->ConfirmReceived($_SESSION['shop_customer']['MaKH'],(int)$id);
+        $_SESSION['shop_notice']=$ok?'Bạn đã xác nhận nhận hàng. Đơn hàng đã hoàn thành.':'Chỉ có thể xác nhận nhận hàng khi đơn đang giao.';
+        header('Location: /Baitaplon/store.php?url=CustomerOrders/Detail/'.(int)$id); exit;
     }
 }
-?>
-
-
-
-

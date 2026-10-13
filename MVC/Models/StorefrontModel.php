@@ -10,7 +10,7 @@ class StorefrontModel extends connectDB {
     }
 
     public function GetCategories() {
-        return mysqli_query($this->con, 'SELECT MaDM, TenDM FROM Danhmuc ORDER BY TenDM');
+        return mysqli_query($this->con, 'SELECT MaDM, TenDM FROM danhmuc ORDER BY TenDM');
     }
 
     public function GetProducts($filters = []) {
@@ -50,8 +50,8 @@ class StorefrontModel extends connectDB {
         ];
         $sort = $sortOptions[$filters['sort'] ?? ''] ?? 'p.TenSP ASC';
         $sql = 'SELECT p.MaSP, p.TenSP, p.MaDM, p.GiaBan, p.SoLuongTon, p.HinhAnh, p.HanSuDung, d.TenDM
-                FROM Sanpham p
-                LEFT JOIN Danhmuc d ON d.MaDM = p.MaDM';
+                FROM sanpham p
+                LEFT JOIN danhmuc d ON d.MaDM = p.MaDM';
         if ($where) $sql .= ' WHERE ' . implode(' AND ', $where);
         $sql .= ' ORDER BY ' . $sort;
 
@@ -60,9 +60,17 @@ class StorefrontModel extends connectDB {
         return mysqli_stmt_get_result($stmt);
     }
 
+    public function GetAvailableProductsForAdvisor() {
+        $sql = 'SELECT p.MaSP, p.TenSP, p.MaDM, p.GiaBan, p.SoLuongTon, p.HinhAnh, d.TenDM
+                FROM sanpham p LEFT JOIN danhmuc d ON d.MaDM = p.MaDM
+                WHERE p.SoLuongTon > 0 ORDER BY p.GiaBan ASC LIMIT 500';
+        $result = mysqli_query($this->con, $sql);
+        return $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : [];
+    }
+
     public function GetProductById($id) {
         $stmt = mysqli_prepare($this->con, 'SELECT p.MaSP, p.TenSP, p.MaDM, p.GiaBan, p.SoLuongTon, p.HinhAnh, p.HanSuDung, d.TenDM
-            FROM Sanpham p LEFT JOIN Danhmuc d ON d.MaDM = p.MaDM WHERE p.MaSP = ? LIMIT 1');
+            FROM sanpham p LEFT JOIN danhmuc d ON d.MaDM = p.MaDM WHERE p.MaSP = ? LIMIT 1');
         if (!$stmt) return null;
         $id = (string)$id;
         mysqli_stmt_bind_param($stmt, 's', $id);
@@ -83,4 +91,3 @@ class StorefrontModel extends connectDB {
         return $items;
     }
 }
-?>

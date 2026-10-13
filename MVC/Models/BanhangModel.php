@@ -1,9 +1,9 @@
 <?php
 class BanhangModel extends connectDB {
-    
+
     // SỬA: Thêm tham số $keyword
     public function GetAllSanpham($keyword = "") {
-        $sql = "SELECT * FROM Sanpham WHERE SoLuongTon > 0";
+        $sql = "SELECT * FROM sanpham WHERE SoLuongTon > 0";
         if($keyword != "") {
             $sql .= " AND (TenSP LIKE '%$keyword%' OR MaSP LIKE '%$keyword%')";
         }
@@ -11,20 +11,20 @@ class BanhangModel extends connectDB {
     }
 
     // Các hàm khác giữ nguyên
-    public function GetAllKhachhang() { return mysqli_query($this->con, "SELECT * FROM Khachhang"); }
-    public function GetAllNhanvien() { return mysqli_query($this->con, "SELECT * FROM Nhanvien"); }
-    public function GetSanphamByID($id) { return mysqli_query($this->con, "SELECT * FROM Sanpham WHERE MaSP='$id'"); }
+    public function GetAllKhachhang() { return mysqli_query($this->con, "SELECT * FROM khachhang"); }
+    public function GetAllNhanvien() { return mysqli_query($this->con, "SELECT * FROM nhanvien"); }
+    public function GetSanphamByID($id) { return mysqli_query($this->con, "SELECT * FROM sanpham WHERE MaSP='$id'"); }
     public function GetAllPhuongthuc() { return mysqli_query($this->con, "SELECT * FROM phuongthucthanhtoan WHERE TrangThai = 1"); }
-    
+
     public function TaoDonHang($makh, $manv, $tongtien, $giohang, $tiengiam, $mapt, $makm = null) {
         if (empty($giohang) || !is_array($giohang)) return false;
 
         mysqli_begin_transaction($this->con);
         try {
-            $stockStmt = mysqli_prepare($this->con, "SELECT SoLuongTon, GiaBan FROM Sanpham WHERE MaSP = ? FOR UPDATE");
-            $orderStmt = mysqli_prepare($this->con, "INSERT INTO Donhang (MaKH, MaNV, NgayLap, TongTien, GiamGia, MaPT, TrangThai) VALUES (?, ?, ?, ?, ?, ?, 4)");
-            $detailStmt = mysqli_prepare($this->con, "INSERT INTO ChitietDonhang (MaHD, MaSP, SoLuong, DonGia) VALUES (?, ?, ?, ?)");
-            $updateStmt = mysqli_prepare($this->con, "UPDATE Sanpham SET SoLuongTon = SoLuongTon - ? WHERE MaSP = ? AND SoLuongTon >= ?");
+            $stockStmt = mysqli_prepare($this->con, "SELECT SoLuongTon, GiaBan FROM sanpham WHERE MaSP = ? FOR UPDATE");
+            $orderStmt = mysqli_prepare($this->con, "INSERT INTO donhang (MaKH, MaNV, NgayLap, TongTien, GiamGia, MaPT, TrangThai) VALUES (?, ?, ?, ?, ?, ?, 4)");
+            $detailStmt = mysqli_prepare($this->con, "INSERT INTO chitietdonhang (MaHD, MaSP, SoLuong, DonGia) VALUES (?, ?, ?, ?)");
+            $updateStmt = mysqli_prepare($this->con, "UPDATE sanpham SET SoLuongTon = SoLuongTon - ? WHERE MaSP = ? AND SoLuongTon >= ?");
             if (!$stockStmt || !$orderStmt || !$detailStmt || !$updateStmt) throw new Exception('Không thể khởi tạo truy vấn đặt hàng.');
 
             $normalizedCart = [];
@@ -43,7 +43,7 @@ class BanhangModel extends connectDB {
             }
 
             if ($makm !== null) {
-                $promoReadStmt = mysqli_prepare($this->con, 'SELECT SoTienGiam, SoLuong, TrangThai FROM Khuyenmai WHERE MaKM = ? FOR UPDATE');
+                $promoReadStmt = mysqli_prepare($this->con, 'SELECT SoTienGiam, SoLuong, TrangThai FROM khuyenmai WHERE MaKM = ? FOR UPDATE');
                 if (!$promoReadStmt) throw new Exception('Unable to verify promotion code.');
                 mysqli_stmt_bind_param($promoReadStmt, 'i', $makm);
                 if (!mysqli_stmt_execute($promoReadStmt)) throw new Exception('Unable to verify promotion code.');
@@ -69,7 +69,7 @@ class BanhangModel extends connectDB {
             }
 
             if ($makm !== null) {
-                $promoStmt = mysqli_prepare($this->con, 'UPDATE Khuyenmai SET SoLuong = SoLuong - 1 WHERE MaKM = ? AND SoLuong > 0');
+                $promoStmt = mysqli_prepare($this->con, 'UPDATE khuyenmai SET SoLuong = SoLuong - 1 WHERE MaKM = ? AND SoLuong > 0');
                 if (!$promoStmt) throw new Exception('Unable to verify promotion code.');
                 mysqli_stmt_bind_param($promoStmt, 'i', $makm);
                 if (!mysqli_stmt_execute($promoStmt) || mysqli_stmt_affected_rows($promoStmt) !== 1) throw new Exception('Promotion code has no remaining uses.');

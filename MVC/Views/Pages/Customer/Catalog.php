@@ -357,10 +357,14 @@
                     <?php } ?>
                     
                     <div class="product-actions">
+                        <?php if (!empty($_SESSION['shop_customer']['MaKH'])) { ?>
                         <form method="post" action="store.php?url=Cart/Add/<?php echo rawurlencode($product['MaSP']); ?>">
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['shop_csrf'] ?? '',ENT_QUOTES,'UTF-8'); ?>">
                             <button class="button" type="submit" <?php echo (int)$product['SoLuongTon']<1?'disabled':''; ?>><i class="fas fa-cart-plus"></i> Thêm vào giỏ</button>
                         </form>
+                        <?php } else { ?>
+                        <a class="button" href="/Baitaplon/User"><i class="fas fa-sign-in-alt"></i> Đăng nhập để mua</a>
+                        <?php } ?>
                         <a class="button secondary" href="store.php?url=Storefront/ChiTiet/<?php echo rawurlencode($product['MaSP']); ?>"><i class="fas fa-eye"></i> Xem chi tiết</a>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 <?php
-class Sanpham extends DB {
+class sanpham extends DB {
 public function GetSanphamNoiBat(){
     // Lấy tất cả sản phẩm, sắp xếp từ mới nhất xuống cũ nhất
     $sql = "SELECT * FROM sanpham ORDER BY MaSP DESC";

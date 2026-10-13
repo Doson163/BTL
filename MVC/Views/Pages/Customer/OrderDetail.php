@@ -78,6 +78,9 @@
     .button.secondary:hover { background: #e2e8f0 !important; transform: translateY(-2px); }
     .button.danger { background: #fee2e2 !important; color: #ef4444 !important; }
     .button.danger:hover { background: #fecaca !important; transform: translateY(-2px); }
+    .order-confirm-actions { display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap; margin: 18px 0 40px; }
+    .button.success { background:#16a34a !important; color:#fff !important; }
+    .button.success:hover { background:#15803d !important; transform:translateY(-2px); }
 </style>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -97,7 +100,7 @@ $statusInfo = $states[(int)$order['TrangThai']] ?? ['Đang xử lý', 'fa-spinne
 <div class="page-head">
     <div>
         <h1>Chi tiết Đơn hàng #<?php echo (int)$order['MaHD']; ?></h1>
-        <div style="margin-top: 15px;">
+        <div id="customer-order-status" data-status="<?php echo (int)$order['TrangThai']; ?>" style="margin-top: 15px;">
             <span class="status-badge <?php echo $statusInfo[2]; ?>">
                 <i class="fas <?php echo $statusInfo[1]; ?>"></i> <?php echo $statusInfo[0]; ?>
             </span>
@@ -150,11 +153,53 @@ $statusInfo = $states[(int)$order['TrangThai']] ?? ['Đang xử lý', 'fa-spinne
     </div>
 </div>
 
-<?php if((int)$order['TrangThai']===1) { ?>
-    <div style="text-align: right; margin-bottom: 40px;">
+<div id="customer-order-actions">
+    <?php if((int)$order['TrangThai']===1 || (int)$order['TrangThai']===3) { ?>
+    <div class="order-confirm-actions">
+        <?php if((int)$order['TrangThai']===3) { ?>
+            <form method="post" action="store.php?url=CustomerOrders/Received/<?php echo (int)$order['MaHD']; ?>">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['shop_csrf'],ENT_QUOTES,'UTF-8'); ?>">
+                <button class="button success" type="submit" onclick="return confirm('Xác nhận bạn đã nhận đủ hàng?');"><i class="fas fa-check-circle"></i> Đã nhận được hàng</button>
+            </form>
+        <?php } ?>
+        <?php if((int)$order['TrangThai']===1) { ?>
         <form method="post" action="store.php?url=CustomerOrders/Cancel/<?php echo (int)$order['MaHD']; ?>">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['shop_csrf'],ENT_QUOTES,'UTF-8'); ?>">
             <button class="button danger" type="submit" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');"><i class="fas fa-ban"></i> Hủy đơn hàng</button>
         </form>
+        <?php } ?>
     </div>
-<?php } ?>
+    <?php } ?>
+</div>
+
+<script>
+(() => {
+    let refreshing = false;
+    window.setInterval(async () => {
+        if (document.hidden || refreshing) return;
+        refreshing = true;
+        try {
+            const response = await fetch(window.location.href, {
+                cache: 'no-store',
+                credentials: 'same-origin',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            if (!response.ok) return;
+            const html = await response.text();
+            const nextDocument = new DOMParser().parseFromString(html, 'text/html');
+            const currentStatus = document.getElementById('customer-order-status');
+            const nextStatus = nextDocument.getElementById('customer-order-status');
+            const currentActions = document.getElementById('customer-order-actions');
+            const nextActions = nextDocument.getElementById('customer-order-actions');
+            if (currentStatus && nextStatus && currentActions && nextActions && currentStatus.dataset.status !== nextStatus.dataset.status) {
+                currentStatus.replaceWith(nextStatus.cloneNode(true));
+                currentActions.replaceWith(nextActions.cloneNode(true));
+            }
+        } catch (error) {
+            // Keep the current order view if a background status refresh fails.
+        } finally {
+            refreshing = false;
+        }
+    }, 10000);
+})();
+</script>

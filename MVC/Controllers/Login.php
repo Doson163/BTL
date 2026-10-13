@@ -9,7 +9,7 @@ class Login extends Controller {
 
         // 2. Chuyển hướng về trang đăng nhập của WinmartMVC (User)
         // Hoặc trang Login riêng của Admin tùy bạn
-        header("Location: http://localhost/Baitaplon/WinmartMVC/Login");
+        header("Location: /Baitaplon/Admin");
         exit;
     }
 }

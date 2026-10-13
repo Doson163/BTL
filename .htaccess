@@ -1,4 +1,9 @@
 RewriteEngine On
+# Short entry points for the customer and management portals.
+RewriteRule ^User/?$ store.php?url=CustomerAuth/Login [QSA,L]
+RewriteRule ^User/([A-Za-z0-9_-]+)/?$ store.php?url=CustomerAuth/$1 [QSA,L]
+RewriteRule ^Admin/?$ WinmartMVC/index.php?url=Login/Index [QSA,L]
+RewriteRule ^Admin/([A-Za-z0-9_-]+)/?$ WinmartMVC/index.php?url=Login/$1 [QSA,L]
 # Let the nested management app handle its own routes and rewrite rules.
 RewriteRule ^WinmartMVC(?:/|$) - [L]
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -1,0 +1,10 @@
+.git
+.env
+.env.*
+!.env.example
+docker-compose.override.yml
+MVC/Config/google-oauth.local.php
+*.docx
+docx_output*.txt
+scratch.php
+database/*.sql.gz

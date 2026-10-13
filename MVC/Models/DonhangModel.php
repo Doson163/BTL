@@ -1,28 +1,29 @@
 <?php
 class DonhangModel extends connectDB {
-    
+
     // 1. Lấy danh sách đơn hàng (CÓ TÌM KIẾM)
     public function DanhSach($keyword = "") {
-        // Kết nối bảng Donhang với Khachhang và Nhanvien để lấy tên
-        $sql = "SELECT Donhang.*, Khachhang.TenKH, Nhanvien.HoTen
-                FROM Donhang
-                LEFT JOIN Khachhang ON Donhang.MaKH = Khachhang.MaKH
-                LEFT JOIN Nhanvien ON Donhang.MaNV = Nhanvien.MaNV";
-        
+        // Kết nối bảng donhang với khachhang và nhanvien để lấy tên
+        $sql = "SELECT donhang.*, khachhang.TenKH, nhanvien.HoTen
+                FROM donhang
+                LEFT JOIN khachhang ON donhang.MaKH = khachhang.MaKH
+                LEFT JOIN nhanvien ON donhang.MaNV = nhanvien.MaNV";
+
         // Nếu có từ khóa tìm kiếm thì nối thêm điều kiện WHERE
         if($keyword != "") {
-            $sql .= " WHERE Donhang.MaHD LIKE '%$keyword%' OR Khachhang.TenKH LIKE '%$keyword%'";
+            $sql .= " WHERE donhang.MaHD LIKE '%$keyword%' OR khachhang.TenKH LIKE '%$keyword%'";
         }
-        
-        $sql .= " ORDER BY NgayLap DESC"; // Đơn mới nhất lên đầu
+
+        // MaHD tự tăng theo thời điểm tạo; không để NgayLap cũ/lệch giờ ghim đơn lên đầu.
+        $sql .= " ORDER BY donhang.MaHD DESC";
         return mysqli_query($this->con, $sql);
     }
 
     // 2. Lấy thông tin chi tiết của 1 đơn hàng (để xem món gì bên trong)
     public function ChiTiet($mahd) {
-        $sql = "SELECT ChitietDonhang.*, Sanpham.TenSP, Sanpham.HinhAnh
-                FROM ChitietDonhang
-                LEFT JOIN Sanpham ON ChitietDonhang.MaSP = Sanpham.MaSP
+        $sql = "SELECT chitietdonhang.*, sanpham.TenSP, sanpham.HinhAnh
+                FROM chitietdonhang
+                LEFT JOIN sanpham ON chitietdonhang.MaSP = sanpham.MaSP
                 WHERE MaHD = '$mahd'";
         return mysqli_query($this->con, $sql);
     }
@@ -31,12 +32,12 @@ class DonhangModel extends connectDB {
 // File: DonhangModel.php
 
 public function GetDonhangByID($mahd) {
-    // Thêm Khachhang.DiaChi vào danh sách cột cần lấy (SELECT)
-    $sql = "SELECT Donhang.*, Khachhang.TenKH, Khachhang.DienThoai, Khachhang.DiaChi, Nhanvien.HoTen, Phuongthucthanhtoan.TenPT AS TenPhuongThuc
-            FROM Donhang
-            LEFT JOIN Khachhang ON Donhang.MaKH = Khachhang.MaKH
-            LEFT JOIN Nhanvien ON Donhang.MaNV = Nhanvien.MaNV
-            LEFT JOIN Phuongthucthanhtoan ON Donhang.MaPT = Phuongthucthanhtoan.MaPT
+    // Thêm khachhang.DiaChi vào danh sách cột cần lấy (SELECT)
+    $sql = "SELECT donhang.*, khachhang.TenKH, khachhang.DienThoai, khachhang.DiaChi, nhanvien.HoTen, phuongthucthanhtoan.TenPT AS TenPhuongThuc
+            FROM donhang
+            LEFT JOIN khachhang ON donhang.MaKH = khachhang.MaKH
+            LEFT JOIN nhanvien ON donhang.MaNV = nhanvien.MaNV
+            LEFT JOIN phuongthucthanhtoan ON donhang.MaPT = phuongthucthanhtoan.MaPT
             WHERE MaHD = '$mahd'";
     return mysqli_query($this->con, $sql);
 }
@@ -44,10 +45,10 @@ public function GetDonhangByID($mahd) {
     public function HuyDon($mahd) {
         mysqli_begin_transaction($this->con);
         try {
-            $statusStmt = mysqli_prepare($this->con, 'SELECT TrangThai FROM Donhang WHERE MaHD = ? FOR UPDATE');
-            $detailStmt = mysqli_prepare($this->con, 'SELECT MaSP, SoLuong FROM ChitietDonhang WHERE MaHD = ?');
-            $stockStmt = mysqli_prepare($this->con, 'UPDATE Sanpham SET SoLuongTon = SoLuongTon + ? WHERE MaSP = ?');
-            $cancelStmt = mysqli_prepare($this->con, 'UPDATE Donhang SET TrangThai = 5 WHERE MaHD = ? AND TrangThai IN (1, 2)');
+            $statusStmt = mysqli_prepare($this->con, 'SELECT TrangThai FROM donhang WHERE MaHD = ? FOR UPDATE');
+            $detailStmt = mysqli_prepare($this->con, 'SELECT MaSP, SoLuong FROM chitietdonhang WHERE MaHD = ?');
+            $stockStmt = mysqli_prepare($this->con, 'UPDATE sanpham SET SoLuongTon = SoLuongTon + ? WHERE MaSP = ?');
+            $cancelStmt = mysqli_prepare($this->con, 'UPDATE donhang SET TrangThai = 5 WHERE MaHD = ? AND TrangThai IN (1, 2)');
             if (!$statusStmt || !$detailStmt || !$stockStmt || !$cancelStmt) throw new Exception('Unable to prepare cancellation.');
 
             $mahd = (int)$mahd;
@@ -81,15 +82,15 @@ public function GetDonhangByID($mahd) {
 
     public function CapNhatTrangThai($mahd, $trangthai) {
         $trangthai = (int)$trangthai;
-        if (!in_array($trangthai, [1, 2, 3, 4], true)) return false;
-        
-        // Cho phép Admin cập nhật trạng thái tự do (trừ khi đơn đã hủy = 5)
-        $stmt = mysqli_prepare($this->con, 'UPDATE Donhang SET TrangThai = ? WHERE MaHD = ? AND TrangThai != 5');
+        if (!in_array($trangthai, [2, 3], true)) return false;
+
+        // Admin chuyển đơn đến chờ lấy hàng hoặc đang giao; khách xác nhận hoàn thành.
+        $stmt = mysqli_prepare($this->con, 'UPDATE donhang SET TrangThai = ? WHERE MaHD = ? AND TrangThai IN (1, 2, 3)');
         if (!$stmt) return false;
-        
+
         $mahd = (int)$mahd;
         mysqli_stmt_bind_param($stmt, 'ii', $trangthai, $mahd);
-        
+
         // Chạy câu lệnh update và trả về true nếu thành công (kể cả chọn lại trạng thái cũ)
         return mysqli_stmt_execute($stmt);
     }

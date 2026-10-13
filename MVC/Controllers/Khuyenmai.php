@@ -41,7 +41,7 @@ class Khuyenmai extends controller {
                     return;
                 }
                 $this->kmModel->Sua($id, $ten, $tien, $soluong, $trangthai);
-                echo "<script>alert('Cập nhật thành công!'); window.location.href='http://localhost/Baitaplon/Khuyenmai';</script>";
+                echo "<script>alert('Cập nhật thành công!'); window.location.href='/Baitaplon/Khuyenmai';</script>";
             } else {
                 // --- TRƯỜNG HỢP THÊM MỚI ---
                 // Check trùng trước
@@ -50,7 +50,7 @@ class Khuyenmai extends controller {
                     return;
                 }
                 $this->kmModel->ThemMoi($ten, $tien, $soluong, $trangthai);
-                echo "<script>alert('Phát hành mã thành công!'); window.location.href='http://localhost/Baitaplon/Khuyenmai';</script>";
+                echo "<script>alert('Phát hành mã thành công!'); window.location.href='/Baitaplon/Khuyenmai';</script>";
             }
         }
     }
@@ -67,7 +67,7 @@ class Khuyenmai extends controller {
     // Xóa
     public function Xoa($id) {
         $this->kmModel->XoaMa($id);
-        header("Location: http://localhost/Baitaplon/Khuyenmai");
+        header("Location: /Baitaplon/Khuyenmai");
     }
 
 
@@ -161,7 +161,7 @@ $this->kmModel->ThemMoi($ten, $tien, $soluong);
                             $count++;
                         }
                     }
-                    echo "<script>alert('Đã nhập thành công $count mã khuyến mãi!'); window.location.href='http://localhost/Baitaplon/Khuyenmai';</script>";
+                    echo "<script>alert('Đã nhập thành công $count mã khuyến mãi!'); window.location.href='/Baitaplon/Khuyenmai';</script>";
 
                 } catch (Exception $e) {
                     echo "<script>alert('Lỗi: " . $e->getMessage() . "'); window.history.back();</script>";

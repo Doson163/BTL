@@ -88,10 +88,10 @@
                         Chào, <b><?php echo $_SESSION['user_login']['hoten'] ?></b>
                         <br>
                         <a href="<?php echo BASE_URL ?>MVC/" style="color: #ffcccc; font-size: 12px; text-decoration: none;">[Admin]</a>
-                        <a href="<?php echo BASE_URL ?>Login/Logout" style="color: #fff; font-size: 12px; text-decoration: underline; margin-left: 5px;">Thoát</a>
+                        <a href="/Baitaplon/Admin/Logout" style="color: #fff; font-size: 12px; text-decoration: underline; margin-left: 5px;">Thoát</a>
                     </span>
                 <?php } elseif ($data['Page'] !== 'Login_v') { ?>
-                    <a href="<?php echo BASE_URL ?>Login" style="text-decoration: none; color: white;">&#272;&#259;ng nh&#7853;p</a>
+                    <a href="/Baitaplon/Admin" style="text-decoration: none; color: white;">&#272;&#259;ng nh&#7853;p</a>
                 <?php } ?>
             </div>
             <?php } ?>

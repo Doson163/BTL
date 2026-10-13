@@ -45,30 +45,30 @@ class Donhang extends controller {
             // NẾU KHÔNG TÌM THẤY: Thông báo và đẩy về trang danh sách
             echo "<script>
                     alert('Đơn hàng không tồn tại hoặc đã bị xóa!');
-                    window.location.href = 'http://localhost/Baitaplon/Donhang';
+                    window.location.href = '/Baitaplon/Donhang';
                   </script>";
         }
     }
 
     public function CapNhatTrangThai($mahd) {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: http://localhost/Baitaplon/Donhang');
+            header('Location: /Baitaplon/Donhang');
             return;
         }
         $trangthai = isset($_POST['ddlTrangThai']) ? $_POST['ddlTrangThai'] : 0;
         $ok = $this->dhModel->CapNhatTrangThai($mahd, $trangthai);
         $message = $ok ? 'Đã cập nhật trạng thái đơn hàng.' : 'Không thể cập nhật trạng thái đơn hàng.';
-        echo "<script>alert('$message'); window.location.href='http://localhost/Baitaplon/Donhang';</script>";
+        echo "<script>alert('$message'); window.location.href='/Baitaplon/Donhang';</script>";
     }
 
     public function Huy($mahd) {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: http://localhost/Baitaplon/Donhang');
+            header('Location: /Baitaplon/Donhang');
             return;
         }
         $ok = $this->dhModel->HuyDon($mahd);
         $message = $ok ? 'Đã hủy đơn và hoàn lại tồn kho.' : 'Chỉ có thể hủy đơn đang chờ xác nhận hoặc chờ lấy hàng.';
-        echo "<script>alert('$message'); window.location.href='http://localhost/Baitaplon/Donhang';</script>";
+        echo "<script>alert('$message'); window.location.href='/Baitaplon/Donhang';</script>";
     }
 }
 ?>
