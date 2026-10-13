@@ -33,3 +33,15 @@ Khi triển khai, đặt `APP_BASE_URL` thành URL công khai đầy đủ, ví 
 Thêm chính xác URI callback đó vào **Authorized redirect URIs** trong Google Cloud Console. Điền Client ID và Client Secret vào biến môi trường tương ứng trong `.env`. Dùng HTTPS và cấu hình domain/reverse proxy trên máy chủ trước khi cho khách truy cập. Không dùng các mật khẩu mẫu trong `.env.example` trên máy chủ thật.
 
 Các biến `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` cũng được ứng dụng đọc trực tiếp nên có thể dùng khi chạy bên ngoài Docker.
+
+## Công khai website qua Cloudflare Tunnel
+
+Tunnel hiện được cấu hình cho `dokhacson.id.vn` và trỏ tới dịch vụ `web` trong Docker Compose. Sau khi đã có chứng chỉ và thông tin xác thực riêng trong thư mục `.cloudflared/`, bật website và Tunnel bằng:
+
+```sh
+docker compose --profile cloudflare up -d --build
+```
+
+Mở `https://dokhacson.id.vn/Baitaplon/User`. Giữ máy tính và Docker Desktop bật để website tiếp tục truy cập được. Cloudflare cấp HTTPS cho tên miền sau khi chứng chỉ Universal SSL được phát hành.
+
+Không đưa thư mục `.cloudflared/` lên Git: bên trong có chứng chỉ tài khoản và khóa Tunnel. Thành viên khác cần tạo Tunnel riêng cho tài khoản/tên miền của họ trước khi bật profile `cloudflare`.
