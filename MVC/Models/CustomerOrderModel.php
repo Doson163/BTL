@@ -41,6 +41,16 @@ class CustomerOrderModel extends connectDB {
         return $order;
     }
 
+    public function PreviewPromotion($code, $cartTotal) {
+        $stmt = mysqli_prepare($this->con, 'SELECT SoTienGiam FROM khuyenmai WHERE TenMa=? AND TrangThai=1 AND SoLuong>0 LIMIT 1');
+        if (!$stmt) return false;
+        mysqli_stmt_bind_param($stmt, 's', $code);
+        if (!mysqli_stmt_execute($stmt)) return false;
+        $promo = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+        if (!$promo) return false;
+        return min(max(0, (int)$cartTotal), max(0, (int)$promo['SoTienGiam']));
+    }
+
     public function CreateOrder($customerId, $recipient, $phone, $address, $paymentId, $cart, $promoCode = "") {
         if (!$cart || !$recipient || !$phone || !$address) return false;
         mysqli_begin_transaction($this->con);

@@ -237,7 +237,7 @@
     
     <div class="invoice-header">
         <div class="brand-section">
-            <h1><i class="fas fa-shopping-basket"></i>WIN MART</h1>
+            <h1><i class="fas fa-shopping-basket"></i>DAILYMART</h1>
             <p>54 Triều Khúc, Thanh Xuân, Hà Nội</p>
             <p>Hotline: 1900 888 888 | Email: contact@anlacmart.com</p>
         </div>

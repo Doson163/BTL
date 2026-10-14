@@ -28,8 +28,9 @@ class SanphamModel extends connectDB {
         // Xử lý nếu ngày rỗng thì để NULL
         $hsdValue = empty($hsd) ? "NULL" : "'$hsd'";
 
+        $manccValue = $mancc === null || $mancc === '' ? 'NULL' : "'" . mysqli_real_escape_string($this->con, (string)$mancc) . "'";
         $sql = "INSERT INTO sanpham (MaSP, TenSP, MaDM, MaNCC, GiaBan, SoLuongTon, HinhAnh, HanSuDung)
-                VALUES ('$masp', '$tensp', '$madm', '$mancc', '$gia', '$soluong', '$hinhanh', $hsdValue)";
+                VALUES ('$masp', '$tensp', '$madm', $manccValue, '$gia', '$soluong', '$hinhanh', $hsdValue)";
         return mysqli_query($this->con, $sql);
     }
 
@@ -59,15 +60,15 @@ class SanphamModel extends connectDB {
     }
 
     // 3. CẬP NHẬT (SỬA: Thêm $hsd)
-    public function UpdateSanpham($masp, $tensp, $madm, $mancc, $gia, $soluong, $hinhanh, $hsd) {
+    public function UpdateSanpham($masp, $tensp, $madm, $gia, $soluong, $hinhanh, $hsd) {
         // Xử lý ngày
         $hsdValue = empty($hsd) ? "NULL" : "'$hsd'";
 
         if ($hinhanh == "") {
-            $sql = "UPDATE sanpham SET TenSP='$tensp', MaDM='$madm', MaNCC='$mancc', GiaBan='$gia',  HanSuDung=$hsdValue
+            $sql = "UPDATE sanpham SET TenSP='$tensp', MaDM='$madm', GiaBan='$gia', HanSuDung=$hsdValue
                     WHERE MaSP='$masp'";
         } else {
-            $sql = "UPDATE sanpham SET TenSP='$tensp', MaDM='$madm', MaNCC='$mancc', GiaBan='$gia',  HinhAnh='$hinhanh', HanSuDung=$hsdValue
+            $sql = "UPDATE sanpham SET TenSP='$tensp', MaDM='$madm', GiaBan='$gia', HinhAnh='$hinhanh', HanSuDung=$hsdValue
                     WHERE MaSP='$masp'";
         }
         return mysqli_query($this->con, $sql);

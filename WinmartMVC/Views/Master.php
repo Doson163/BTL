@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WinMart Clone</title>
+    <title>DailyMart</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body { font-family: Arial, sans-serif; margin: 0; background: linear-gradient(135deg, #fcf4f4 0%, #f7e4e6 48%, #fcf3ef 100%); }
@@ -46,7 +46,7 @@
 <header<?php if($data['Page']==='Login_v') echo ' style="display:none;"'; ?>>
     <div class="container">
         <a href="<?php echo BASE_URL ?>Home" class="logo" style="text-decoration: none; color: white;">
-            WinMart
+            DailyMart
         </a>
 
         <?php if ($data['Page'] !== 'Login_v') { ?>

@@ -2,12 +2,10 @@
 class Sanpham extends controller {
     public $spModel;
     public $dmModel;
-    public $nccModel;
 
     public function __construct() {
         $this->spModel = $this->model("SanphamModel");
         $this->dmModel = $this->model("DanhmucModel");
-        $this->nccModel = $this->model("NhacungcapModel");
     }
 
     // 1. Hiển thị (Giữ nguyên)
@@ -21,7 +19,6 @@ class Sanpham extends controller {
             "page" => "Sanpham_V",
             "dulieu" => $this->spModel->GetSanpham($keyword),
             "danhmuc" => $this->dmModel->DanhSach(),
-            "nhacungcap" => $this->nccModel->DanhSach(),
             "keyword" => $keyword
         ]);
     }
@@ -37,12 +34,11 @@ class Sanpham extends controller {
 
             $tensp = $_POST['txtTenSP'];
             $madm = $_POST['ddlDanhmuc'];
-            $mancc = $_POST['ddlNCC'];
             $gia = $_POST['txtGia'];
             $soluong = $_POST['txtSoLuong'];
             $hsd = $_POST['txtHSD']; // Lấy hạn sử dụng
-            if (!$this->DuLieuHopLe($tensp, $madm, $mancc, $gia, $soluong, $hsd)) {
-                echo "<script>alert('Vui lòng nhập tên, danh mục, nhà cung cấp, giá và số lượng hợp lệ.'); window.history.back();</script>";
+            if (!$this->DuLieuHopLe($tensp, $madm, $gia, $soluong, $hsd)) {
+                echo "<script>alert('Vui lòng nhập tên, danh mục, giá và số lượng hợp lệ.'); window.history.back();</script>";
                 return;
             }
             
@@ -52,7 +48,7 @@ class Sanpham extends controller {
                 move_uploaded_file($_FILES['txtHinhAnh']['tmp_name'], "./Public/Images/" . $hinhanh);
             }
 
-            $this->spModel->InsertSanpham($masp, $tensp, $madm, $mancc, $gia, $soluong, $hinhanh, $hsd);
+            $this->spModel->InsertSanpham($masp, $tensp, $madm, null, $gia, $soluong, $hinhanh, $hsd);
             echo "<script>alert('Thêm thành công!'); window.location.href='/Baitaplon/Sanpham';</script>";
         }
     }
@@ -73,7 +69,6 @@ class Sanpham extends controller {
             "page" => "Sanpham_V",
             "dulieu" => $this->spModel->GetSanpham(),
             "danhmuc" => $this->dmModel->DanhSach(),
-            "nhacungcap" => $this->nccModel->DanhSach(),
             "editData" => mysqli_fetch_array($this->spModel->GetSanphamByID($masp))
         ]);
     }
@@ -84,12 +79,11 @@ class Sanpham extends controller {
             $masp = $_POST['txtMaSP'];
             $tensp = $_POST['txtTenSP'];
             $madm = $_POST['ddlDanhmuc'];
-            $mancc = $_POST['ddlNCC'];
             $gia = $_POST['txtGia'];
             $soluong = $_POST['txtSoLuong'];
             $hsd = $_POST['txtHSD']; // Lấy hạn sử dụng
-            if (!$this->DuLieuHopLe($tensp, $madm, $mancc, $gia, $soluong, $hsd)) {
-                echo "<script>alert('Vui lòng nhập tên, danh mục, nhà cung cấp, giá và số lượng hợp lệ.'); window.history.back();</script>";
+            if (!$this->DuLieuHopLe($tensp, $madm, $gia, $soluong, $hsd)) {
+                echo "<script>alert('Vui lòng nhập tên, danh mục, giá và số lượng hợp lệ.'); window.history.back();</script>";
                 return;
             }
 
@@ -99,7 +93,7 @@ class Sanpham extends controller {
                 move_uploaded_file($_FILES['txtHinhAnh']['tmp_name'], "./Public/Images/" . $hinhanh);
             }
 
-            $this->spModel->UpdateSanpham($masp, $tensp, $madm, $mancc, $gia, $soluong, $hinhanh, $hsd);
+            $this->spModel->UpdateSanpham($masp, $tensp, $madm, $gia, $soluong, $hinhanh, $hsd);
             echo "<script>alert('Cập nhật thành công!'); window.location.href='/Baitaplon/Sanpham';</script>";
         }
     }
@@ -216,10 +210,10 @@ class Sanpham extends controller {
         }
     }
 
-    private function DuLieuHopLe($tensp, $madm, $mancc, $gia, $soluong, $hsd) {
+    private function DuLieuHopLe($tensp, $madm, $gia, $soluong, $hsd) {
         $giaHopLe = filter_var($gia, FILTER_VALIDATE_INT);
         $soLuongHopLe = filter_var($soluong, FILTER_VALIDATE_INT);
-        if (trim((string)$tensp) === '' || filter_var($madm, FILTER_VALIDATE_INT) === false || (int)$madm < 1 || filter_var($mancc, FILTER_VALIDATE_INT) === false || (int)$mancc < 1) return false;
+        if (trim((string)$tensp) === '' || filter_var($madm, FILTER_VALIDATE_INT) === false || (int)$madm < 1) return false;
         if ($giaHopLe === false || $giaHopLe <= 0 || $soLuongHopLe === false || $soLuongHopLe < 0) return false;
         if ($hsd !== '' && (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $hsd) || !checkdate((int)substr($hsd, 5, 2), (int)substr($hsd, 8, 2), (int)substr($hsd, 0, 4)))) return false;
         return true;

@@ -274,7 +274,7 @@
     <div class="login-card">
         <div class="login-header">
             <h2>ĐĂNG NHẬP <span>.</span></h2>
-            <p>Chào mừng bạn quay trở lại WinMart</p>
+            <p>Chào mừng bạn quay trở lại DailyMart</p>
         </div>
 
         <?php if(!empty($data['notice'])) { ?>

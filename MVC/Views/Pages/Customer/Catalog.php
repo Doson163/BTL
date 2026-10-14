@@ -1,3 +1,4 @@
+<?php $categoryRows = $data['categories'] ? mysqli_fetch_all($data['categories'], MYSQLI_ASSOC) : []; ?>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
     
@@ -294,29 +295,67 @@
         color: #9ca3af !important;
         box-shadow: none !important;
     }
+    .premium-catalog{font-family:'Outfit',sans-serif}
+    .premium-catalog .hero-banner{height:370px;border-radius:4px;background:#11171a;margin:0 -20px 54px;width:calc(100% + 40px);box-shadow:none}
+    .premium-catalog .hero-bg{opacity:.32;mix-blend-mode:normal;filter:saturate(.8)}
+    .premium-catalog .hero-gradient{background:linear-gradient(90deg,rgba(12,17,20,.98) 0%,rgba(12,17,20,.88) 48%,rgba(12,17,20,.22) 100%)}
+    .premium-catalog .hero-content{padding:44px 20px;max-width:650px}
+    .premium-catalog .hero-content h2{font-size:clamp(34px,4vw,52px);line-height:1.13;margin-bottom:16px}
+    .premium-catalog .hero-content p{font-size:15px;color:#aab3bc;max-width:570px}
+    .premium-catalog .hero-btn{padding:13px 24px;border-radius:9px;margin-right:10px}
+    .premium-catalog .hero-btn-outline{display:inline-flex;align-items:center;padding:12px 22px;border:1px solid #41484f;border-radius:9px;color:#e7e9ec;font-weight:600;font-size:14px}
+    .category-section{margin:0 0 82px}
+    .section-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+    .section-heading .section-title{font-size:23px;margin:0;color:#fff}
+    .section-heading>a{color:#e6c13f;font-size:12px;font-weight:700}
+    .category-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:15px}
+    .category-card{min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:#1a2026;border:1px solid #252c33;border-radius:17px;color:#f5f6f7;font-size:13px;font-weight:600;text-align:center;padding:16px 10px;transition:transform .2s,border-color .2s,background .2s}
+    .category-card i{font-size:22px;color:#dfb92d}
+    .category-card:hover{transform:translateY(-4px);border-color:#79651f;background:#20262c;color:#f4d45f}
+    .premium-catalog .filter-panel{margin-bottom:30px!important}
+    .premium-catalog .products{gap:20px!important}
+    .premium-catalog .product-image{height:210px!important;background:#11161a!important;border-bottom-color:#252c33}
+    .premium-catalog .product-image img{mix-blend-mode:normal;object-fit:cover;border-radius:14px}
+    .premium-catalog .product-copy{padding:17px!important}
+    .premium-catalog .product-copy .muted{color:#e3bd39!important}
+    .premium-catalog .product-copy h2{color:#f3f5f6}
+    .premium-catalog .product-copy .stock{color:#8dccaa!important}
+    .premium-catalog .product-card:hover{border-color:#78631c!important;box-shadow:0 20px 42px rgba(0,0,0,.38)!important}
+    @media(max-width:800px){.category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.premium-catalog .hero-banner{margin-left:-14px;width:calc(100% + 28px)}}
+    @media(max-width:520px){.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.premium-catalog .hero-banner{height:360px}.premium-catalog .hero-content{padding:28px 20px}.premium-catalog .hero-content h2{font-size:34px}.premium-catalog .product-image{height:165px!important}}
 </style>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
+<div class="premium-catalog">
 <div class="hero-banner">
     <div class="hero-bg"></div>
     <div class="hero-gradient"></div>
     <div class="hero-content">
-        <div class="hero-badge"><i class="fas fa-bolt"></i> Siêu ưu đãi</div>
-        <h2>Đại tiệc Mua sắm<br>Tại WinMart</h2>
-        <p>Hàng ngàn sản phẩm chính hãng, tươi sạch mỗi ngày với mức giá ưu đãi nhất dành riêng cho bạn.</p>
-        <button class="hero-btn" type="button" onclick="window.scrollTo({top: 400, behavior: 'smooth'})">Khám phá ngay <i class="fas fa-arrow-right"></i></button>
+        <div class="hero-badge">Exclusive collection</div>
+        <h2>Nâng Tầm Trải Nghiệm<br><em>Mua Sắm Thượng Lưu</em></h2>
+        <p>Chào mừng bạn đến với không gian mua sắm tuyển chọn. Mỗi sản phẩm đều được chọn lọc kỹ cho phong cách sống chất lượng.</p>
+        <button class="hero-btn" type="button" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Khám phá ngay <i class="fas fa-arrow-right"></i></button><a class="hero-btn-outline" href="#categories">Xem danh mục</a>
     </div>
 </div>
+
+<section id="categories" class="category-section">
+    <div class="section-heading"><h2 class="section-title">Danh mục thượng phẩm</h2><a href="#products">Tất cả danh mục&nbsp; <i class="fas fa-chevron-right"></i></a></div>
+    <div class="category-grid">
+        <?php $categoryIcons=['fa-apple-whole','fa-wine-bottle','fa-bread-slice','fa-house','fa-spa','fa-mug-hot']; foreach($categoryRows as $index=>$category) { ?>
+            <a class="category-card" href="store.php?url=Storefront/Get_data&amp;category=<?php echo (int)$category['MaDM']; ?>"><i class="fas <?php echo $categoryIcons[$index % count($categoryIcons)]; ?>"></i><span><?php echo htmlspecialchars($category['TenDM'],ENT_QUOTES,'UTF-8'); ?></span></a>
+        <?php } ?>
+    </div>
+</section>
 
 <form class="filter-panel filters" method="get" action="store.php">
     <input type="hidden" name="url" value="Storefront/Get_data">
     <input type="search" name="q" placeholder="Tìm tên hoặc mã sản phẩm..." value="<?php echo htmlspecialchars((string)$data['filters']['q'],ENT_QUOTES,'UTF-8'); ?>">
     <select name="category">
         <option value="">Tất cả danh mục</option>
-        <?php if($data['categories']) { while($category=mysqli_fetch_assoc($data['categories'])) { ?>
+        <?php foreach($categoryRows as $category) { ?>
             <option value="<?php echo (int)$category['MaDM']; ?>" <?php echo (string)$data['filters']['category']===(string)$category['MaDM']?'selected':''; ?>><?php echo htmlspecialchars($category['TenDM'],ENT_QUOTES,'UTF-8'); ?></option>
-        <?php }} ?>
+        <?php } ?>
     </select>
     <input type="number" min="0" step="1000" name="min_price" placeholder="Mức giá từ (VNĐ)" value="<?php echo htmlspecialchars((string)$data['filters']['min_price'],ENT_QUOTES,'UTF-8'); ?>">
     <input type="number" min="0" step="1000" name="max_price" placeholder="Mức giá đến (VNĐ)" value="<?php echo htmlspecialchars((string)$data['filters']['max_price'],ENT_QUOTES,'UTF-8'); ?>">
@@ -329,7 +368,7 @@
     <button class="button" type="submit"><i class="fas fa-filter"></i> Lọc</button>
 </form>
 
-<h2 class="section-title"><i class="fas fa-fire" style="color: #e31d2b;"></i> Sản phẩm nổi bật</h2>
+<h2 id="products" class="section-title"><i class="fas fa-sparkles" style="color: #e3bd39;"></i> Gợi ý riêng cho bạn</h2>
 
 <?php if($data['products'] && mysqli_num_rows($data['products'])>0) { ?>
     <div class="products">
@@ -378,3 +417,4 @@
         <p style="margin: 0; color: #64748b; font-family: 'Outfit', sans-serif;">Thử thay đổi từ khóa hoặc bộ lọc để xem các kết quả khác nhé.</p>
     </div>
 <?php } ?>
+</div>

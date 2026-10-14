@@ -170,7 +170,7 @@
 <div class="main-banner" style="width: 100%; background: transparent; margin-top: 20px; margin-bottom: 20px;">
     <div class="container">
         <img src="https://s3-hcmc02.higiocloud.vn/images/2025/12/homebanner_867x400px_wct-20251220092852.jpg" 
-             alt="Banner Winmart" 
+             alt="Banner DailyMart"
              style="width: 100%; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block;">
     </div>
 </div>

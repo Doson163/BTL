@@ -80,7 +80,7 @@ class CustomerAuth extends controller {
         $profile=$this->googleRequest('https://openidconnect.googleapis.com/v1/userinfo',null,$token['access_token']);
         if (empty($profile['email']) || empty($profile['email_verified'])) $this->googleError('Google không cung cấp email đã xác minh cho tài khoản này.');
         $account=$this->accountModel->AuthenticateGoogle($profile['email']);
-        if (!$account) $this->googleError('Email Google chưa có tài khoản Win Mart. Hãy đăng ký khách hàng bằng email Google này trước.');
+        if (!$account) $this->googleError('Email Google chưa có tài khoản DailyMart. Hãy đăng ký khách hàng bằng email Google này trước.');
         session_regenerate_id(true); $_SESSION['shop_customer']=['MaKH'=>$account['MaKH'],'TenKH'=>$account['TenKH']]; $this->activateCustomerCart($account['MaKH']);
         header('Location: /Baitaplon/store.php?url=CustomerAuth/Profile'); exit;
     }

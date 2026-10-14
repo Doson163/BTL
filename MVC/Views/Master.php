@@ -7,14 +7,14 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="/Baitaplon/Public/Css/giaodien.css">
+    <link rel="stylesheet" href="/Baitaplon/Public/Css/giaodien.css?v=<?php echo filemtime(__DIR__ . '/../../Public/Css/giaodien.css'); ?>">
 </head>
 <body>
 
     <div class="sidebar">
         <div class="brand">
             <i class="fas fa-shopping-basket" style="margin-right:10px; color: #4fc3f7"></i> 
-            Win Mart
+            DailyMart
         </div>
         
         <ul class="menu">

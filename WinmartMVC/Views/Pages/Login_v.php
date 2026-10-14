@@ -271,6 +271,65 @@
         transform: scaleX(1);
         transform-origin: left;
     }
+
+    /* Match the dark charcoal and gold palette used by the admin workspace. */
+    .adminlogin-wrapper {
+        background-color: #101417;
+        background-image:
+            radial-gradient(ellipse at 50% 0%, rgba(205,169,47,.13), transparent 48%),
+            linear-gradient(135deg, #101417, #0b0f12);
+    }
+    .adminlogin-wrapper::before {
+        background: linear-gradient(135deg, rgba(223,185,54,.12), rgba(223,185,54,.02));
+    }
+    .adminlogin-wrapper::after {
+        background: linear-gradient(135deg, rgba(223,185,54,.09), rgba(30,39,42,.1));
+    }
+    .adminlogin-card {
+        background: rgba(23,28,32,.96);
+        border: 1px solid #2a3238;
+        border-radius: 24px;
+        box-shadow: 0 28px 70px rgba(0,0,0,.42), 0 0 0 1px rgba(223,185,54,.04) inset;
+    }
+    .adminlogin-header h2 { color: #f1f3f4; }
+    .adminlogin-header h2 span { color: #dfb936; }
+    .adminlogin-header p,.al-register-link { color: #aab4be; }
+    .al-input {
+        background: #11171c;
+        border: 1px solid #39434c;
+        color: #f1f3f5;
+        box-shadow: none;
+    }
+    .al-input:focus {
+        background: #11171c;
+        border-color: #d9b63b;
+        box-shadow: 0 0 0 3px rgba(217,182,59,.14);
+    }
+    .al-label { color: #87939e; }
+    .al-input:focus ~ .al-label,
+    .al-input:not(:placeholder-shown) ~ .al-label {
+        color: #e4c342;
+        background: #171c20;
+        box-shadow: none;
+    }
+    .al-icon { color: #87939e; }
+    .al-input:focus ~ .al-icon { color: #e4c342; }
+    .al-btn-manager {
+        background: linear-gradient(135deg, #f0cf56 0%, #c99e1d 100%);
+        color: #171a1c;
+        box-shadow: 0 8px 22px rgba(207,169,41,.18);
+    }
+    .al-btn-manager:hover { box-shadow: 0 12px 28px rgba(207,169,41,.28); }
+    .adminlogin-error {
+        background: rgba(112,35,36,.2);
+        color: #ff9999;
+        border-color: rgba(239,95,95,.34);
+    }
+    @media(max-width:560px) {
+        .adminlogin-wrapper { padding: 20px 14px; }
+        .adminlogin-card { padding: 34px 24px; border-radius: 20px; }
+        .adminlogin-header h2 { font-size: 27px; }
+    }
 </style>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">

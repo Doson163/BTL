@@ -64,22 +64,6 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="flex: 1;">
-                    <label class="form-label">Nhà Cung Cấp:</label>
-                    <select name="ddlNCC" class="form-control">
-                        <option value="">-- Chọn NCC --</option>
-                        <?php
-                        if(isset($data['nhacungcap'])){
-                            while($row = mysqli_fetch_array($data['nhacungcap'])){
-                                $selected = '';
-                                if(isset($data['editData']) && $data['editData']['MaNCC'] == $row['MaNCC']) 
-                                    $selected = 'selected';
-                                echo '<option value="'.$row['MaNCC'].'" '.$selected.'>'.$row['TenNCC'].'</option>';
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
             </div>
 
             <div class="row" style="display:flex; gap: 20px; align-items: flex-end;">

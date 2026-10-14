@@ -257,7 +257,7 @@
     <div class="register-card">
         <div class="register-header">
             <h2>TẠO TÀI KHOẢN <span>.</span></h2>
-            <p>Đăng ký để nhận nhiều đặc quyền từ WinMart</p>
+            <p>Đăng ký để nhận nhiều đặc quyền từ DailyMart</p>
         </div>
 
         <form method="post" action="/Baitaplon/User/Register">

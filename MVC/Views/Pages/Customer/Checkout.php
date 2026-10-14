@@ -109,7 +109,11 @@
             
             <h2 style="margin-top: 30px;"><i class="fas fa-ticket-alt" style="color: #e31d2b;"></i> Mã khuyến mãi</h2>
             <label for="promo_code">Nhập mã giảm giá (nếu có)</label>
-            <input id="promo_code" name="promo_code" maxlength="50" placeholder="Ví dụ: WINMART100K">
+            <div class="checkout-promo-entry">
+                <input id="promo_code" name="promo_code" maxlength="50" placeholder="Ví dụ: TET2026">
+                <button id="apply-promo" class="button secondary" type="button"><i class="fas fa-tag"></i> Áp dụng</button>
+            </div>
+            <p id="promo-feedback" class="promo-feedback" aria-live="polite"></p>
             
             <h2 style="margin-top: 30px;"><i class="fas fa-wallet" style="color: #e31d2b;"></i> Phương thức thanh toán</h2>
             <?php if (empty($data['methods'])) { ?>
@@ -135,7 +139,7 @@
     
     <aside class="panel" style="position: sticky; top: 100px;">
         <h2><i class="fas fa-box-open" style="color: #e31d2b;"></i> Đơn hàng của bạn</h2>
-        <div style="background: #f8fafc; border-radius: 16px; padding: 20px; border: 1px solid #e2e8f0;">
+        <div id="checkout-summary" data-subtotal="<?php echo (float)$data['total']; ?>" style="background: #f8fafc; border-radius: 16px; padding: 20px; border: 1px solid #e2e8f0;">
             <?php foreach($data['items'] as $item) { ?>
                 <div class="summary-line">
                     <span title="<?php echo htmlspecialchars($item['TenSP'],ENT_QUOTES,'UTF-8'); ?>"><strong><?php echo (int)$item['CartQuantity']; ?>x</strong> <?php echo htmlspecialchars($item['TenSP'],ENT_QUOTES,'UTF-8'); ?></span>
@@ -143,11 +147,79 @@
                 </div>
             <?php } ?>
             
+            <div class="summary-line promo-discount-line">
+                <span>Mã khuyến mãi <small id="applied-promo-code"></small></span>
+                <strong id="checkout-discount">- 0 &#8363;</strong>
+            </div>
             <div class="summary-line summary-total">
-                <span style="color: #1e293b;">Tổng cộng</span>
-                <span><?php echo number_format((float)$data['total'],0,',','.'); ?> &#8363;</span>
+                <span>Tổng cộng</span>
+                <span id="checkout-total"><?php echo number_format((float)$data['total'],0,',','.'); ?> &#8363;</span>
             </div>
         </div>
         <p style="text-align: center; font-size: 14px; color: #94a3b8; margin-top: 20px;"><i class="fas fa-shield-alt"></i> Thông tin của bạn được bảo mật tuyệt đối.</p>
     </aside>
 </div>
+
+<script>
+(() => {
+    const promoInput = document.getElementById('promo_code');
+    const applyButton = document.getElementById('apply-promo');
+    const feedback = document.getElementById('promo-feedback');
+    const summary = document.getElementById('checkout-summary');
+    const discountOutput = document.getElementById('checkout-discount');
+    const totalOutput = document.getElementById('checkout-total');
+    const codeOutput = document.getElementById('applied-promo-code');
+    if (!promoInput || !applyButton || !summary) return;
+
+    const subtotal = Number(summary.dataset.subtotal || 0);
+    const money = value => `${new Intl.NumberFormat('vi-VN').format(value)} ₫`;
+    const resetPreview = () => {
+        discountOutput.textContent = `- ${money(0)}`;
+        totalOutput.textContent = money(subtotal);
+        codeOutput.textContent = '';
+    };
+    const applyPromo = async () => {
+        const code = promoInput.value.trim().toUpperCase();
+        if (!code) {
+            feedback.textContent = 'Vui lòng nhập mã khuyến mãi.';
+            feedback.className = 'promo-feedback is-error';
+            resetPreview();
+            return;
+        }
+        applyButton.disabled = true;
+        feedback.textContent = 'Đang kiểm tra mã...';
+        feedback.className = 'promo-feedback';
+        try {
+            const csrf = document.querySelector('input[name="csrf_token"]')?.value || '';
+            const response = await fetch('/Baitaplon/store.php?url=CustomerOrders/PreviewPromo', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
+                body: new URLSearchParams({ csrf_token: csrf, promo_code: code })
+            });
+            const result = await response.json();
+            if (!response.ok || !result.ok) throw new Error(result.message || 'Không thể áp dụng mã này.');
+            discountOutput.textContent = `- ${money(Number(result.discount))}`;
+            totalOutput.textContent = money(Number(result.total));
+            codeOutput.textContent = `(${result.code})`;
+            feedback.textContent = result.message;
+            feedback.className = 'promo-feedback is-success';
+        } catch (error) {
+            resetPreview();
+            feedback.textContent = error.message || 'Không thể kiểm tra mã khuyến mãi. Vui lòng thử lại.';
+            feedback.className = 'promo-feedback is-error';
+        } finally {
+            applyButton.disabled = false;
+        }
+    };
+    applyButton.addEventListener('click', applyPromo);
+    promoInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter') { event.preventDefault(); applyPromo(); }
+    });
+    promoInput.addEventListener('input', () => {
+        resetPreview();
+        feedback.textContent = '';
+        feedback.className = 'promo-feedback';
+    });
+})();
+</script>

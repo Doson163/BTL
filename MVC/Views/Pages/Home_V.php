@@ -98,12 +98,12 @@
     </div>
 </div>
 
-<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin:0 0 20px;">
+<div class="revenue-periods" style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin:0 0 20px;">
     <?php foreach ([['label' => 'Doanh thu hôm nay', 'key' => 'Today'], ['label' => 'Doanh thu tháng này', 'key' => 'ThisMonth'], ['label' => 'Doanh thu năm nay', 'key' => 'ThisYear']] as $period) { ?>
         <div class="card-box" style="padding:15px 20px;"><div class="card-info"><p><?php echo $period['label']; ?></p><h3><?php echo number_format((float)($data['revenuePeriods'][$period['key']] ?? 0)); ?> đ</h3></div></div>
     <?php } ?>
 </div>
-<div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
+<div class="status-strip" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
     <?php $orderStatusLabels = [1 => 'Chờ xác nhận', 2 => 'Chờ lấy hàng', 3 => 'Đang giao', 4 => 'Hoàn thành', 5 => 'Đã hủy']; foreach ($orderStatusLabels as $status => $label) { ?>
         <span class="badge-success" style="font-size:12px;"><?php echo $label; ?>: <?php echo (int)($data['orderStatusCounts'][$status] ?? 0); ?></span>
     <?php } ?>
@@ -162,8 +162,8 @@
             datasets: [{
                 label: 'Doanh thu (VNĐ)',
                 data: values,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)', // Màu cột xanh dương nhạt
-                borderColor: 'rgba(54, 162, 235, 1)',       // Viền cột đậm
+                backgroundColor: 'rgba(223, 185, 54, 0.72)',
+                borderColor: 'rgba(223, 185, 54, 1)',
                 borderWidth: 1,
                 borderRadius: 5
             }]
@@ -171,8 +171,14 @@
         options: {
             responsive: true,
             scales: {
+                x: {
+                    ticks: { color: '#74808a' },
+                    grid: { display: false }
+                },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: { color: '#74808a' },
+                    grid: { color: 'rgba(131, 145, 155, 0.12)' }
                 }
             },
             plugins: {

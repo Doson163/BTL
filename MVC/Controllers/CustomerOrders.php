@@ -26,6 +26,45 @@ class CustomerOrders extends controller {
         $this->render('Customer/Checkout', ['items'=>$items,'profile'=>$profile,'methods'=>$methods,'total'=>$total,'notice'=>$_SESSION['shop_notice'] ?? '']);
         unset($_SESSION['shop_notice']);
     }
+    public function PreviewPromo() {
+        $this->signedIn();
+        $this->postGuard();
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+
+        $code = strtoupper(trim((string)($_POST['promo_code'] ?? '')));
+        if ($code === '') {
+            http_response_code(422);
+            echo json_encode(['ok'=>false, 'message'=>'Vui lòng nhập mã khuyến mãi.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $items = $this->model('StorefrontModel')->GetCartProducts($_SESSION['shop_cart'] ?? []);
+        if (!$items) {
+            http_response_code(422);
+            echo json_encode(['ok'=>false, 'message'=>'Giỏ hàng đang trống.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $subtotal = 0;
+        foreach ($items as $item) $subtotal += (float)$item['LineTotal'];
+
+        $discount = $this->orders->PreviewPromotion($code, $subtotal);
+        if ($discount === false) {
+            http_response_code(422);
+            echo json_encode(['ok'=>false, 'message'=>'Mã không hợp lệ, đã ngừng hoạt động hoặc hết lượt sử dụng.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        echo json_encode([
+            'ok'=>true,
+            'code'=>$code,
+            'subtotal'=>$subtotal,
+            'discount'=>$discount,
+            'total'=>max(0, $subtotal - $discount),
+            'message'=>'Đã áp dụng mã khuyến mãi.'
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
     public function Place() {
         $this->signedIn(); $this->postGuard();
         $recipient=trim((string)($_POST['recipient'] ?? ''));
