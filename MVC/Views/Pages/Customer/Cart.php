@@ -139,7 +139,7 @@
                         <td>
                             <form class="qty-form" method="post" action="store.php?url=Cart/Update/<?php echo rawurlencode($item['MaSP']); ?>">
                                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['shop_csrf'],ENT_QUOTES,'UTF-8'); ?>">
-                                <input type="number" name="quantity" min="0" max="<?php echo (int)$item['SoLuongTon']; ?>" value="<?php echo (int)$item['CartQuantity']; ?>">
+                                <input type="number" name="quantity" min="0" max="<?php echo (int)$item['SoLuongTon']; ?>" value="<?php echo (int)$item['CartQuantity']; ?>" onchange="this.form.requestSubmit()" aria-label="Số lượng <?php echo htmlspecialchars($item['TenSP'],ENT_QUOTES,'UTF-8'); ?>">
                                 <button class="button secondary" type="submit" style="padding: 10px 16px !important;"><i class="fas fa-sync-alt"></i></button>
                             </form>
                             <small class="muted" style="display:block;margin-top:8px;">Tồn: <?php echo (int)$item['SoLuongTon']; ?> &middot; Nhập 0 để xóa</small>

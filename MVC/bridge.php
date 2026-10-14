@@ -8,6 +8,7 @@
     include_once $baseDir . '/MVC/Core/app.php';
     include_once $baseDir . '/MVC/Core/controller.php';
     include_once $baseDir . '/MVC/Core/connectDB.php';
+    include_once $baseDir . '/MVC/Core/CustomerCartSession.php';
     
     // Nạp thư viện Excel
     // Hệ thống sẽ tìm chính xác: D:/.../Baitaplon/Public/Classes/PHPExcel.php

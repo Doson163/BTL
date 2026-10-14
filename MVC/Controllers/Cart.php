@@ -25,15 +25,16 @@ class Cart extends controller {
         $this->requireCustomer();
         $this->requirePostAndCsrf(); $product=$this->storeModel->GetProductById($id); $current=(int)($_SESSION['shop_cart'][$id] ?? 0);
         if (!$product || (int)$product['SoLuongTon']<$current+1) { $_SESSION['shop_notice']='Product is unavailable or out of stock.'; $this->redirectToCart(); }
-        $_SESSION['shop_cart'][$id]=$current+1; $_SESSION['shop_notice']='Product added to your cart.'; $this->redirectToCart();
+        $_SESSION['shop_cart'][$id]=$current+1; CustomerCartSession::saveActive(); $_SESSION['shop_notice']='Product added to your cart.'; $this->redirectToCart();
     }
     public function Update($id) {
         $this->requireCustomer();
         $this->requirePostAndCsrf(); $quantity=filter_var($_POST['quantity'] ?? null,FILTER_VALIDATE_INT); $product=$this->storeModel->GetProductById($id);
         if (!$product || $quantity===false || $quantity<0) { $_SESSION['shop_notice']='Please enter a valid quantity.'; $this->redirectToCart(); }
         if ($quantity===0) unset($_SESSION['shop_cart'][$id]); else { $stock=(int)$product['SoLuongTon']; $_SESSION['shop_cart'][$id]=min($quantity,$stock); if($quantity>$stock) $_SESSION['shop_notice']='Quantity was adjusted to current stock.'; }
+        CustomerCartSession::saveActive();
         $this->redirectToCart();
     }
-    public function Remove($id) { $this->requireCustomer(); $this->requirePostAndCsrf(); unset($_SESSION['shop_cart'][$id]); $this->redirectToCart(); }
-    public function Clear() { $this->requireCustomer(); $this->requirePostAndCsrf(); $_SESSION['shop_cart']=[]; $this->redirectToCart(); }
+    public function Remove($id) { $this->requireCustomer(); $this->requirePostAndCsrf(); unset($_SESSION['shop_cart'][$id]); CustomerCartSession::saveActive(); $this->redirectToCart(); }
+    public function Clear() { $this->requireCustomer(); $this->requirePostAndCsrf(); $_SESSION['shop_cart']=[]; CustomerCartSession::saveActive(); $this->redirectToCart(); }
 }

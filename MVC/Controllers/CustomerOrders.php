@@ -42,7 +42,7 @@ class CustomerOrders extends controller {
             $_SESSION['shop_notice']='Please enter a valid delivery name, phone, and address.';
             header('Location: /Baitaplon/store.php?url=CustomerOrders/Checkout'); exit;
         }
-        $_SESSION['shop_cart']=[];
+        $_SESSION['shop_cart']=[]; CustomerCartSession::saveActive();
         $_SESSION['shop_notice']='Đặt hàng thành công. Mã đơn hàng #'.$orderId.'.';
         header('Location: /Baitaplon/store.php?url=CustomerOrders/Detail/'.$orderId); exit;
     }

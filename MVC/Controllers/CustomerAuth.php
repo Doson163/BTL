@@ -4,6 +4,10 @@ class CustomerAuth extends controller {
 
     public function __construct() { $this->accountModel = $this->model('CustomerAccountModel'); }
 
+    private function activateCustomerCart($customerId) {
+        CustomerCartSession::activate($customerId);
+    }
+
     private function validPost() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); exit('Method not allowed.'); }
         if (!hash_equals((string)($_SESSION['shop_csrf'] ?? ''), (string)($_POST['csrf_token'] ?? ''))) { http_response_code(403); exit('Invalid session. Reload the page.'); }
@@ -39,7 +43,7 @@ class CustomerAuth extends controller {
         if ($name==='' || $phone==='' || !preg_match('/^[0-9+(). -]{8,20}$/',$phone) || ($email!=='' && !filter_var($email,FILTER_VALIDATE_EMAIL)) || strlen($password)<8) { $this->showForm('Register','Please check your name, phone, email, and password (at least 8 characters).'); return; }
         $email=$email===''?null:$email; $customerId='KH'.strtoupper(bin2hex(random_bytes(6)));
         if (!$this->accountModel->Register($name,$phone,$email,password_hash($password,PASSWORD_DEFAULT),$customerId)) { $this->showForm('Register','Phone or email is already in use.'); return; }
-        session_regenerate_id(true); $_SESSION['shop_customer']=['MaKH'=>$customerId,'TenKH'=>$name];
+        session_regenerate_id(true); $_SESSION['shop_customer']=['MaKH'=>$customerId,'TenKH'=>$name]; $this->activateCustomerCart($customerId);
         header('Location: /Baitaplon/store.php?url=CustomerAuth/Profile'); exit;
     }
 
@@ -48,7 +52,7 @@ class CustomerAuth extends controller {
         $this->validPost(); $identity=trim((string)($_POST['identity'] ?? ''));
         $account=$identity!==''?$this->accountModel->Authenticate($identity):null;
         if (!$account || !password_verify((string)($_POST['password'] ?? ''),$account['MatKhauHash'])) { $this->showForm('Login','Login details are incorrect.'); return; }
-        session_regenerate_id(true); $_SESSION['shop_customer']=['MaKH'=>$account['MaKH'],'TenKH'=>$account['TenKH']];
+        session_regenerate_id(true); $_SESSION['shop_customer']=['MaKH'=>$account['MaKH'],'TenKH'=>$account['TenKH']]; $this->activateCustomerCart($account['MaKH']);
         header('Location: /Baitaplon/store.php?url=CustomerAuth/Profile'); exit;
     }
 
@@ -77,7 +81,7 @@ class CustomerAuth extends controller {
         if (empty($profile['email']) || empty($profile['email_verified'])) $this->googleError('Google không cung cấp email đã xác minh cho tài khoản này.');
         $account=$this->accountModel->AuthenticateGoogle($profile['email']);
         if (!$account) $this->googleError('Email Google chưa có tài khoản Win Mart. Hãy đăng ký khách hàng bằng email Google này trước.');
-        session_regenerate_id(true); $_SESSION['shop_customer']=['MaKH'=>$account['MaKH'],'TenKH'=>$account['TenKH']];
+        session_regenerate_id(true); $_SESSION['shop_customer']=['MaKH'=>$account['MaKH'],'TenKH'=>$account['TenKH']]; $this->activateCustomerCart($account['MaKH']);
         header('Location: /Baitaplon/store.php?url=CustomerAuth/Profile'); exit;
     }
 
@@ -91,7 +95,7 @@ class CustomerAuth extends controller {
     }
 
     public function Logout() {
-        $this->validPost(); unset($_SESSION['shop_customer']); session_regenerate_id(true);
+        $this->validPost(); CustomerCartSession::sync(null); unset($_SESSION['shop_customer']); session_regenerate_id(true);
         header('Location: /Baitaplon/User'); exit;
     }
 
