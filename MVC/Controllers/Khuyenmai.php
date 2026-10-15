@@ -29,7 +29,7 @@ class Khuyenmai extends controller {
             $soluong = filter_var($soluong, FILTER_VALIDATE_INT);
             $trangthai = isset($_POST['ddlTrangThai']) && (int)$_POST['ddlTrangThai'] === 0 ? 0 : 1;
             if ($ten === '' || strlen($ten) > 50 || $tien === false || $tien < 0 || $soluong === false || $soluong < 0) {
-                echo "<script>alert('Mã khuyến mãi, số tiền giảm hoặc số lượng không hợp lệ.'); window.history.back();</script>";
+                $this->backWithMessage('Mã khuyến mãi, số tiền giảm hoặc số lượng không hợp lệ.', 'warning', 'Cảnh báo', '/Baitaplon/Khuyenmai');
                 return;
             }
 
@@ -37,20 +37,20 @@ class Khuyenmai extends controller {
                 // --- TRƯỜNG HỢP SỬA ---
                 $id = $_POST['txtID'];
                 if ($this->kmModel->CheckTrung($ten, (int)$id)) {
-                    echo "<script>alert('Mã khuyến mãi đã tồn tại.'); window.history.back();</script>";
+                    $this->backWithMessage('Mã khuyến mãi đã tồn tại.', 'warning', 'Cảnh báo', '/Baitaplon/Khuyenmai');
                     return;
                 }
                 $this->kmModel->Sua($id, $ten, $tien, $soluong, $trangthai);
-                echo "<script>alert('Cập nhật thành công!'); window.location.href='/Baitaplon/Khuyenmai';</script>";
+                $this->redirectWithMessage('/Baitaplon/Khuyenmai', 'Cập nhật mã khuyến mãi thành công!', 'success', 'Cập nhật thành công');
             } else {
                 // --- TRƯỜNG HỢP THÊM MỚI ---
                 // Check trùng trước
                 if($this->kmModel->CheckTrung($ten)){
-                    echo "<script>alert('Mã [$ten] đã tồn tại!'); window.history.back();</script>";
+                    $this->backWithMessage("Mã [$ten] đã tồn tại!", 'warning', 'Cảnh báo', '/Baitaplon/Khuyenmai');
                     return;
                 }
                 $this->kmModel->ThemMoi($ten, $tien, $soluong, $trangthai);
-                echo "<script>alert('Phát hành mã thành công!'); window.location.href='/Baitaplon/Khuyenmai';</script>";
+                $this->redirectWithMessage('/Baitaplon/Khuyenmai', 'Phát hành mã khuyến mãi thành công!', 'success', 'Phát hành thành công');
             }
         }
     }
@@ -67,7 +67,7 @@ class Khuyenmai extends controller {
     // Xóa
     public function Xoa($id) {
         $this->kmModel->XoaMa($id);
-        header("Location: /Baitaplon/Khuyenmai");
+        $this->redirectWithMessage('/Baitaplon/Khuyenmai', 'Đã xóa mã khuyến mãi thành công!', 'success', 'Xóa thành công');
     }
 
 
@@ -148,13 +148,13 @@ $this->kmModel->ThemMoi($ten, $tien, $soluong);
                             $count++;
                         }
                     }
-                    echo "<script>alert('Đã nhập thành công $count mã khuyến mãi!'); window.location.href='/Baitaplon/Khuyenmai';</script>";
+                    $this->redirectWithMessage('/Baitaplon/Khuyenmai', "Đã nhập thành công $count mã khuyến mãi từ file Excel!", 'success', 'Import thành công');
 
                 } catch (Exception $e) {
-                    echo "<script>alert('Lỗi: " . $e->getMessage() . "'); window.history.back();</script>";
+                    $this->backWithMessage('Lỗi khi đọc file Excel: ' . $e->getMessage(), 'error', 'Lỗi Import', '/Baitaplon/Khuyenmai');
                 }
             } else {
-                echo "<script>alert('Vui lòng chọn file Excel!'); window.history.back();</script>";
+                $this->backWithMessage('Vui lòng chọn file Excel!', 'warning', 'Cảnh báo', '/Baitaplon/Khuyenmai');
             }
         }
     }

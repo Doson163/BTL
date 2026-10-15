@@ -187,7 +187,7 @@
                             <a href="/Baitaplon/Sanpham/Sua/<?php echo $row['MaSP']; ?>" class="btn-custom btn-orange" style="padding: 5px 10px; font-size: 12px;" title="Sửa">
                                 <i class="fas fa-pen"></i>
                             </a>
-                            <a href="/Baitaplon/Sanpham/Xoa/<?php echo $row['MaSP']; ?>" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này không?')" class="btn-custom btn-red" style="padding: 5px 10px; font-size: 12px;" title="Xóa">
+                            <a href="/Baitaplon/Sanpham/Xoa/<?php echo $row['MaSP']; ?>" data-swal-confirm="Bạn có chắc chắn muốn xóa sản phẩm này không?" data-swal-title="Xác nhận xóa sản phẩm" class="btn-custom btn-red" style="padding: 5px 10px; font-size: 12px;" title="Xóa">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>

@@ -28,7 +28,7 @@ class Sanpham extends controller {
         if(isset($_POST['btnThem'])) {
             $masp = $_POST['txtMaSP'];
             if($this->spModel->CheckTrungMa($masp)) {
-                echo "<script>alert('Lỗi: Mã sản phẩm [$masp] đã tồn tại!'); window.history.back();</script>";
+                $this->backWithMessage("Lỗi: Mã sản phẩm [$masp] đã tồn tại!", 'warning', 'Cảnh báo', '/Baitaplon/Sanpham');
                 return;
             }
 
@@ -38,7 +38,7 @@ class Sanpham extends controller {
             $soluong = $_POST['txtSoLuong'];
             $hsd = $_POST['txtHSD']; // Lấy hạn sử dụng
             if (!$this->DuLieuHopLe($tensp, $madm, $gia, $soluong, $hsd)) {
-                echo "<script>alert('Vui lòng nhập tên, danh mục, giá và số lượng hợp lệ.'); window.history.back();</script>";
+                $this->backWithMessage('Vui lòng nhập tên, danh mục, giá và số lượng hợp lệ.', 'warning', 'Cảnh báo', '/Baitaplon/Sanpham');
                 return;
             }
             
@@ -49,18 +49,18 @@ class Sanpham extends controller {
             }
 
             $this->spModel->InsertSanpham($masp, $tensp, $madm, null, $gia, $soluong, $hinhanh, $hsd);
-            echo "<script>alert('Thêm thành công!'); window.location.href='/Baitaplon/Sanpham';</script>";
+            $this->redirectWithMessage('/Baitaplon/Sanpham', 'Thêm sản phẩm mới thành công!', 'success', 'Thêm thành công');
         }
     }
 
     // 3. Xóa (Giữ nguyên)
     public function Xoa($masp) {
         if ($this->spModel->CoDonHang($masp)) {
-            echo "<script>alert('Không thể xóa sản phẩm đã xuất hiện trong đơn hàng.'); window.location.href='/Baitaplon/Sanpham';</script>";
+            $this->redirectWithMessage('/Baitaplon/Sanpham', 'Không thể xóa sản phẩm đã xuất hiện trong đơn hàng.', 'error', 'Không thể xóa');
             return;
         }
         $this->spModel->DeleteSanpham($masp);
-        header("Location: /Baitaplon/Sanpham");
+        $this->redirectWithMessage('/Baitaplon/Sanpham', 'Đã xóa sản phẩm thành công!', 'success', 'Xóa thành công');
     }
 
     // 4. Sửa (Giữ nguyên)
@@ -83,7 +83,7 @@ class Sanpham extends controller {
             $soluong = $_POST['txtSoLuong'];
             $hsd = $_POST['txtHSD']; // Lấy hạn sử dụng
             if (!$this->DuLieuHopLe($tensp, $madm, $gia, $soluong, $hsd)) {
-                echo "<script>alert('Vui lòng nhập tên, danh mục, giá và số lượng hợp lệ.'); window.history.back();</script>";
+                $this->backWithMessage('Vui lòng nhập tên, danh mục, giá và số lượng hợp lệ.', 'warning', 'Cảnh báo', '/Baitaplon/Sanpham');
                 return;
             }
 
@@ -94,7 +94,7 @@ class Sanpham extends controller {
             }
 
             $this->spModel->UpdateSanpham($masp, $tensp, $madm, $gia, $soluong, $hinhanh, $hsd);
-            echo "<script>alert('Cập nhật thành công!'); window.location.href='/Baitaplon/Sanpham';</script>";
+            $this->redirectWithMessage('/Baitaplon/Sanpham', 'Cập nhật thông tin sản phẩm thành công!', 'success', 'Cập nhật thành công');
         }
     }
 
@@ -187,13 +187,13 @@ class Sanpham extends controller {
                             $count++;
                         }
                     }
-                    echo "<script>alert('Đã nhập thành công $count sản phẩm!'); window.location.href='/Baitaplon/Sanpham';</script>";
+                    $this->redirectWithMessage('/Baitaplon/Sanpham', "Đã nhập thành công $count sản phẩm từ file Excel!", 'success', 'Import thành công');
 
                 } catch (Exception $e) {
-                    echo "<script>alert('Lỗi: " . $e->getMessage() . "'); window.history.back();</script>";
+                    $this->backWithMessage('Lỗi khi đọc file Excel: ' . $e->getMessage(), 'error', 'Lỗi Import', '/Baitaplon/Sanpham');
                 }
             } else {
-                echo "<script>alert('Vui lòng chọn file Excel!'); window.history.back();</script>";
+                $this->backWithMessage('Vui lòng chọn file Excel!', 'warning', 'Cảnh báo', '/Baitaplon/Sanpham');
             }
         }
     }

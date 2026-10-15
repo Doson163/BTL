@@ -23,7 +23,7 @@ class Danhmuc extends controller {
             $ten = $_POST['txtTen'];
             $mota = $_POST['txtMoTa'];
             if (trim($macode) === '' || trim($ten) === '') {
-                echo "<script>alert('Mã và tên danh mục không được để trống.'); window.history.back();</script>";
+                $this->backWithMessage('Mã và tên danh mục không được để trống.', 'warning', 'Cảnh báo', '/Baitaplon/Danhmuc');
                 return;
             }
             
@@ -31,19 +31,19 @@ class Danhmuc extends controller {
                 // Sửa
                 $id = $_POST['txtID'];
                 if ($this->dmModel->CheckTrungMa($macode, $id) || $this->dmModel->CheckTrungTen($ten, $id)) {
-                    echo "<script>alert('Mã hoặc tên danh mục đã tồn tại.'); window.history.back();</script>";
+                    $this->backWithMessage('Mã hoặc tên danh mục đã tồn tại.', 'warning', 'Cảnh báo', '/Baitaplon/Danhmuc');
                     return;
                 }
                 $this->dmModel->Sua($id, $macode, $ten, $mota);
-                echo "<script>alert('Đã cập nhật!'); window.location.href='/Baitaplon/Danhmuc';</script>";
+                $this->redirectWithMessage('/Baitaplon/Danhmuc', 'Đã cập nhật danh mục thành công!', 'success', 'Cập nhật thành công');
             } else {
                 // Thêm mới
                 if($this->dmModel->CheckTrungMa($macode) || $this->dmModel->CheckTrungTen($ten)){
-                    echo "<script>alert('Mã danh mục [$macode] đã tồn tại!'); window.history.back();</script>";
+                    $this->backWithMessage("Mã danh mục [$macode] đã tồn tại!", 'warning', 'Cảnh báo', '/Baitaplon/Danhmuc');
                     return;
                 }
                 $this->dmModel->Them($macode, $ten, $mota);
-                echo "<script>alert('Thêm mới thành công!'); window.location.href='/Baitaplon/Danhmuc';</script>";
+                $this->redirectWithMessage('/Baitaplon/Danhmuc', 'Thêm mới danh mục thành công!', 'success', 'Thêm mới thành công');
             }
         }
     }
@@ -58,11 +58,11 @@ class Danhmuc extends controller {
 
     public function Xoa($id) {
         if ($this->dmModel->CoSanPham($id)) {
-            echo "<script>alert('Không thể xóa danh mục đang có sản phẩm.'); window.location.href='/Baitaplon/Danhmuc';</script>";
+            $this->redirectWithMessage('/Baitaplon/Danhmuc', 'Không thể xóa danh mục đang có sản phẩm.', 'error', 'Không thể xóa');
             return;
         }
         $this->dmModel->Xoa($id);
-        header("Location: /Baitaplon/Danhmuc");
+        $this->redirectWithMessage('/Baitaplon/Danhmuc', 'Đã xóa danh mục thành công!', 'success', 'Xóa thành công');
     }
 
     // --- 1. XUẤT EXCEL (Chuẩn .xlsx) ---
@@ -135,13 +135,13 @@ class Danhmuc extends controller {
                             $count++;
                         }
                     }
-                    echo "<script>alert('Đã nhập thành công $count danh mục!'); window.location.href='/Baitaplon/Danhmuc';</script>";
+                    $this->redirectWithMessage('/Baitaplon/Danhmuc', "Đã nhập thành công $count danh mục từ file Excel!", 'success', 'Import thành công');
 
                 } catch (Exception $e) {
-                    echo "<script>alert('Lỗi: " . $e->getMessage() . "'); window.history.back();</script>";
+                    $this->backWithMessage('Lỗi khi đọc file Excel: ' . $e->getMessage(), 'error', 'Lỗi Import', '/Baitaplon/Danhmuc');
                 }
             } else {
-                echo "<script>alert('Vui lòng chọn file Excel!'); window.history.back();</script>";
+                $this->backWithMessage('Vui lòng chọn file Excel!', 'warning', 'Cảnh báo', '/Baitaplon/Danhmuc');
             }
         }
     }

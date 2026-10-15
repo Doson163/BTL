@@ -1,0 +1,18 @@
+SET NAMES utf8mb4;
+ALTER TABLE khuyenmai CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+INSERT INTO khuyenmai (TenMa, SoTienGiam, SoLuong, TrangThai) VALUES
+('WELCOME20K', 20000, 200, 1),
+('DAILYMART50', 50000, 100, 1),
+('FREESHIP', 15000, 300, 1),
+('SIEUTHI100K', 100000, 50, 1),
+('TRIAN30K', 30000, 150, 1),
+('CUOITUAN25K', 25000, 120, 1),
+('GIADINH40K', 40000, 80, 1),
+('VIPMEMBER', 80000, 40, 1),
+('FLASH10K', 10000, 500, 1),
+('EXPIRED01', 50000, 0, 0)
+ON DUPLICATE KEY UPDATE
+    SoTienGiam = VALUES(SoTienGiam),
+    SoLuong = VALUES(SoLuong),
+    TrangThai = VALUES(TrangThai);

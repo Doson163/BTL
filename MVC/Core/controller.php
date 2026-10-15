@@ -8,6 +8,76 @@ class controller{
         include_once './MVC/Views/'.$view.'.php';
     }
 
+    public function setFlash($message, $type = 'success', $title = null) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if ($title === null) {
+            switch ($type) {
+                case 'success': $title = 'Thành công'; break;
+                case 'error':   $title = 'Lỗi'; break;
+                case 'warning': $title = 'Cảnh báo'; break;
+                case 'info':    
+                default:        $title = 'Thông báo'; break;
+            }
+        }
+        $_SESSION['flash_message'] = [
+            'type' => $type,
+            'title' => $title,
+            'message' => $message
+        ];
+    }
+
+    public function redirectWithMessage($url, $message, $type = 'success', $title = null) {
+        $this->setFlash($message, $type, $title);
+        header('Location: ' . $url);
+        exit;
+    }
+
+    public function backWithMessage($message, $type = 'warning', $title = null, $defaultUrl = '/Baitaplon/Home') {
+        $this->setFlash($message, $type, $title);
+        $referer = isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $defaultUrl;
+        header('Location: ' . $referer);
+        exit;
+    }
+
+    /**
+     * Fallback in case a direct response with SweetAlert2 dialog is preferred.
+     */
+    public function renderAlert($message, $redirectUrl = '/Baitaplon/Home', $type = 'info', $title = 'Thông báo') {
+        $safeMsg = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+        $safeTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+        $safeUrl = htmlspecialchars($redirectUrl, ENT_QUOTES, 'UTF-8');
+        $safeType = in_array($type, ['success', 'error', 'warning', 'info'], true) ? $type : 'info';
+        echo "<!DOCTYPE html>
+<html lang='vi'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>DailyMart - Thông báo</title>
+    <script src='/Baitaplon/Public/Js/sweetalert2.all.min.js'></script>
+    <style>
+        body { margin: 0; background: #f4f6fa; font-family: 'Segoe UI', Tahoma, sans-serif; height: 100vh; display: grid; place-items: center; }
+    </style>
+</head>
+<body>
+    <script>
+        Swal.fire({
+            icon: '$safeType',
+            title: '$safeTitle',
+            text: '$safeMsg',
+            confirmButtonText: 'Đồng ý',
+            confirmButtonColor: '#1a237e',
+            allowOutsideClick: false
+        }).then(function() {
+            window.location.href = '$safeUrl';
+        });
+    </script>
+</body>
+</html>";
+        exit;
+    }
+
     /** Keep PHPExcel's PHP 8.2 deprecation notices out of downloaded files. */
     protected function startExcelExport(){
         error_reporting(error_reporting() & ~E_DEPRECATED & ~E_USER_DEPRECATED);

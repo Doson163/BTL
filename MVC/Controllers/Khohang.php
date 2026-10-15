@@ -41,21 +41,12 @@ class Khohang extends controller {
             $quantity = filter_var($sl, FILTER_VALIDATE_INT);
             $unitPrice = filter_var($gia, FILTER_VALIDATE_INT);
             if ($quantity === false || $quantity < 1 || $unitPrice === false || $unitPrice < 1) {
-                echo "<script>alert('Sá»‘ lÆ°á»£ng vÃ  giÃ¡ nháº­p pháº£i lÃ  sá»‘ nguyÃªn dÆ°Æ¡ng.'); window.history.back();</script>";
+                $this->backWithMessage('Số lượng và giá nhập phải là số nguyên dương.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang');
                 return;
             }
 
-            /*if ($gia <= 0) {
-                echo "<script>alert('GiÃ¡ nháº­p pháº£i lá»›n hÆ¡n 0!'); window.history.back();</script>";
-                return; // Dá»«ng ngay
-            }*/
-
-            
-
-            
             $sp = mysqli_fetch_array($this->khoModel->GetSP($id));
 
-            
             $item = [
                 'id' => $id,
                 'ten' => $sp['TenSP'],
@@ -63,54 +54,45 @@ class Khohang extends controller {
                 'gia' => $gia
             ];
 
-            
             $_SESSION['gio_nhap'][] = $item;
 
-            
             header("Location: /Baitaplon/Khohang");
         }
     }
 
-    
     public function XoaTam($index) {
         if(isset($_SESSION['gio_nhap'][$index])) {
-            unset($_SESSION['gio_nhap'][$index]); // XÃ³a pháº§n tá»­ táº¡i vá»‹ trÃ­ $index
-            $_SESSION['gio_nhap'] = array_values($_SESSION['gio_nhap']); // Sáº¯p xáº¿p láº¡i chá»‰ sá»‘ máº£ng (0,1,2...) trÃ¡nh lá»—i
+            unset($_SESSION['gio_nhap'][$index]);
+            $_SESSION['gio_nhap'] = array_values($_SESSION['gio_nhap']);
         }
         header("Location: /Baitaplon/Khohang");
     }
 
-    
     public function LuuPhieu() {
-        
         if(isset($_SESSION['gio_nhap']) && count($_SESSION['gio_nhap']) > 0) {
-            
             $mancc = $_POST['ddlNCC'];
-            // Phiếu nhập kho vẫn yêu cầu MaNV trong cơ sở dữ liệu; tự gán nhân viên mặc định thay vì yêu cầu chọn trên giao diện.
             $manv = $this->khoModel->GetDefaultNhanVienId();
             if ($manv === null) {
-                echo "<script>alert('Chưa có nhân viên trong hệ thống để ghi nhận phiếu nhập kho.'); window.history.back();</script>";
+                $this->backWithMessage('Chưa có nhân viên trong hệ thống để ghi nhận phiếu nhập kho.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang');
                 return;
             }
-            
-            
+
             $tongtien = 0;
             foreach($_SESSION['gio_nhap'] as $item) {
                 $tongtien += $item['soluong'] * $item['gia'];
             }
 
-            
             $kq = $this->khoModel->NhapHang($mancc, $manv, $tongtien, $_SESSION['gio_nhap']);
 
             if($kq) {
                 unset($_SESSION['gio_nhap']); 
-                echo "<script>alert('Nháº­p kho thÃ nh cÃ´ng!'); window.location.href='/Baitaplon/Khohang';</script>";
+                $this->redirectWithMessage('/Baitaplon/Khohang', 'Nhập kho thành công!', 'success', 'Nhập kho thành công');
             } else {
-                echo "<script>alert('Lá»—i nháº­p kho! Vui lÃ²ng kiá»ƒm tra láº¡i.'); window.location.href='/Baitaplon/Khohang';</script>";
+                $this->redirectWithMessage('/Baitaplon/Khohang', 'Lỗi nhập kho! Vui lòng kiểm tra lại.', 'error', 'Lỗi nhập kho');
             }
 
         } else {
-            echo "<script>alert('ChÆ°a chá»n sáº£n pháº©m nÃ o!'); window.location.href='/Baitaplon/Khohang';</script>";
+            $this->redirectWithMessage('/Baitaplon/Khohang', 'Chưa chọn sản phẩm nào để nhập kho!', 'warning', 'Cảnh báo');
         }
     }
 
@@ -227,10 +209,10 @@ class Khohang extends controller {
                             $count++;
                         }
                     }
-                    echo "<script>alert('ÄÃ£ import thÃ nh cÃ´ng $count phiáº¿u nháº­p!'); window.location.href='/Baitaplon/Khohang';</script>";
+                    $this->redirectWithMessage('/Baitaplon/Khohang', "Đã import thành công $count phiếu nhập từ file Excel!", 'success', 'Import thành công');
 
                 } catch (Exception $e) {
-                    echo "<script>alert('Lá»—i: " . $e->getMessage() . "'); window.history.back();</script>";
+                    $this->backWithMessage('Lỗi khi đọc file Excel: ' . $e->getMessage(), 'error', 'Lỗi Import', '/Baitaplon/Khohang');
                 }
             }
         }
@@ -261,7 +243,7 @@ class Khohang extends controller {
             $thucte = $_POST['txtThucTe'];
             $tonThucHopLe = filter_var($thucte, FILTER_VALIDATE_INT);
             if ($tonThucHopLe === false || $tonThucHopLe < 0) {
-                echo "<script>alert('Tá»“n thá»±c táº¿ pháº£i lÃ  sá»‘ nguyÃªn khÃ´ng Ã¢m.'); window.history.back();</script>";
+                $this->backWithMessage('Tồn thực tế phải là số nguyên không âm.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang/KiemKe');
                 return;
             }
             $lydo = $_POST['txtLyDo'];
@@ -271,11 +253,11 @@ class Khohang extends controller {
             
             $row = mysqli_fetch_array($this->khoModel->GetSP($id));
             if (!$row) {
-                echo "<script>alert('KhÃ´ng tÃ¬m tháº¥y sáº£n pháº©m Ä‘á»ƒ kiá»ƒm kÃª.'); window.history.back();</script>";
+                $this->backWithMessage('Không tìm thấy sản phẩm để kiểm kê.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang/KiemKe');
                 return;
             }
             if ((int)$row['SoLuongTon'] !== $tonThucHopLe && trim($lydo) === '') {
-                echo "<script>alert('Vui lÃ²ng ghi lÃ½ do khi sá»‘ tá»“n thá»±c táº¿ khÃ¡c tá»“n trÃªn mÃ¡y.'); window.history.back();</script>";
+                $this->backWithMessage('Vui lòng ghi lý do khi số tồn thực tế lệch với tồn trên hệ thống.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang/KiemKe');
                 return;
             }
             
@@ -307,7 +289,7 @@ class Khohang extends controller {
             $ghichu = $_POST['txtGhiChu'];
             $manv = isset($_POST['ddlNhanVien']) ? trim($_POST['ddlNhanVien']) : '';
             if ($manv === '') {
-                echo "<script>alert('Vui lÃ²ng chá»n nhÃ¢n viÃªn kiá»ƒm kÃª.'); window.history.back();</script>";
+                $this->backWithMessage('Vui lòng chọn nhân viên kiểm kê.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang/KiemKe');
                 return;
             }
 
@@ -320,14 +302,14 @@ class Khohang extends controller {
             
             
             if (!$this->khoModel->LuuKiemKho($manv, $ghichu, $_SESSION['gio_kiem'])) {
-                echo "<script>alert('Could not save inventory count.'); window.history.back();</script>";
+                $this->backWithMessage('Không thể lưu phiếu kiểm kê.', 'error', 'Lỗi lưu phiếu', '/Baitaplon/Khohang/KiemKe');
                 return;
             }
             
             unset($_SESSION['gio_kiem']);
-            echo "<script>alert('ÄÃ£ cÃ¢n báº±ng kho thÃ nh cÃ´ng!'); window.location.href='/Baitaplon/Khohang/KiemKe';</script>";
+            $this->redirectWithMessage('/Baitaplon/Khohang/KiemKe', 'Đã cân bằng kho và lưu phiếu kiểm kê thành công!', 'success', 'Cân bằng kho thành công');
         } else {
-            echo "<script>alert('ChÆ°a cÃ³ sáº£n pháº©m nÃ o!'); window.location.href='/Baitaplon/Khohang/KiemKe';</script>";
+            $this->redirectWithMessage('/Baitaplon/Khohang/KiemKe', 'Chưa có sản phẩm nào trong danh sách kiểm kê!', 'warning', 'Cảnh báo');
         }
     }
 
@@ -419,9 +401,9 @@ class Khohang extends controller {
                             $count++;
                         }
                     }
-                    echo "<script>alert('ÄÃ£ import $count phiáº¿u kiá»ƒm kÃª!'); window.location.href='/Baitaplon/Khohang/KiemKe';</script>";
+                    $this->redirectWithMessage('/Baitaplon/Khohang/KiemKe', "Đã import thành công $count phiếu kiểm kê từ file Excel!", 'success', 'Import thành công');
                 } catch (Exception $e) {
-                    echo "<script>alert('Lá»—i: " . $e->getMessage() . "'); window.history.back();</script>";
+                    $this->backWithMessage('Lỗi khi đọc file Excel: ' . $e->getMessage(), 'error', 'Lỗi Import', '/Baitaplon/Khohang');
                 }
             }
         }

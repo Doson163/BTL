@@ -124,7 +124,7 @@
                             <a href="/Baitaplon/Danhmuc/Sua/<?php echo $row['MaDM']; ?>" class="btn-custom btn-orange" style="padding: 5px 10px; font-size: 12px;">
                                 <i class="fas fa-pen"></i>
                             </a>
-                            <a href="/Baitaplon/Danhmuc/Xoa/<?php echo $row['MaDM']; ?>" onclick="return confirm('Xóa danh mục này sẽ ảnh hưởng đến các sản phẩm thuộc về nó. Bạn chắc chắn chứ?')" class="btn-custom btn-red" style="padding: 5px 10px; font-size: 12px;">
+                            <a href="/Baitaplon/Danhmuc/Xoa/<?php echo $row['MaDM']; ?>" data-swal-confirm="Xóa danh mục này có thể ảnh hưởng đến các sản phẩm thuộc về nó. Bạn chắc chắn muốn xóa?" data-swal-title="Xác nhận xóa danh mục" class="btn-custom btn-red" style="padding: 5px 10px; font-size: 12px;" title="Xóa">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>

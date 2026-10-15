@@ -202,7 +202,7 @@
                             </a>
                             <?php if (in_array((int)$row['TrangThai'], [1, 2], true)) { ?>
                                 <form method="post" action="/Baitaplon/Donhang/Huy/<?php echo (int)$row['MaHD']; ?>">
-                                    <button class="btn-cancel" type="submit" onclick="return confirm('Hủy đơn hàng này?')">Hủy đơn</button>
+                                    <button class="btn-cancel" type="button" data-swal-confirm="Bạn có chắc chắn muốn hủy đơn hàng này và hoàn lại tồn kho?" data-swal-title="Xác nhận hủy đơn">Hủy đơn</button>
                                 </form>
                             <?php } ?>
                             </div>

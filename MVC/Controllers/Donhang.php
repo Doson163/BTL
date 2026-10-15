@@ -55,10 +55,7 @@ class Donhang extends controller {
         } 
         else {
             // NẾU KHÔNG TÌM THẤY: Thông báo và đẩy về trang danh sách
-            echo "<script>
-                    alert('Đơn hàng không tồn tại hoặc đã bị xóa!');
-                    window.location.href = '/Baitaplon/Donhang';
-                  </script>";
+            $this->redirectWithMessage('/Baitaplon/Donhang', 'Đơn hàng không tồn tại hoặc đã bị xóa!', 'warning', 'Không tìm thấy đơn hàng');
         }
     }
 
@@ -70,7 +67,7 @@ class Donhang extends controller {
         $trangthai = isset($_POST['ddlTrangThai']) ? $_POST['ddlTrangThai'] : 0;
         $ok = $this->dhModel->CapNhatTrangThai($mahd, $trangthai);
         $message = $ok ? 'Đã cập nhật trạng thái đơn hàng.' : 'Không thể cập nhật trạng thái đơn hàng.';
-        echo "<script>alert('$message'); window.location.href='/Baitaplon/Donhang';</script>";
+        $this->redirectWithMessage('/Baitaplon/Donhang', $message, $ok ? 'success' : 'error', $ok ? 'Cập nhật thành công' : 'Lỗi cập nhật');
     }
 
     public function Huy($mahd) {
@@ -79,8 +76,8 @@ class Donhang extends controller {
             return;
         }
         $ok = $this->dhModel->HuyDon($mahd);
-        $message = $ok ? 'Đã hủy đơn và hoàn lại tồn kho.' : 'Chỉ có thể hủy đơn đang chờ xác nhận hoặc chờ lấy hàng.';
-        echo "<script>alert('$message'); window.location.href='/Baitaplon/Donhang';</script>";
+        $message = $ok ? 'Đã hủy đơn và hoàn lại tồn kho thành công.' : 'Chỉ có thể hủy đơn đang chờ xác nhận hoặc chờ lấy hàng.';
+        $this->redirectWithMessage('/Baitaplon/Donhang', $message, $ok ? 'success' : 'warning', $ok ? 'Hủy đơn thành công' : 'Không thể hủy đơn');
     }
 }
 ?>

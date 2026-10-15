@@ -241,5 +241,45 @@ $showShoppingTools = !$isAuthPage;
 <style>
 .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:50px;padding:16px 0 34px}.footer-grid section{display:flex;flex-direction:column;align-items:flex-start;gap:10px}.footer-grid .brand{color:#f5f6f7}.footer-grid p{font-size:13px;line-height:1.7;color:#82909d;max-width:280px;margin:5px 0}.footer-grid h3{font-size:14px;color:#e3bd39;margin:4px 0 5px}.footer-grid section>a:not(.brand){font-size:13px;color:#a7b0b9}.footer-grid section>a:hover{color:#f1d25c}.footer-social{display:flex;gap:9px;margin-top:5px}.footer-social span{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#1b2127;color:#d7b437}.footer-shop{color:#e3bd39!important;font-weight:700;font-size:13px}.footer-bottom{border-top:1px solid #22282e;padding-top:18px;display:flex;justify-content:space-between;gap:18px;font-size:11px;color:#6f7c88}@media(max-width:760px){.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 20px}}@media(max-width:460px){.footer-grid{grid-template-columns:1fr 1fr}.footer-bottom{flex-direction:column}}
 </style>
+<script src="/Baitaplon/Public/Js/sweetalert2.all.min.js"></script>
+<script>
+(function() {
+    if (window.Swal) {
+        window.alert = function(msg) {
+            return Swal.fire({
+                icon: 'info',
+                title: 'Thông báo',
+                text: String(msg),
+                confirmButtonText: 'Đồng ý',
+                confirmButtonColor: '#dfb936',
+                background: '#191e24',
+                color: '#f6f7f8'
+            });
+        };
+    }
+})();
+</script>
+<?php if (!empty($_SESSION['flash_message'])): 
+    $flash = $_SESSION['flash_message'];
+    unset($_SESSION['flash_message']);
+?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.Swal) {
+        Swal.fire({
+            icon: <?php echo json_encode($flash['type'] ?? 'info'); ?>,
+            title: <?php echo json_encode($flash['title'] ?? 'Thông báo'); ?>,
+            text: <?php echo json_encode($flash['message'] ?? ''); ?>,
+            confirmButtonText: 'Đồng ý',
+            confirmButtonColor: '#dfb936',
+            background: '#191e24',
+            color: '#f6f7f8',
+            timer: 4000,
+            timerProgressBar: true
+        });
+    }
+});
+</script>
+<?php endif; ?>
 </body>
 </html>

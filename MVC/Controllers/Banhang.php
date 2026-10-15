@@ -44,10 +44,7 @@ class Banhang extends controller {
 
             // KIỂM TRA: Nếu (Trong giỏ + 1) > Tồn kho thực tế -> Báo lỗi
             if (($current_qty + 1) > $row['SoLuongTon']) {
-                echo "<script>
-                        alert('Không thể thêm! Sản phẩm [".$row['TenSP']."] chỉ còn tồn ".$row['SoLuongTon']." cái.');
-                        window.location.href='/Baitaplon/Banhang';
-                      </script>";
+                $this->redirectWithMessage('/Baitaplon/Banhang', 'Không thể thêm! Sản phẩm [' . $row['TenSP'] . '] chỉ còn tồn ' . $row['SoLuongTon'] . ' cái.', 'warning', 'Cảnh báo tồn kho');
                 return; // Dừng ngay, không chạy đoạn code thêm bên dưới
             }
 
@@ -84,10 +81,10 @@ class Banhang extends controller {
             if(mysqli_num_rows($kq) > 0) {
                 $row = mysqli_fetch_array($kq);
                 $_SESSION['giamgia'] = ['MaKM'=>$row['MaKM'], 'TenMa'=>$row['TenMa'], 'SoTien'=>$row['SoTienGiam']];
-                echo "<script>alert('Áp dụng thành công!'); window.location.href='/Baitaplon/Banhang';</script>";
+                $this->redirectWithMessage('/Baitaplon/Banhang', 'Áp dụng mã giảm giá thành công!', 'success', 'Áp dụng voucher');
             } else {
                 unset($_SESSION['giamgia']);
-                echo "<script>alert('Mã sai!'); window.location.href='/Baitaplon/Banhang';</script>";
+                $this->redirectWithMessage('/Baitaplon/Banhang', 'Mã giảm giá không chính xác hoặc đã hết lượt!', 'error', 'Mã không hợp lệ');
             }
         }
     }
@@ -102,10 +99,7 @@ class Banhang extends controller {
                 $rowCheck = mysqli_fetch_array($kqCheck);
                 
                 if($item['soluong'] > $rowCheck['SoLuongTon']) {
-                    echo "<script>
-                            alert('Lỗi thanh toán: Sản phẩm [".$item['ten']."] hiện chỉ còn ".$rowCheck['SoLuongTon']." cái (Bạn mua ".$item['soluong']."). Vui lòng điều chỉnh lại!');
-                            window.location.href='/Baitaplon/Banhang';
-                          </script>";
+                    $this->redirectWithMessage('/Baitaplon/Banhang', 'Lỗi thanh toán: Sản phẩm [' . $item['ten'] . '] hiện chỉ còn ' . $rowCheck['SoLuongTon'] . ' cái (Bạn mua ' . $item['soluong'] . '). Vui lòng điều chỉnh lại!', 'error', 'Lỗi tồn kho');
                     return; // Hủy thanh toán
                 }
             }
@@ -128,10 +122,10 @@ class Banhang extends controller {
                 $this->model("KhachhangModel")->TichDiem($makh, $donHangTotal);
                 unset($_SESSION['giohang']); 
                 unset($_SESSION['giamgia']);
-                echo "<script>alert('Thanh toán thành công!'); window.location.href='/Baitaplon/Banhang';</script>";
+                $this->redirectWithMessage('/Baitaplon/Banhang', 'Thanh toán thành công hóa đơn!', 'success', 'Thanh toán thành công');
             }
             else {
-                echo "<script>alert('Thanh toán chưa thành công. Vui lòng kiểm tra tồn kho, khuyến mãi và thử lại.'); window.location.href='/Baitaplon/Banhang';</script>";
+                $this->redirectWithMessage('/Baitaplon/Banhang', 'Thanh toán chưa thành công. Vui lòng kiểm tra tồn kho, khuyến mãi và thử lại.', 'error', 'Lỗi thanh toán');
             }
         }
     }

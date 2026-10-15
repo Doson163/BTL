@@ -178,7 +178,7 @@
                                     <a href="/Baitaplon/Khuyenmai/Sua/<?php echo $row['MaKM']; ?>" style="color:#ff9800; margin-right:15px; font-size:16px;" title="Sửa">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="/Baitaplon/Khuyenmai/Xoa/<?php echo $row['MaKM']; ?>" onclick="return confirm('Bạn chắc chắn muốn xóa mã này?')" style="color:#dc3545; font-size:16px;" title="Xóa">
+                                    <a href="/Baitaplon/Khuyenmai/Xoa/<?php echo $row['MaKM']; ?>" data-swal-confirm="Bạn có chắc chắn muốn xóa mã khuyến mãi này không?" data-swal-title="Xác nhận xóa voucher" style="color:#dc3545; font-size:16px;" title="Xóa">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </td>
