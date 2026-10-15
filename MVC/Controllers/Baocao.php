@@ -24,8 +24,9 @@ class Baocao extends controller {
 
     // Xuất Excel: Top Sản Phẩm Bán Chạy
     public function XuatExcel() {
-        $tungay = $_POST['txtTuNgayEx']; 
-        $denngay = $_POST['txtDenNgayEx'];
+        $this->startExcelExport();
+        $tungay = isset($_POST['txtTuNgayEx']) ? $_POST['txtTuNgayEx'] : date('Y-m-01');
+        $denngay = isset($_POST['txtDenNgayEx']) ? $_POST['txtDenNgayEx'] : date('Y-m-d');
 
         $objExcel = new PHPExcel();
         $objExcel->setActiveSheetIndex(0);
@@ -58,13 +59,7 @@ class Baocao extends controller {
 
         $fileName = 'BaoCao_BanChay.xlsx';
         $objWriter = new PHPExcel_Writer_Excel2007($objExcel);
-        $objWriter->save($fileName);
-        if (ob_get_length()) ob_end_clean();
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
-        header('Content-Length: ' . filesize($fileName));
-        readfile($fileName);
-        unlink($fileName);
+        $this->downloadExcel($objWriter, $fileName);
     }
 }
 ?>

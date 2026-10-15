@@ -73,6 +73,7 @@ class Khuyenmai extends controller {
 
     // --- 1. XUẤT EXCEL (Chuẩn .xlsx) ---
     public function XuatExcel() {
+        $this->startExcelExport();
         $objExcel = new PHPExcel();
         $objExcel->setActiveSheetIndex(0);
         $sheet = $objExcel->getActiveSheet()->setTitle('DS Voucher');
@@ -113,21 +114,7 @@ class Khuyenmai extends controller {
         // Lưu và tải về
         $fileName = 'DanhSachKhuyenMai.xlsx';
         $objWriter = new PHPExcel_Writer_Excel2007($objExcel);
-        $objWriter->save($fileName);
-
-        if (ob_get_length()) ob_end_clean();
-        
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($fileName));
-        readfile($fileName);
-        unlink($fileName);
-        exit;
+        $this->downloadExcel($objWriter, $fileName);
     }
 
     // --- 2. NHẬP EXCEL ---

@@ -83,9 +83,30 @@ function customerRoom(customerId) {
     return `support:customer:${customerId}`;
 }
 
+let lastPendingOrderCount = null;
+async function publishPendingOrderCount() {
+    try {
+        const [rows] = await pool.execute('SELECT COUNT(*) AS total FROM donhang WHERE MaNV IS NULL AND TrangThai = 1');
+        const count = Number(rows[0] && rows[0].total || 0);
+        if (lastPendingOrderCount === null) {
+            lastPendingOrderCount = count;
+            return;
+        }
+        if (count !== lastPendingOrderCount) {
+            lastPendingOrderCount = count;
+            io.to('admin:notifications').emit('admin:order-count', count);
+        }
+    } catch (error) {
+        console.error('order notification poll failed', error.message);
+    }
+}
+
 io.on('connection', socket => {
     const identity = socket.data.identity;
-    if (identity.role === 'admin') socket.join('support:admins');
+    if (identity.role === 'admin') {
+        socket.join('support:admins');
+        socket.join('admin:notifications');
+    }
     else socket.join(customerRoom(identity.sub));
 
     socket.on('support:join', async (rawId, acknowledge = () => {}) => {
@@ -183,6 +204,8 @@ io.on('connection', socket => {
 });
 
 migrate().then(() => {
+    publishPendingOrderCount();
+    setInterval(publishPendingOrderCount, 5000);
     server.listen(port, '0.0.0.0', () => console.log(`DailyMart chat service listening on ${port}`));
 }).catch(error => {
     console.error('Chat service startup failed', error);

@@ -22,7 +22,7 @@
 
             <div class="menu-title">HOẠT ĐỘNG BÁN HÀNG</div>
             <li><a href="/Baitaplon/Banhang"><i class="fas fa-desktop"></i> Bán hàng </a></li>
-            <li><a href="/Baitaplon/Donhang"><i class="fas fa-file-invoice-dollar"></i> Đơn hàng</a></li>
+            <li><a href="/Baitaplon/Donhang"><i class="fas fa-file-invoice-dollar"></i> Đơn hàng <span id="admin-order-count" class="admin-support-unread" aria-label="Đơn khách chờ xác nhận" hidden></span></a></li>
 
             <div class="menu-title">QUẢN LÝ HÀNG HÓA</div>
             <li><a href="/Baitaplon/Sanpham"><i class="fas fa-box"></i> Sản phẩm</a></li>
@@ -83,17 +83,23 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
 (function(){
-    const badge=document.getElementById('admin-support-unread');
-    if(!badge)return;
-    const tokenUrl='/Baitaplon/SupportChat/Token',unreadUrl='/Baitaplon/SupportChat/Unread';
-    function render(count){count=Math.max(0,Number(count)||0);badge.textContent=count>99?'99+':String(count);badge.hidden=count===0;}
-    async function refresh(){try{const response=await fetch(unreadUrl,{credentials:'same-origin',cache:'no-store'});const result=await response.json();if(response.ok&&result.ok)render(result.unreadCount);}catch(_){}}
-    window.addEventListener('support:unread-refresh',refresh);
-    refresh();
+    const chatBadge=document.getElementById('admin-support-unread');
+    const orderBadge=document.getElementById('admin-order-count');
+    const tokenUrl='/Baitaplon/SupportChat/Token',unreadUrl='/Baitaplon/SupportChat/Unread',orderCountUrl='/Baitaplon/Donhang/SoDonMoi';
+    function render(badge,count){if(!badge)return;count=Math.max(0,Number(count)||0);badge.textContent=count>99?'99+':String(count);badge.hidden=count===0;}
+    async function refreshChat(){if(!chatBadge)return;try{const response=await fetch(unreadUrl,{credentials:'same-origin',cache:'no-store'});const result=await response.json();if(response.ok&&result.ok)render(chatBadge,result.unreadCount);}catch(_){}}
+    async function refreshOrders(){if(!orderBadge)return;try{const response=await fetch(orderCountUrl,{credentials:'same-origin',cache:'no-store'});const result=await response.json();if(response.ok&&result.ok)render(orderBadge,result.count);}catch(_){}}
+    window.addEventListener('support:unread-refresh',refreshChat);
+    refreshChat();
+    refreshOrders();
+    window.setInterval(refreshOrders,15000);
+    window.addEventListener('focus',refreshOrders);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshOrders();});
     if(!window.io)return;
     const socket=window.io({path:'/socket.io/',transports:['websocket','polling'],auth:async callback=>{try{const response=await fetch(tokenUrl,{credentials:'same-origin',cache:'no-store'});const result=await response.json();callback({token:response.ok&&result.ok?result.token:''});}catch(_){callback({token:''});}},reconnection:true});
-    socket.on('support:inbox-update',refresh);
-    socket.on('support:unread-count',render);
+    socket.on('support:inbox-update',refreshChat);
+    socket.on('support:unread-count',count=>render(chatBadge,count));
+    socket.on('admin:order-count',count=>render(orderBadge,count));
 })();
 </script>
 </body>

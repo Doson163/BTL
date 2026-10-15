@@ -28,6 +28,22 @@
     .table-bill th { background: #f8f9fa; padding: 12px; text-align: left; font-size: 13px; color: #555; border-bottom: 2px solid #ddd; }
     .table-bill td { padding: 12px; border-bottom: 1px solid #eee; color: #333; font-size: 14px; }
     .total-row { background: #e3f2fd; font-weight: bold; color: #0d47a1; }
+    .page-wrapper .supplier-select-row,
+    .supplier-select-row {
+        background: #fff1b8 !important;
+        color: #111827 !important;
+        border: 1px solid #e7d277;
+    }
+    .page-wrapper .supplier-select-row .form-label,
+    .supplier-select-row .form-label { color: #111827 !important; }
+    .page-wrapper tr.stock-receipt-total,
+    .page-wrapper tr.stock-receipt-total td,
+    tr.stock-receipt-total,
+    tr.stock-receipt-total td {
+        background: #fff1b8 !important;
+        color: #111827 !important;
+        border-color: #e7d277 !important;
+    }
 </style>
 
 
@@ -81,17 +97,10 @@
             </div>
             <div class="card-body-custom">
                 <form action="/Baitaplon/Khohang/LuuPhieu" method="POST">
-                    <div class="form-group" style="display: flex; align-items: center; gap: 10px; background: #f1f8ff; padding: 15px; border-radius: 6px;">
+                    <div class="form-group supplier-select-row" style="display: flex; align-items: center; gap: 10px; padding: 15px; border-radius: 6px;">
                         <label class="form-label" style="margin: 0; white-space: nowrap;">Nhà Cung Cấp:</label>
                         <select name="ddlNCC" class="form-control" style="background: white;">
                             <?php if(isset($data['ncc'])){ while($ncc = mysqli_fetch_array($data['ncc'])){ echo "<option value='".$ncc['MaNCC']."'>".$ncc['TenNCC']."</option>"; } } ?>
-                        </select>
-                    </div>
-                    <div class="form-group" style="display:flex; align-items:center; gap:10px; padding:0 15px;">
-                        <label class="form-label" style="margin:0; white-space:nowrap;">Nhân viên nhập:</label>
-                        <select name="ddlNhanVien" class="form-control" required>
-                            <option value="">-- Chọn nhân viên --</option>
-                            <?php if(isset($data['nv'])){ while($nv = mysqli_fetch_array($data['nv'])){ echo '<option value="'.htmlspecialchars($nv['MaNV'], ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($nv['HoTen'], ENT_QUOTES, 'UTF-8').'</option>'; } } ?>
                         </select>
                     </div>
 
@@ -123,7 +132,7 @@
                                     </td>
                                 </tr>
                             <?php } } else { echo "<tr><td colspan='5' style='text-align:center; padding: 20px; color: #999;'>Chưa có sản phẩm nào</td></tr>"; } ?>
-                            <tr class="total-row">
+                            <tr class="total-row stock-receipt-total">
                                 <td colspan="3" style="text-align: right; padding-right: 20px;">TỔNG CỘNG:</td>
                                 <td colspan="2" style="text-align: right; font-size: 18px; color: #d32f2f;"><?php echo number_format($tongtien); ?> đ</td>
                             </tr>

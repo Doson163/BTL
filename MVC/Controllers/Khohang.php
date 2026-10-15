@@ -21,7 +21,6 @@ class Khohang extends controller {
         $this->view("Master", [
             "page" => "Khohang_V",
             "ncc" => $this->khoModel->GetAllNCC(),
-            "nv" => $this->khoModel->GetAllNhanvien(),       
             "sp" => $this->khoModel->GetAllSP(),         
             "lichsu" => $this->khoModel->GetLichSuNhap($keyword), 
             "keyword" => $keyword
@@ -87,9 +86,10 @@ class Khohang extends controller {
         if(isset($_SESSION['gio_nhap']) && count($_SESSION['gio_nhap']) > 0) {
             
             $mancc = $_POST['ddlNCC'];
-            $manv = isset($_POST['ddlNhanVien']) ? trim($_POST['ddlNhanVien']) : '';
-            if ($manv === '') {
-                echo "<script>alert('Vui lÃ²ng chá»n nhÃ¢n viÃªn kiá»ƒm kÃª.'); window.history.back();</script>";
+            // Phiếu nhập kho vẫn yêu cầu MaNV trong cơ sở dữ liệu; tự gán nhân viên mặc định thay vì yêu cầu chọn trên giao diện.
+            $manv = $this->khoModel->GetDefaultNhanVienId();
+            if ($manv === null) {
+                echo "<script>alert('Chưa có nhân viên trong hệ thống để ghi nhận phiếu nhập kho.'); window.history.back();</script>";
                 return;
             }
             
@@ -116,6 +116,7 @@ class Khohang extends controller {
 
     
     public function XuatExcelLichSu() {
+        $this->startExcelExport();
         $objExcel = new PHPExcel();
         $objExcel->setActiveSheetIndex(0);
         $sheet = $objExcel->getActiveSheet()->setTitle('Lich Su Nhap Kho');
@@ -163,14 +164,7 @@ class Khohang extends controller {
         
         $fileName = 'LichSuNhapKho.xlsx';
         $objWriter = new PHPExcel_Writer_Excel2007($objExcel);
-        $objWriter->save($fileName);
-        if (ob_get_length()) ob_end_clean();
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
-        header('Content-Length: ' . filesize($fileName));
-        readfile($fileName);
-        unlink($fileName);
-        exit;
+        $this->downloadExcel($objWriter, $fileName);
     }
 
     
@@ -339,6 +333,7 @@ class Khohang extends controller {
 
     
     public function XuatExcelKiemKe() {
+        $this->startExcelExport();
         $objExcel = new PHPExcel();
         $objExcel->setActiveSheetIndex(0);
         $sheet = $objExcel->getActiveSheet()->setTitle('Lich Su Kiem Ke');
@@ -374,14 +369,7 @@ class Khohang extends controller {
 
         $fileName = 'LichSuKiemKe.xlsx';
         $objWriter = new PHPExcel_Writer_Excel2007($objExcel);
-        $objWriter->save($fileName);
-        if (ob_get_length()) ob_end_clean();
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
-        header('Content-Length: ' . filesize($fileName));
-        readfile($fileName);
-        unlink($fileName);
-        exit;
+        $this->downloadExcel($objWriter, $fileName);
     }
 
     

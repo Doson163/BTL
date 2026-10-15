@@ -4,6 +4,12 @@ class KhohangModel extends connectDB {
 
     public function GetAllNCC() { return mysqli_query($this->con, "SELECT * FROM nhacungcap"); }
     public function GetAllNhanvien() { return mysqli_query($this->con, "SELECT MaNV, HoTen FROM nhanvien ORDER BY HoTen"); }
+    public function GetDefaultNhanVienId() {
+        $result = mysqli_query($this->con, "SELECT MaNV FROM nhanvien ORDER BY HoTen, MaNV LIMIT 1");
+        if (!$result || mysqli_num_rows($result) === 0) return null;
+        $row = mysqli_fetch_assoc($result);
+        return $row['MaNV'] ?? null;
+    }
     public function GetAllSP() { return mysqli_query($this->con, "SELECT * FROM sanpham"); }
     public function GetSP($id) { return mysqli_query($this->con, "SELECT * FROM sanpham WHERE MaSP='$id'"); }
 

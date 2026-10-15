@@ -19,6 +19,13 @@ class DonhangModel extends connectDB {
         return mysqli_query($this->con, $sql);
     }
 
+    // Đơn đặt trực tiếp từ khách được tạo với MaNV NULL và trạng thái chờ xác nhận (1).
+    public function DemDonKhachChoXacNhan() {
+        $result = mysqli_query($this->con, 'SELECT COUNT(*) AS total FROM donhang WHERE MaNV IS NULL AND TrangThai = 1');
+        $row = $result ? mysqli_fetch_assoc($result) : null;
+        return (int)($row['total'] ?? 0);
+    }
+
     // 2. Lấy thông tin chi tiết của 1 đơn hàng (để xem món gì bên trong)
     public function ChiTiet($mahd) {
         $sql = "SELECT chitietdonhang.*, sanpham.TenSP, sanpham.HinhAnh

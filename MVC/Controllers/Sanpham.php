@@ -100,6 +100,7 @@ class Sanpham extends controller {
 
     // --- 6. XUẤT EXCEL (Thêm cột HSD) ---
     public function XuatExcel() {
+        $this->startExcelExport();
         $objExcel = new PHPExcel();
         $objExcel->setActiveSheetIndex(0);
         $sheet = $objExcel->getActiveSheet()->setTitle('DS San Pham');
@@ -144,20 +145,7 @@ class Sanpham extends controller {
         // Xuất file
         $fileName = 'DanhSachSanpham.xlsx';
         $objWriter = new PHPExcel_Writer_Excel2007($objExcel);
-        $objWriter->save($fileName);
-
-        if (ob_get_length()) ob_end_clean();
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($fileName));
-        readfile($fileName);
-        unlink($fileName);
-        exit;
+        $this->downloadExcel($objWriter, $fileName);
     }
 
     // --- 7. NHẬP EXCEL (Thêm đọc cột H: HSD) ---

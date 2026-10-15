@@ -23,6 +23,18 @@ class Donhang extends controller {
         ]);
     }
 
+    public function SoDonMoi() {
+        if (empty($_SESSION['user_login'])) {
+            http_response_code(401);
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(['ok'=>false, 'count'=>0]);
+            return;
+        }
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        echo json_encode(['ok'=>true, 'count'=>$this->dhModel->DemDonKhachChoXacNhan()]);
+    }
+
     // 2. Xem chi tiết đơn hàng (GIỮ NGUYÊN CODE CỦA BẠN)
     public function Chitiet($mahd) {
         // Gọi Model lấy thông tin đơn hàng

@@ -3,7 +3,7 @@
        1. CSS CHO GIAO DIỆN MÀN HÌNH (SCREEN)
        ========================================= */
     body {
-        background-color: #f5f7fa; /* Màu nền web xám nhẹ cho nổi bật hóa đơn */
+        background-color: #f5faf6ff; /* Màu nền web xám nhẹ cho nổi bật hóa đơn */
     }
 
     .invoice-container {
@@ -201,6 +201,69 @@
     }
     .btn-back:hover { background: #f1f1f1; }
 
+    /* Giữ hóa đơn dễ đọc trên nền trắng khi được render trong giao diện admin tối. */
+    .page-wrapper .invoice-container,
+    .page-wrapper .invoice-container *,
+    .invoice-container,
+    .invoice-container * {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }
+    .page-wrapper .invoice-container p,
+    .page-wrapper .invoice-container td,
+    .page-wrapper .invoice-container .total-row,
+    .invoice-container p,
+    .invoice-container td,
+    .invoice-container .total-row { font-weight: 600 !important; }
+    .page-wrapper .invoice-container,
+    .invoice-container {
+        background: #fff1b8 !important;
+        border: 1px solid #e7d277 !important;
+    }
+    .page-wrapper .invoice-container .brand-section h1,
+    .invoice-container .brand-section h1 { color: #111827 !important; -webkit-text-fill-color: #111827 !important; }
+    .page-wrapper .invoice-container .invoice-meta h2,
+    .invoice-container .invoice-meta h2 { color: #111827 !important; -webkit-text-fill-color: #111827 !important; }
+    .page-wrapper .invoice-container .invoice-meta .status,
+    .invoice-container .invoice-meta .status {
+        color: #2e7d32 !important;
+        -webkit-text-fill-color: #2e7d32 !important;
+        background: #e8f5e9 !important;
+        border-color: #c8e6c9 !important;
+    }
+    .page-wrapper .invoice-container .info-title,
+    .invoice-container .info-title { color: #111827 !important; -webkit-text-fill-color: #111827 !important; }
+    .page-wrapper .invoice-container .table-invoice,
+    .page-wrapper .invoice-container .table-invoice tbody tr,
+    .page-wrapper .invoice-container .table-invoice tbody tr:hover,
+    .invoice-container .table-invoice,
+    .invoice-container .table-invoice tbody tr,
+    .invoice-container .table-invoice tbody tr:hover { background: #fff8d8 !important; }
+    .page-wrapper .invoice-container .table-invoice th,
+    .invoice-container .table-invoice th {
+        background: #f1dc83 !important;
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        border-color: #dfca72 !important;
+    }
+    .page-wrapper .invoice-container .table-invoice td,
+    .invoice-container .table-invoice td {
+        background: #fff8d8 !important;
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        border-color: #e4d99f !important;
+    }
+    .page-wrapper .invoice-container .final-total,
+    .invoice-container .final-total { color: #111827 !important; -webkit-text-fill-color: #111827 !important; font-weight: 800 !important; }
+    .page-wrapper .invoice-container .btn-print,
+    .page-wrapper .invoice-container .btn-print *,
+    .invoice-container .btn-print,
+    .invoice-container .btn-print * { color: #fff !important; -webkit-text-fill-color: #fff !important; }
+    .page-wrapper .invoice-container .btn-back,
+    .page-wrapper .invoice-container .btn-back *,
+    .invoice-container .btn-back,
+    .invoice-container .btn-back * { color: #555 !important; -webkit-text-fill-color: #555 !important; }
+
     /* =========================================
        2. CSS QUAN TRỌNG: CẤU HÌNH KHI IN
        ========================================= */
@@ -239,7 +302,7 @@
         <div class="brand-section">
             <h1><i class="fas fa-shopping-basket"></i>DAILYMART</h1>
             <p>54 Triều Khúc, Thanh Xuân, Hà Nội</p>
-            <p>Hotline: 1900 888 888 | Email: contact@anlacmart.com</p>
+            <p>Hotline: 1900 888 888 | Email: Sondohp502@gmail.com</p>
         </div>
         <div class="invoice-meta">
             <h2>HÓA ĐƠN BÁN HÀNG</h2>
@@ -345,7 +408,7 @@
     </div>
 
     <div class="invoice-footer">
-        <p>Cảm ơn quý khách đã mua sắm tại An Lạc Mart!</p>
+        <p>Cảm ơn quý khách đã mua sắm tại DailyMart!</p>
         <p>Hàng hóa đã mua vui lòng miễn đổi trả sau 24h.</p>
     </div>
 
