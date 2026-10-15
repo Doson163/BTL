@@ -8,7 +8,7 @@ include_once $baseDir . '/MVC/Core/CustomerCartSession.php';
 CustomerCartSession::sync($_SESSION['shop_customer']['MaKH'] ?? null);
 $url=isset($_GET['url'])?trim((string)$_GET['url'],'/'):'Storefront/Get_data';
 $controllerName=explode('/',$url)[0];
-$publicControllers=['Storefront','Cart','CustomerAuth','CustomerOrders'];
+$publicControllers=['Storefront','Cart','CustomerAuth','CustomerOrders','SupportChat'];
 if (!in_array($controllerName,$publicControllers,true)) { http_response_code(404); exit('Page not found.'); }
 $_GET['url']=$url;
 include_once './MVC/bridge.php';

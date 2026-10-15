@@ -33,6 +33,7 @@
             <div class="menu-title">HỆ THỐNG</div>
             <li><a href="/Baitaplon/Khuyenmai"><i class="fas fa-tags"></i> Khuyến mãi</a></li>
             <li><a href="/Baitaplon/Baocao"><i class="fas fa-wallet"></i> Báo cáo</a></li>
+            <li><a href="/Baitaplon/SupportChat/Inbox"><i class="fas fa-comments"></i> Chat hỗ trợ <span id="admin-support-unread" class="admin-support-unread" aria-label="Tin nhắn chưa đọc" hidden></span></a></li>
             
             
             <li style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px;">
@@ -75,5 +76,25 @@
         </div>
     </div>
 
+<style>
+.admin-support-unread{display:inline-grid;min-width:19px;height:19px;margin-left:7px;padding:0 5px;place-items:center;border-radius:999px;background:#ed3b4b;color:#fff;font:800 11px/1 Arial,sans-serif;vertical-align:middle}
+.admin-support-unread[hidden]{display:none}
+</style>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+(function(){
+    const badge=document.getElementById('admin-support-unread');
+    if(!badge)return;
+    const tokenUrl='/Baitaplon/SupportChat/Token',unreadUrl='/Baitaplon/SupportChat/Unread';
+    function render(count){count=Math.max(0,Number(count)||0);badge.textContent=count>99?'99+':String(count);badge.hidden=count===0;}
+    async function refresh(){try{const response=await fetch(unreadUrl,{credentials:'same-origin',cache:'no-store'});const result=await response.json();if(response.ok&&result.ok)render(result.unreadCount);}catch(_){}}
+    window.addEventListener('support:unread-refresh',refresh);
+    refresh();
+    if(!window.io)return;
+    const socket=window.io({path:'/socket.io/',transports:['websocket','polling'],auth:async callback=>{try{const response=await fetch(tokenUrl,{credentials:'same-origin',cache:'no-store'});const result=await response.json();callback({token:response.ok&&result.ok?result.token:''});}catch(_){callback({token:''});}},reconnection:true});
+    socket.on('support:inbox-update',refresh);
+    socket.on('support:unread-count',render);
+})();
+</script>
 </body>
 </html>

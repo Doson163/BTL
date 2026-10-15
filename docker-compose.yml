@@ -25,6 +25,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      chat:
+        condition: service_healthy
     environment:
       DB_HOST: db
       DB_PORT: 3306
@@ -38,12 +40,36 @@ services:
       WINMART_GOOGLE_CLIENT_ID: ${WINMART_GOOGLE_CLIENT_ID:-}
       WINMART_GOOGLE_CLIENT_SECRET: ${WINMART_GOOGLE_CLIENT_SECRET:-}
       WINMART_GOOGLE_REDIRECT_URI: ${WINMART_GOOGLE_REDIRECT_URI:-http://localhost:8080/Baitaplon/store.php?url=CustomerAuth/GoogleCallback}
+      CHAT_JWT_SECRET: ${CHAT_JWT_SECRET:?Set CHAT_JWT_SECRET in .env}
     ports:
       - "${WEB_PORT:-8080}:80"
     volumes:
       - winmart_sessions:/var/lib/php/sessions
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/Baitaplon/User -o /dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  chat:
+    build:
+      context: ./chat-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-baitaplon}
+      DB_USER: ${DB_USER:-winmart}
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      CHAT_JWT_SECRET: ${CHAT_JWT_SECRET:?Set CHAT_JWT_SECRET in .env}
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 15s
       timeout: 5s
       retries: 5

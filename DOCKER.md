@@ -7,14 +7,17 @@ Docker Compose thay thế XAMPP bằng hai dịch vụ: Apache/PHP và MariaDB. 
 1. Cài Docker Desktop và khởi động Docker.
 2. Sao chép `.env.example` thành `.env`.
 3. Đổi `DB_PASSWORD`, `DB_ROOT_PASSWORD` và `ADMIN_PASSWORD` thành các mật khẩu riêng, dài và khó đoán. Không đưa `.env` lên Git.
-4. Mở terminal tại thư mục dự án và chạy:
+4. Tạo `CHAT_JWT_SECRET` riêng, dài ít nhất 32 ký tự (có thể dùng `openssl rand -hex 32`) rồi đặt vào `.env`.
+5. Mở terminal tại thư mục dự án và chạy:
 
    ```sh
    docker compose up -d --build
    ```
 
-5. Mở trang khách hàng tại `http://localhost:8080/Baitaplon/User` hoặc trang quản trị tại `http://localhost:8080/Baitaplon/Admin`.
-6. Đăng nhập quản trị bằng `ADMIN_USERNAME` và `ADMIN_PASSWORD` trong `.env`. Tạo danh mục và sản phẩm đầu tiên trong trang quản trị.
+6. Mở trang khách hàng tại `http://localhost:8080/Baitaplon/User` hoặc trang quản trị tại `http://localhost:8080/Baitaplon/Admin`.
+7. Đăng nhập quản trị bằng `ADMIN_USERNAME` và `ADMIN_PASSWORD` trong `.env`. Tạo danh mục và sản phẩm đầu tiên trong trang quản trị.
+
+Chat hỗ trợ dùng dịch vụ WebSocket riêng trong Docker Compose, được Apache chuyển tiếp qua `/socket.io/`. Bảng hội thoại và tin nhắn được tạo tự động trong MariaDB khi dịch vụ chat khởi động. Khách cần đăng nhập mới mở được chat; quản trị viên xem hộp thư tại **Chat hỗ trợ** trong thanh điều hướng.
 
 Theo dõi log bằng `docker compose logs -f`. Dừng dịch vụ bằng `docker compose down`. Dữ liệu MariaDB được giữ trong volume `winmart_db` khi dừng hoặc cập nhật container.
 

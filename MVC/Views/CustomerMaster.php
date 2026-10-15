@@ -131,6 +131,7 @@ $showShoppingTools = !$isAuthPage;
     ?>
 </main>
 <?php if ($showShoppingTools) require __DIR__ . '/Pages/Customer/ChatWidget.php'; ?>
+<?php if ($showShoppingTools && $isCustomerSignedIn) require __DIR__ . '/Pages/Customer/SupportWidget.php'; ?>
 <style>
     /* Premium dark storefront theme: presentation only; page routes and forms remain untouched. */
     body{background:#101417!important;color:#f4f6f8!important;font-family:'Outfit',Arial,sans-serif!important}
