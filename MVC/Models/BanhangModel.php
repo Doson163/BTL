@@ -11,8 +11,6 @@ class BanhangModel extends connectDB {
     }
 
     // Các hàm khác giữ nguyên
-    public function GetAllKhachhang() { return mysqli_query($this->con, "SELECT * FROM khachhang"); }
-    public function GetAllNhanvien() { return mysqli_query($this->con, "SELECT * FROM nhanvien"); }
     public function GetSanphamByID($id) { return mysqli_query($this->con, "SELECT * FROM sanpham WHERE MaSP='$id'"); }
     public function GetAllPhuongthuc() { return mysqli_query($this->con, "SELECT * FROM phuongthucthanhtoan WHERE TrangThai = 1"); }
 

@@ -18,8 +18,6 @@ class Banhang extends controller {
         $this->view("Master", [
             "page" => "Banhang_V",
             "sp" => $this->bhModel->GetAllSanpham($keyword),
-            "kh" => $this->bhModel->GetAllKhachhang(),
-            "nv" => $this->bhModel->GetAllNhanvien(),
             "pt" => $this->bhModel->GetAllPhuongthuc(),
             
             // --- THÊM DÒNG NÀY: Lấy danh sách mã khuyến mãi ---
@@ -105,8 +103,10 @@ class Banhang extends controller {
             }
 
             // B. Xử lý thanh toán
-            $makh = $_POST['ddlKhachHang']; 
-            $manv = $_POST['ddlNhanVien'];
+            // Khách hàng là tùy chọn khi bán hàng tại quầy.
+            $makh = null;
+            // MaNV cho phép NULL; không yêu cầu chọn nhân viên khi bán hàng tại quầy.
+            $manv = null;
             $mapt = isset($_POST['radPhuongThuc']) ? $_POST['radPhuongThuc'] : 1;
             
             $tong = 0; 
@@ -119,7 +119,9 @@ class Banhang extends controller {
             $makm = isset($_SESSION['giamgia']['MaKM']) ? (int)$_SESSION['giamgia']['MaKM'] : null;
             $donHangTotal = $this->bhModel->TaoDonHang($makh, $manv, $final, $_SESSION['giohang'], $giam, $mapt, $makm);
             if($donHangTotal !== false) {
-                $this->model("KhachhangModel")->TichDiem($makh, $donHangTotal);
+                if ($makh !== null) {
+                    $this->model("KhachhangModel")->TichDiem($makh, $donHangTotal);
+                }
                 unset($_SESSION['giohang']); 
                 unset($_SESSION['giamgia']);
                 $this->redirectWithMessage('/Baitaplon/Banhang', 'Thanh toán thành công hóa đơn!', 'success', 'Thanh toán thành công');

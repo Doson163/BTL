@@ -323,40 +323,21 @@
     <!-- CỘT PHẢI: HÓA ĐƠN & THANH TOÁN -->
     <div class="col-right" style="flex: 1; min-width: 370px;">
         <div class="card-pos" style="height:100%; display: flex; flex-direction: column;">
-            <div style="background:#141a1f; color:#f5d565; padding: 14px 18px; border-bottom: 1px solid #28323c;">
-                <h3 style="font-size: 16px; margin:0; font-weight:700; color:#f5d565; display:flex; align-items:center;">
-                    <i class="fas fa-receipt" style="color:#f5d565; margin-right:8px; font-size:18px;"></i> Hóa Đơn Bán Hàng
+            <div style="background:#e6bd2f; color:#17191c; padding: 14px 18px; border-bottom: 1px solid #28323c;">
+                <h3 style="font-size: 16px; margin:0; font-weight:700; color:#17191c; display:flex; align-items:center;">
+                    <i class="fas fa-receipt" style="color:#17191c; margin-right:8px; font-size:18px;"></i> Hóa Đơn Bán Hàng
                 </h3>
             </div>
             <div class="card-body" style="flex: 1; overflow-y: auto; padding: 16px;">
                 <form action="/Baitaplon/Banhang/ThanhToan" method="post" style="height: 100%; display: flex; flex-direction: column;">
                     
-                    <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-                        <div style="flex: 1;">
-                            <label>Khách hàng:</label>
-                            <select name="ddlKhachHang" class="form-control form-sm" style="background:#12171c; color:#f1f5f9; border:1px solid #2d3844; border-radius:8px; width:100%;" required>
-                                <?php while($row_kh = mysqli_fetch_array($data['kh'])){ ?>
-                                    <option value="<?php echo $row_kh['MaKH'] ?>"><?php echo htmlspecialchars($row_kh['TenKH'], ENT_QUOTES, 'UTF-8'); ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div style="flex: 1;">
-                            <label>Nhân viên:</label>
-                            <select name="ddlNhanVien" class="form-control form-sm" style="background:#12171c; color:#f1f5f9; border:1px solid #2d3844; border-radius:8px; width:100%;">
-                                <?php while($row_nv = mysqli_fetch_array($data['nv'])){ ?>
-                                    <option value="<?php echo $row_nv['MaNV'] ?>"><?php echo htmlspecialchars($row_nv['HoTen'], ENT_QUOTES, 'UTF-8'); ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                
                     <!-- BẢNG DANH SÁCH MÓN ĐÃ CHỌN -->
                     <div style="flex: 1; min-height: 130px; max-height: 220px; overflow-y:auto; border:1px solid #28323c; margin-bottom:12px; border-radius: 8px; background:#12171c;">
                         <table style="width:100%; font-size:12px; border-collapse: collapse;">
-                            <tr style="background:#161c22; color:#f5d565; font-weight:700; position: sticky; top: 0; border-bottom:1px solid #28323c;">
-                                <td style="padding:8px 10px; color:#f5d565;">Sản phẩm</td>
-                                <td style="padding:8px 10px; text-align:center; color:#f5d565;">SL</td>
-                                <td style="padding:8px 10px; text-align:right; color:#f5d565;">Thành tiền</td>
+                            <tr style="background:#e6bd2f; color:#17191c; font-weight:700; position: sticky; top: 0; border-bottom:1px solid #28323c;">
+                                <td style="padding:8px 10px; color:#17191c;">Sản phẩm</td>
+                                <td style="padding:8px 10px; text-align:center; color:#17191c;">SL</td>
+                                <td style="padding:8px 10px; text-align:right; color:#17191c;">Thành tiền</td>
                                 <td style="width:25px; text-align:center;"></td>
                             </tr>
                             <?php

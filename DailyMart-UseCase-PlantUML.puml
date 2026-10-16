@@ -1,0 +1,465 @@
+' DailyMart – 10 Use Case thành phần theo mẫu PlantUML của giảng viên.
+' Mỗi sơ đồ nằm trong một cặp @startuml / @enduml riêng.
+' Tác nhân nối trực tiếp với UC chính; chức năng cần xác thực include Đăng nhập.
+
+@startuml UC01_DangNhap
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as KH
+actor "Quản trị viên" as Admin
+rectangle "Hệ thống DailyMart" {
+  usecase "Đăng nhập" as UC_Login
+  usecase "Đăng nhập khách hàng\nbằng tài khoản" as UC_CustomerLogin
+  usecase "Đăng nhập khách hàng\nbằng Google" as UC_GoogleLogin
+  usecase "Đăng nhập quản trị viên" as UC_AdminLogin
+
+  note right of UC_CustomerLogin
+    Tiền điều kiện: khách hàng đã có tài khoản DailyMart.
+    Thành công: tạo phiên đăng nhập khách hàng.
+  end note
+
+  note right of UC_GoogleLogin
+    Chỉ dùng khi Google OAuth đã được cấu hình
+    và email Google đã có tài khoản DailyMart.
+  end note
+
+  note right of UC_AdminLogin
+    Tiền điều kiện: quản trị viên có tài khoản quản trị.
+    Nhập đúng thông tin đăng nhập.
+    Thành công: tạo phiên đăng nhập quản trị viên.
+  end note
+}
+KH -- UC_CustomerLogin
+KH -- UC_GoogleLogin
+Admin -- UC_AdminLogin
+UC_CustomerLogin -|> UC_Login
+UC_GoogleLogin -|> UC_Login
+UC_AdminLogin -|> UC_Login
+@enduml
+
+@startuml UC02_DangKyTaiKhoan
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as KH
+rectangle "Hệ thống DailyMart" {
+  usecase "Đăng ký tài khoản" as UC_Register
+  note right of UC_Register
+    Khách hàng nhập họ tên, số điện thoại,
+    mật khẩu (tối thiểu 8 ký tự), email tùy chọn.
+    Số điện thoại/email không được trùng;
+    email phải đúng định dạng nếu có nhập.
+    Thành công: tạo tài khoản và phiên khách hàng.
+  end note
+}
+KH -- UC_Register
+@enduml
+
+@startuml UC03_ThemDanhMuc
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Quản trị viên" as Admin
+rectangle "Hệ thống DailyMart" {
+  usecase "Thêm danh mục" as UC_AddCategory
+  usecase "Đăng nhập" as UC_Login
+  note right of UC_AddCategory
+    Quản trị viên nhập mã, tên và mô tả danh mục.
+    Mã và tên là bắt buộc, không được trùng.
+    Thành công: lưu danh mục và cập nhật danh sách.
+  end note
+}
+Admin -- UC_AddCategory
+UC_AddCategory ..> UC_Login : <<include>>
+@enduml
+
+@startuml UC04_SuaDanhMuc
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Quản trị viên" as Admin
+rectangle "Hệ thống DailyMart" {
+  usecase "Sửa danh mục" as UC_EditCategory
+  usecase "Đăng nhập" as UC_Login
+  note right of UC_EditCategory
+    Quản trị viên chọn danh mục và sửa mã,
+    tên hoặc mô tả.
+    Mã/tên bắt buộc, không trùng danh mục khác;
+    khi kiểm tra không so với chính danh mục đó.
+    Thành công: lưu thay đổi và cập nhật danh sách.
+  end note
+}
+Admin -- UC_EditCategory
+UC_EditCategory ..> UC_Login : <<include>>
+@enduml
+
+@startuml UC05_XoaDanhMuc
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Quản trị viên" as Admin
+rectangle "Hệ thống DailyMart" {
+  usecase "Xóa danh mục" as UC_DeleteCategory
+  usecase "Đăng nhập" as UC_Login
+  note right of UC_DeleteCategory
+    Quản trị viên chọn và xác nhận xóa danh mục.
+    Hệ thống không cho xóa nếu danh mục
+    vẫn có sản phẩm liên kết.
+    Thành công: xóa danh mục khỏi danh sách.
+  end note
+}
+Admin -- UC_DeleteCategory
+UC_DeleteCategory ..> UC_Login : <<include>>
+@enduml
+
+@startuml UC06_ThemSanPham
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Quản trị viên" as Admin
+rectangle "Hệ thống DailyMart" {
+  usecase "Thêm sản phẩm" as UC_AddProduct
+  usecase "Đăng nhập" as UC_Login
+  note right of UC_AddProduct
+    Quản trị viên nhập mã, tên, danh mục,
+    giá, số lượng; ảnh và hạn sử dụng tùy chọn.
+    Mã không trùng; danh mục hợp lệ; giá > 0;
+    số lượng >= 0; hạn dùng hợp lệ nếu có.
+    Thành công: lưu sản phẩm và tồn kho ban đầu.
+  end note
+}
+Admin -- UC_AddProduct
+UC_AddProduct ..> UC_Login : <<include>>
+@enduml
+
+@startuml UC07_SuaSanPham
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Quản trị viên" as Admin
+rectangle "Hệ thống DailyMart" {
+  usecase "Sửa sản phẩm" as UC_EditProduct
+  usecase "Đăng nhập" as UC_Login
+  note right of UC_EditProduct
+    Quản trị viên chọn sản phẩm và sửa tên,
+    danh mục, giá, ảnh hoặc hạn sử dụng.
+    Mã sản phẩm không đổi.
+    Tồn kho được điều chỉnh ở Kiểm kê /
+    Điều chỉnh, không tại chức năng sửa.
+    Thành công: lưu thông tin hợp lệ.
+  end note
+}
+Admin -- UC_EditProduct
+UC_EditProduct ..> UC_Login : <<include>>
+@enduml
+
+@startuml UC08_DatHang
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as KH
+rectangle "Hệ thống DailyMart" {
+  usecase "Đặt hàng / thanh toán COD" as UC_Order
+  usecase "Áp dụng mã khuyến mãi" as UC_Promo
+  usecase "Đăng nhập" as UC_Login
+  note right of UC_Order
+    Tiền điều kiện của khách hàng: đã đăng nhập
+    và giỏ hàng có sản phẩm.
+    Khách nhập thông tin người nhận, địa chỉ
+    và xác nhận đặt hàng.
+    Hệ thống kiểm tra tồn, tạo đơn “Chờ xác nhận”,
+    trừ tồn kho và xóa giỏ hàng.
+    Hình thức hiện hỗ trợ: COD / tiền mặt.
+  end note
+}
+KH -- UC_Order
+UC_Order ..> UC_Login : <<include>>
+UC_Promo ..> UC_Order : <<extend>>
+@enduml
+
+@startuml UC09_TheoDoiCapNhatDon
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as KH
+actor "Quản trị viên" as Admin
+rectangle "Hệ thống DailyMart" {
+  usecase "Theo dõi đơn hàng" as UC_Track
+  usecase "Xác nhận đã nhận hàng" as UC_Received
+  usecase "Cập nhật trạng thái đơn" as UC_Update
+  usecase "Đăng nhập" as UC_Login
+
+  note right of UC_Track
+    Khách hàng chỉ xem đơn thuộc tài khoản mình.
+    Trạng thái hiển thị: Chờ xác nhận,
+    Chờ lấy hàng, Đang giao, Hoàn thành, Đã hủy.
+  end note
+
+  note right of UC_Update
+    Quản trị viên cập nhật đơn sang
+    Chờ lấy hàng hoặc Đang giao.
+    Khách hàng xác nhận đã nhận khi đơn đang giao
+    để chuyển đơn sang Hoàn thành (3 → 4).
+  end note
+}
+KH -- UC_Track
+KH -- UC_Received
+Admin -- UC_Update
+UC_Track ..> UC_Login : <<include>>
+UC_Received ..> UC_Login : <<include>>
+UC_Update ..> UC_Login : <<include>>
+@enduml
+
+@startuml UC10_HuyDon
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as KH
+actor "Quản trị viên" as Admin
+rectangle "Hệ thống DailyMart" {
+  usecase "Hủy đơn hàng" as UC_Cancel
+  usecase "Đăng nhập" as UC_Login
+  note right of UC_Cancel
+    Điều kiện của khách hàng: chỉ hủy đơn
+    ở trạng thái Chờ xác nhận.
+    Điều kiện của quản trị viên: hủy đơn ở trạng thái
+    Chờ xác nhận hoặc Chờ lấy hàng.
+    Thành công: chuyển sang Đã hủy và hoàn số lượng
+    sản phẩm về tồn kho.
+  end note
+}
+KH -- UC_Cancel
+Admin -- UC_Cancel
+UC_Cancel ..> UC_Login : <<include>>
+@enduml
