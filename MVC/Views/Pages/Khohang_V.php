@@ -97,13 +97,6 @@
             </div>
             <div class="card-body-custom">
                 <form action="/Baitaplon/Khohang/LuuPhieu" method="POST">
-                    <div class="form-group supplier-select-row" style="display: flex; align-items: center; gap: 10px; padding: 15px; border-radius: 6px;">
-                        <label class="form-label" style="margin: 0; white-space: nowrap;">Nhà Cung Cấp:</label>
-                        <select name="ddlNCC" class="form-control" style="background: white;">
-                            <?php if(isset($data['ncc'])){ while($ncc = mysqli_fetch_array($data['ncc'])){ echo "<option value='".$ncc['MaNCC']."'>".$ncc['TenNCC']."</option>"; } } ?>
-                        </select>
-                    </div>
-
                     <table class="table-bill">
                         <thead>
                             <tr>

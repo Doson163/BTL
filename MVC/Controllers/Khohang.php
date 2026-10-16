@@ -20,7 +20,6 @@ class Khohang extends controller {
         
         $this->view("Master", [
             "page" => "Khohang_V",
-            "ncc" => $this->khoModel->GetAllNCC(),
             "sp" => $this->khoModel->GetAllSP(),         
             "lichsu" => $this->khoModel->GetLichSuNhap($keyword), 
             "keyword" => $keyword
@@ -70,7 +69,11 @@ class Khohang extends controller {
 
     public function LuuPhieu() {
         if(isset($_SESSION['gio_nhap']) && count($_SESSION['gio_nhap']) > 0) {
-            $mancc = $_POST['ddlNCC'];
+            $mancc = $this->khoModel->GetDefaultNhaCungCapId();
+            if ($mancc === null) {
+                $this->backWithMessage('Chưa có nhà cung cấp trong hệ thống để ghi nhận phiếu nhập kho.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang');
+                return;
+            }
             $manv = $this->khoModel->GetDefaultNhanVienId();
             if ($manv === null) {
                 $this->backWithMessage('Chưa có nhân viên trong hệ thống để ghi nhận phiếu nhập kho.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang');
@@ -230,7 +233,6 @@ class Khohang extends controller {
         $this->view("Master", [
             "page" => "Kiemkho_V",
             "sp" => $this->khoModel->GetAllSP(),
-            "nv" => $this->khoModel->GetAllNhanvien(),
             "lichsu" => $this->khoModel->GetLichSuKiemKe($keyword),
             "keyword" => $keyword
         ]);
@@ -287,9 +289,9 @@ class Khohang extends controller {
     public function LuuPhieuKiem() {
         if(isset($_SESSION['gio_kiem']) && count($_SESSION['gio_kiem']) > 0) {
             $ghichu = $_POST['txtGhiChu'];
-            $manv = isset($_POST['ddlNhanVien']) ? trim($_POST['ddlNhanVien']) : '';
-            if ($manv === '') {
-                $this->backWithMessage('Vui lòng chọn nhân viên kiểm kê.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang/KiemKe');
+            $manv = $this->khoModel->GetDefaultNhanVienId();
+            if ($manv === null) {
+                $this->backWithMessage('Chưa có nhân viên trong hệ thống để ghi nhận phiếu kiểm kê.', 'warning', 'Cảnh báo', '/Baitaplon/Khohang/KiemKe');
                 return;
             }
 

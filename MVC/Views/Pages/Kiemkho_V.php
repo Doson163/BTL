@@ -80,14 +80,6 @@
                         <label class="form-label">Ghi chú cho đợt kiểm kê này:</label>
                         <input type="text" name="txtGhiChu" class="form-control" placeholder="VD: Kiểm kho cuối tháng 12..." required>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Nhân viên kiểm kê:</label>
-                        <select name="ddlNhanVien" class="form-control" required>
-                            <option value="">-- Chọn nhân viên --</option>
-                            <?php if(isset($data['nv'])){ while($nv = mysqli_fetch_array($data['nv'])){ echo '<option value="'.htmlspecialchars($nv['MaNV'], ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($nv['HoTen'], ENT_QUOTES, 'UTF-8').'</option>'; } } ?>
-                        </select>
-                    </div>
-
                     <table class="table-bill">
                         <thead>
                             <tr>

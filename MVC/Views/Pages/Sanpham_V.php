@@ -2,7 +2,7 @@
     /* CSS Giữ nguyên như cũ */
     .form-group { margin-bottom: 15px; }
     .form-label { font-weight: bold; margin-bottom: 5px; display: block; color: #333; }
-    .form-control { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+    .form-control { width: 100%; padding: 8px 12px; border: 1px solid #ffc107; border-radius: 4px; box-sizing: border-box; }
     .form-control:focus { border-color: #4facfe; outline: none; box-shadow: 0 0 5px rgba(79, 172, 254, 0.3); }
     
     .search-box {

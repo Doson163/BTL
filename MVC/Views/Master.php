@@ -71,6 +71,13 @@ $activeClass = function ($pages) use ($currentPage) {
         </header>
 
         <div class="page-wrapper">
+            <?php if (!empty($_SESSION['flash_notice'])) { $flashNotice = $_SESSION['flash_notice']; unset($_SESSION['flash_notice']); ?>
+                <div class="admin-flash admin-flash-<?php echo $flashNotice['type'] === 'error' ? 'error' : 'success'; ?>" role="status" aria-live="polite">
+                    <i class="fas <?php echo $flashNotice['type'] === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check'; ?>" aria-hidden="true"></i>
+                    <span><?php echo htmlspecialchars($flashNotice['message'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <button type="button" aria-label="Đóng thông báo" onclick="this.parentElement.remove()">&times;</button>
+                </div>
+            <?php } ?>
             <?php 
                 // Đây là nơi phép màu xảy ra: Nội dung các trang con sẽ được nhúng vào đây
                 if(isset($data['page'])){
@@ -86,6 +93,10 @@ $activeClass = function ($pages) use ($currentPage) {
     </div>
 
 <style>
+.admin-flash{display:flex;align-items:center;gap:10px;margin:0 0 16px;padding:12px 16px;border:1px solid;border-radius:8px;font-weight:600}
+.admin-flash-success{background:#24351f;border-color:#56863c;color:#c9eea9}
+.admin-flash-error{background:#3a2424;border-color:#a64a4a;color:#ffc7c7}
+.admin-flash button{margin-left:auto;border:0;background:transparent;color:inherit;font-size:22px;line-height:1;cursor:pointer}
 .admin-support-unread{display:inline-grid;min-width:19px;height:19px;margin-left:7px;padding:0 5px;place-items:center;border-radius:999px;background:#ed3b4b;color:#fff;font:800 11px/1 Arial,sans-serif;vertical-align:middle}
 .admin-support-unread[hidden]{display:none}
 .sidebar .menu li a.active{
