@@ -81,12 +81,27 @@
     .order-confirm-actions { display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap; margin: 18px 0 40px; }
     .button.success { background:#16a34a !important; color:#fff !important; }
     .button.success:hover { background:#15803d !important; transform:translateY(-2px); }
+    .order-review-panel>p{color:#b5c0c9;margin:-8px 0 20px}
+    .order-review-card{padding:20px;margin-top:16px;border:1px solid #35404a;border-radius:14px;background:#141a1f}
+    .order-review-card h3{font-size:18px;margin:0 0 6px;color:#f4f6f8}
+    .order-review-card p{margin:0 0 12px;color:#aeb9c3}
+    .order-review-card label{display:block;margin:12px 0 6px;color:#dbe1e5;font-weight:700}
+    .order-review-card select{max-width:260px}
+    .order-review-card textarea{min-height:105px;resize:vertical}
+    .order-review-card .button{margin-top:14px}
+    .order-review-card .review-stars{color:#e6c13f;font-size:21px;letter-spacing:2px}
+    .order-review-card .review-comment{white-space:pre-wrap;overflow-wrap:anywhere;color:#e2e7eb}
+    .order-review-notice{padding:12px 15px;border:1px solid #6c5a1d;border-radius:10px;background:#302b1c;color:#f2d878;margin:0 0 16px}
 </style>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <?php 
-$order=$data['order']; 
+$order=$data['order'];
+$orderItems=$order['Items'];
+$customerReviews=$data['customerReviews'] ?? [];
+$escapeReview=static function($value){return htmlspecialchars((string)$value,ENT_QUOTES,'UTF-8');};
+$reviewStars=static function($score){$score=max(0,min(5,(int)$score));return str_repeat('★',$score).str_repeat('☆',5-$score);};
 $states=[
     1=>['Chờ xác nhận', 'fa-clock', 'status-1'],
     2=>['Chờ lấy hàng', 'fa-box', 'status-2'],
@@ -121,7 +136,7 @@ $statusInfo = $states[(int)$order['TrangThai']] ?? ['Đang xử lý', 'fa-spinne
             </tr>
         </thead>
         <tbody>
-            <?php while($item=mysqli_fetch_assoc($order['Items'])) { ?>
+            <?php foreach($orderItems as $item) { ?>
                 <tr>
                     <td style="font-weight: 600; color: #1e293b;"><?php echo htmlspecialchars($item['TenSP'] ?? $item['MaSP'],ENT_QUOTES,'UTF-8'); ?></td>
                     <td><span style="background: #f1f5f9; padding: 4px 12px; border-radius: 8px; font-weight: 700;"><?php echo (int)$item['SoLuong']; ?></span></td>
@@ -142,6 +157,46 @@ $statusInfo = $states[(int)$order['TrangThai']] ?? ['Đang xử lý', 'fa-spinne
             <span><?php echo number_format((float)$order['TongTien'],0,',','.'); ?> &#8363;</span>
         </div>
     </div>
+</div>
+
+<div id="order-review-section">
+    <?php if ((int)$order['TrangThai']===4) { ?>
+    <section class="panel order-review-panel" id="danh-gia-san-pham" aria-labelledby="order-review-title">
+        <h2 id="order-review-title"><i class="fas fa-star" style="color:#e6c13f;"></i> Đánh giá sản phẩm đã mua</h2>
+        <p>Đơn hàng đã hoàn thành. Mỗi sản phẩm chỉ được đánh giá một lần.</p>
+        <?php if (!empty($data['reviewNotice'])) { ?><div class="order-review-notice" role="status"><?php echo $escapeReview($data['reviewNotice']); ?></div><?php } ?>
+        <?php foreach ($orderItems as $item) {
+            $itemId=(string)$item['MaSP'];
+            $existing=$customerReviews[$itemId] ?? null;
+        ?>
+        <article class="order-review-card">
+            <h3><?php echo $escapeReview($item['TenSP'] ?? $itemId); ?></h3>
+            <?php if ($existing) { ?>
+            <p>Bạn đã đánh giá sản phẩm này.</p>
+            <div class="review-stars" aria-label="<?php echo (int)$existing['SoSao']; ?> trên 5 sao"><?php echo $reviewStars($existing['SoSao']); ?></div>
+            <p class="review-comment"><?php echo $escapeReview($existing['NoiDung']); ?></p>
+            <?php } else { ?>
+            <p>Chia sẻ trải nghiệm của bạn về sản phẩm này.</p>
+            <form method="post" action="store.php?url=CustomerOrders/DanhGia/<?php echo (int)$order['MaHD']; ?>/<?php echo rawurlencode($itemId); ?>">
+                <input type="hidden" name="csrf_token" value="<?php echo $escapeReview($_SESSION['shop_csrf']); ?>">
+                <label>Số sao
+                    <select name="stars" required>
+                        <option value="">Chọn số sao</option>
+                        <?php for ($value=5;$value>=1;$value--) { ?>
+                        <option value="<?php echo $value; ?>"><?php echo $reviewStars($value); ?> — <?php echo $value; ?> sao</option>
+                        <?php } ?>
+                    </select>
+                </label>
+                <label>Nhận xét
+                    <textarea name="comment" maxlength="1000" required placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm..."></textarea>
+                </label>
+                <button class="button" type="submit">Lưu đánh giá</button>
+            </form>
+            <?php } ?>
+        </article>
+        <?php } ?>
+    </section>
+    <?php } ?>
 </div>
 
 <div class="panel">
@@ -191,9 +246,12 @@ $statusInfo = $states[(int)$order['TrangThai']] ?? ['Đang xử lý', 'fa-spinne
             const nextStatus = nextDocument.getElementById('customer-order-status');
             const currentActions = document.getElementById('customer-order-actions');
             const nextActions = nextDocument.getElementById('customer-order-actions');
+            const currentReviews = document.getElementById('order-review-section');
+            const nextReviews = nextDocument.getElementById('order-review-section');
             if (currentStatus && nextStatus && currentActions && nextActions && currentStatus.dataset.status !== nextStatus.dataset.status) {
                 currentStatus.replaceWith(nextStatus.cloneNode(true));
                 currentActions.replaceWith(nextActions.cloneNode(true));
+                if (currentReviews && nextReviews) currentReviews.replaceWith(nextReviews.cloneNode(true));
             }
         } catch (error) {
             // Keep the current order view if a background status refresh fails.
