@@ -1,0 +1,369 @@
+' DailyMart: một UC chính cho mỗi nhóm nghiệp vụ; các thao tác cụ thể nằm trong note.
+' Mỗi khối @startuml có thể dán riêng vào PlantUML.
+@startuml UC_TongQuat
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+skinparam ArrowColor #000000
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as KH
+actor "Quản trị viên" as AD
+rectangle "Hệ thống DailyMart" {
+  usecase "Đăng ký" as KH0
+  usecase "Tìm kiếm sản phẩm" as KH1
+  usecase "Quản lý giỏ hàng" as KH2
+  usecase "Đặt hàng" as KH3
+  usecase "Cập nhật hồ sơ" as KH4
+  usecase "Quản lý danh mục" as AD0
+  usecase "Quản lý sản phẩm" as AD1
+  usecase "Quản lý kho" as AD2
+  usecase "Quản lý khuyến mãi" as AD3
+  usecase "Bán hàng tại quầy" as AD4
+  usecase "Xem báo cáo" as AD5
+  usecase "Đăng nhập" as Login
+  usecase "Quản lý đơn hàng" as Orders
+  usecase "Chat hỗ trợ" as Chat
+  note right of AD1
+    Thêm, sửa, xóa, tìm kiếm sản phẩm; nhập/xuất Excel.
+  end note
+  note right of AD0
+    Thêm, sửa, xóa, tìm kiếm danh mục; nhập/xuất Excel.
+  end note
+  note right of KH2
+    Thêm, sửa số lượng, xóa mặt hàng trong giỏ.
+  end note
+  note right of Orders
+    Khách hàng: xem, theo dõi, hủy và xác nhận nhận hàng.
+    Admin: tìm, cập nhật trạng thái và hủy đơn hợp lệ.
+  end note
+}
+KH -- KH0
+KH -- KH1
+KH -- KH2
+KH -- KH3
+KH -- KH4
+AD -- AD0
+AD -- AD1
+AD -- AD2
+AD -- AD3
+AD -- AD4
+AD -- AD5
+KH -- Login
+KH -- Orders
+KH -- Chat
+AD -- Login
+AD -- Orders
+AD -- Chat
+@enduml
+@startuml UC_01
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+skinparam ArrowColor #000000
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as A0
+actor "Quản trị viên" as A1
+rectangle "Hệ thống DailyMart" {
+  usecase "Đăng nhập" as UC
+  note right of UC
+    - Đăng nhập bằng tài khoản
+    - Khách hàng: có thể dùng Google
+    - Xác thực đúng vai trò
+  end note
+}
+A0 -- UC
+A1 -- UC
+@enduml
+@startuml UC_02
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+skinparam ArrowColor #000000
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as A0
+rectangle "Hệ thống DailyMart" {
+  usecase "Đăng ký tài khoản" as UC
+  note right of UC
+    - Nhập thông tin cá nhân
+    - Kiểm tra dữ liệu hợp lệ
+    - Tạo tài khoản khách hàng
+  end note
+}
+A0 -- UC
+@enduml
+@startuml UC_03
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+skinparam ArrowColor #000000
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as A0
+rectangle "Hệ thống DailyMart" {
+  usecase "Quản lý giỏ hàng" as UC
+  note right of UC
+    - Thêm sản phẩm vào giỏ
+    - Cập nhật số lượng
+    - Xóa sản phẩm khỏi giỏ
+    - Xem tổng tiền
+  end note
+}
+A0 -- UC
+@enduml
+@startuml UC_04
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+skinparam ArrowColor #000000
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Quản trị viên" as A0
+rectangle "Hệ thống DailyMart" {
+  usecase "Quản lý danh mục" as UC
+  usecase "Đăng nhập" as Login
+  note right of UC
+    - Thêm danh mục
+    - Sửa danh mục
+    - Xóa danh mục
+    - Tìm kiếm; nhập/xuất Excel
+  end note
+}
+A0 -- UC
+UC ..> Login : <<include>>
+@enduml
+@startuml UC_05
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+skinparam ArrowColor #000000
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Quản trị viên" as A0
+rectangle "Hệ thống DailyMart" {
+  usecase "Quản lý sản phẩm" as UC
+  usecase "Đăng nhập" as Login
+  note right of UC
+    - Thêm sản phẩm
+    - Sửa sản phẩm
+    - Xóa sản phẩm
+    - Tìm kiếm; nhập/xuất Excel
+  end note
+}
+A0 -- UC
+UC ..> Login : <<include>>
+@enduml
+@startuml UC_06
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+skinparam ArrowColor #000000
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as A0
+rectangle "Hệ thống DailyMart" {
+  usecase "Đặt hàng" as UC
+  usecase "Đăng nhập" as Login
+  note right of UC
+    - Kiểm tra giỏ hàng
+    - Nhập thông tin giao hàng
+    - Áp dụng mã khuyến mãi
+    - Chọn thanh toán khi nhận hàng
+  end note
+}
+A0 -- UC
+UC ..> Login : <<include>>
+@enduml
+@startuml UC_07
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+skinparam ArrowColor #000000
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+}
+
+actor "Khách hàng" as A0
+actor "Quản trị viên" as A1
+rectangle "Hệ thống DailyMart" {
+  usecase "Quản lý đơn hàng" as UC
+  usecase "Đăng nhập" as Login
+  note right of UC
+    - KH: xem, theo dõi, hủy đơn
+    - KH: xác nhận đã nhận hàng
+    - Admin: tìm, cập nhật trạng thái
+    - Admin: hủy đơn hợp lệ
+  end note
+}
+A0 -- UC
+A1 -- UC
+UC ..> Login : <<include>>
+@enduml
