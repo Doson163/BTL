@@ -226,6 +226,12 @@
         font-weight: 800 !important;
         font-size: 15px !important;
     }
+    .review-stars-report { color:#f5d565; font-size:19px; letter-spacing:2px; white-space:nowrap; }
+    .review-comment-report { white-space:pre-wrap; overflow-wrap:anywhere; min-width:220px; max-width:460px; }
+    .review-pages-report { display:flex; justify-content:center; align-items:center; gap:14px; margin-top:20px; color:#cbd5e1; }
+    .review-pages-report form { margin:0; }
+    .review-pages-report button { background:#222a32; border:1px solid #47515c; border-radius:8px; color:#f5d565; padding:8px 14px; cursor:pointer; }
+    .review-pages-report button:hover { border-color:#f5d565; }
 
     @media (max-width: 900px) {
         .report-kpi-grid { grid-template-columns: 1fr; }
@@ -380,4 +386,68 @@ if(isset($data['top_sp']) && mysqli_num_rows($data['top_sp']) > 0) {
             </tbody>
         </table>
     </div>
+</div>
+
+<!-- ĐÁNH GIÁ CỦA KHÁCH HÀNG TRONG KHOẢNG NGÀY ĐÃ CHỌN -->
+<?php
+$reviewSummary = $data['review_summary'] ?? ['total' => 0, 'average' => 0];
+$reviewRows = $data['review_rows'] ?? [];
+$reviewTotal = (int)$reviewSummary['total'];
+?>
+<div class="card-report-main" id="danh-gia-khach-hang" style="margin-top:22px;">
+    <div class="card-report-header">
+        <h4 class="card-report-title">
+            <i class="fas fa-star" style="color:#f5d565;"></i> Đánh giá của khách hàng
+        </h4>
+        <div class="badge-report-period">
+            <?php echo $reviewTotal; ?> đánh giá · Trung bình <?php echo number_format((float)$reviewSummary['average'], 1, ',', '.'); ?>/5 sao
+        </div>
+    </div>
+    <div style="overflow-x:auto;">
+        <table class="table-report-custom">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Khách hàng</th>
+                    <th>Số sao</th>
+                    <th>Nhận xét</th>
+                    <th>Ngày đánh giá</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if ($reviewRows) { foreach ($reviewRows as $review) { ?>
+                <tr>
+                    <td><?php echo htmlspecialchars((string)$review['TenSP'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars((string)$review['TenKH'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><span class="review-stars-report" aria-label="<?php echo (int)$review['SoSao']; ?> trên 5 sao"><?php echo str_repeat('★', (int)$review['SoSao']) . str_repeat('☆', 5 - (int)$review['SoSao']); ?></span></td>
+                    <td class="review-comment-report"><?php echo htmlspecialchars((string)$review['NoiDung'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo date('d/m/Y H:i', strtotime($review['NgayTao'])); ?></td>
+                </tr>
+                <?php } } else { ?>
+                <tr><td colspan="5" style="text-align:center;padding:32px;color:#94a3b8;">Chưa có đánh giá trong khoảng thời gian đã chọn.</td></tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if (($data['review_pages'] ?? 1) > 1) { ?>
+    <nav class="review-pages-report" aria-label="Trang đánh giá của khách hàng">
+        <?php if ($data['review_page'] > 1) { ?>
+        <form action="/Baitaplon/Baocao/Get_data#danh-gia-khach-hang" method="post">
+            <input type="hidden" name="txtTuNgay" value="<?php echo htmlspecialchars($data['tungay'], ENT_QUOTES, 'UTF-8'); ?>">
+            <input type="hidden" name="txtDenNgay" value="<?php echo htmlspecialchars($data['denngay'], ENT_QUOTES, 'UTF-8'); ?>">
+            <input type="hidden" name="review_page" value="<?php echo $data['review_page'] - 1; ?>">
+            <button type="submit">Trang trước</button>
+        </form>
+        <?php } ?>
+        <span>Trang <?php echo $data['review_page']; ?>/<?php echo $data['review_pages']; ?></span>
+        <?php if ($data['review_page'] < $data['review_pages']) { ?>
+        <form action="/Baitaplon/Baocao/Get_data#danh-gia-khach-hang" method="post">
+            <input type="hidden" name="txtTuNgay" value="<?php echo htmlspecialchars($data['tungay'], ENT_QUOTES, 'UTF-8'); ?>">
+            <input type="hidden" name="txtDenNgay" value="<?php echo htmlspecialchars($data['denngay'], ENT_QUOTES, 'UTF-8'); ?>">
+            <input type="hidden" name="review_page" value="<?php echo $data['review_page'] + 1; ?>">
+            <button type="submit">Trang sau</button>
+        </form>
+        <?php } ?>
+    </nav>
+    <?php } ?>
 </div>

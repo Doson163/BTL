@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS `chitietkiem`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `chitietkiem` (
   `MaPK` int(11) NOT NULL,
-  `MaSP` int(11) NOT NULL,
+  `MaSP` varchar(20) NOT NULL,
   `TonMay` int(11) NOT NULL,
   `TonThuc` int(11) NOT NULL,
   `LyDo` varchar(255) DEFAULT NULL,
@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS `chitietphieunhap`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `chitietphieunhap` (
   `MaPN` int(11) NOT NULL,
-  `MaSP` int(11) NOT NULL,
+  `MaSP` varchar(20) NOT NULL,
   `SoLuong` int(11) NOT NULL,
   `DonGia` decimal(15,0) NOT NULL,
   PRIMARY KEY (`MaPN`,`MaSP`)
@@ -180,7 +180,7 @@ DROP TABLE IF EXISTS `phieukiem`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `phieukiem` (
   `MaPK` int(11) NOT NULL AUTO_INCREMENT,
-  `MaNV` int(11) NOT NULL,
+  `MaNV` varchar(20) NOT NULL,
   `NgayKiem` datetime DEFAULT current_timestamp(),
   `GhiChu` text DEFAULT NULL,
   PRIMARY KEY (`MaPK`)
@@ -197,7 +197,7 @@ DROP TABLE IF EXISTS `phieunhap`;
 CREATE TABLE `phieunhap` (
   `MaPN` int(11) NOT NULL AUTO_INCREMENT,
   `MaNCC` int(11) NOT NULL,
-  `MaNV` int(11) NOT NULL,
+  `MaNV` varchar(20) NOT NULL,
   `NgayNhap` datetime NOT NULL,
   `TongTien` decimal(15,0) NOT NULL,
   PRIMARY KEY (`MaPN`)

@@ -13,12 +13,23 @@ class Baocao extends controller {
 
         // Lấy thống kê sản phẩm bán chạy
         $top_sanpham = $this->bcModel->GetTopBanChay($tungay, $denngay);
+        $reviewModel = $this->model('ProductReviewModel');
+        $reviewSummary = $reviewModel->GetAdminSummary($tungay, $denngay);
+        $reviewPageSize = 20;
+        $reviewPages = max(1, (int)ceil((int)$reviewSummary['total'] / $reviewPageSize));
+        $requestedPage = filter_var($_POST['review_page'] ?? 1, FILTER_VALIDATE_INT);
+        $reviewPage = max(1, min($requestedPage ?: 1, $reviewPages));
+        $reviewRows = $reviewModel->GetAdminReviews($tungay, $denngay, $reviewPageSize, ($reviewPage - 1) * $reviewPageSize);
 
         $this->view("Master", [
             "page" => "Baocao_V",
             "tungay" => $tungay,
             "denngay" => $denngay,
             "top_sp" => $top_sanpham,
+            "review_summary" => $reviewSummary,
+            "review_rows" => $reviewRows,
+            "review_page" => $reviewPage,
+            "review_pages" => $reviewPages,
         ]);
     }
 

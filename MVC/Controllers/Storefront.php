@@ -10,7 +10,21 @@ class Storefront extends controller {
     public function ChiTiet($id) {
         $product=$this->storeModel->GetProductById($id);
         if (!$product) { http_response_code(404); $_SESSION['shop_notice']='Product is unavailable.'; header('Location: /Baitaplon/store.php?url=Storefront/Get_data'); exit; }
-        $this->view('CustomerMaster',['page'=>'Customer/ProductDetail','product'=>$product,'cartCount'=>array_sum($_SESSION['shop_cart'] ?? []),'notice'=>$_SESSION['shop_notice'] ?? '']);
+        $reviews=$this->model('ProductReviewModel');
+        $summary=$reviews->GetSummary($id);
+        $totalPages=max(1,(int)ceil((int)$summary['total']/10));
+        $requestedPage=filter_var($_GET['review_page'] ?? 1,FILTER_VALIDATE_INT);
+        $page=max(1,min($requestedPage ?: 1,$totalPages));
+        $this->view('CustomerMaster',[
+            'page'=>'Customer/ProductDetail',
+            'product'=>$product,
+            'reviewSummary'=>$summary,
+            'reviews'=>$reviews->GetReviews($id,$page),
+            'reviewPage'=>$page,
+            'reviewPages'=>$totalPages,
+            'cartCount'=>array_sum($_SESSION['shop_cart'] ?? []),
+            'notice'=>$_SESSION['shop_notice'] ?? ''
+        ]);
         unset($_SESSION['shop_notice']);
     }
 

@@ -93,7 +93,50 @@ class CustomerOrders extends controller {
     public function Detail($id) {
         $this->signedIn(); $order=$this->orders->GetOrder($_SESSION['shop_customer']['MaKH'],(int)$id);
         if (!$order) { http_response_code(404); exit('Không tìm thấy đơn hàng.'); }
-        $this->render('Customer/OrderDetail',['order'=>$order]);
+        $order['Items']=mysqli_fetch_all($order['Items'],MYSQLI_ASSOC);
+        $customerReviews=[];
+        if ((int)$order['TrangThai']===4) {
+            $reviews=$this->model('ProductReviewModel');
+            foreach ($order['Items'] as $item) {
+                $customerReviews[(string)$item['MaSP']]=$reviews->GetCustomerReview((string)$item['MaSP'],(string)$_SESSION['shop_customer']['MaKH']);
+            }
+        }
+        $this->render('Customer/OrderDetail',[
+            'order'=>$order,
+            'customerReviews'=>$customerReviews,
+            'notice'=>$_SESSION['shop_notice'] ?? '',
+            'reviewNotice'=>$_SESSION['shop_review_notice'] ?? ''
+        ]);
+        unset($_SESSION['shop_notice'],$_SESSION['shop_review_notice']);
+    }
+
+    public function DanhGia($id,$productId) {
+        $this->signedIn(); $this->postGuard();
+        $orderId=(int)$id;
+        $productId=(string)$productId;
+        $redirect='/Baitaplon/store.php?url=CustomerOrders/Detail/'.$orderId.'#danh-gia-san-pham';
+        $stars=filter_var($_POST['stars'] ?? null,FILTER_VALIDATE_INT);
+        $comment=trim((string)($_POST['comment'] ?? ''));
+        if ($stars===false || $stars<1 || $stars>5 || $comment==='' || mb_strlen($comment,'UTF-8')>1000) {
+            $_SESSION['shop_review_notice']='Vui lòng chọn từ 1 đến 5 sao và viết nhận xét không quá 1.000 ký tự.';
+            header('Location: '.$redirect); exit;
+        }
+        $reviews=$this->model('ProductReviewModel');
+        $customerId=(string)$_SESSION['shop_customer']['MaKH'];
+        if (!$reviews->CanReviewOrder($orderId,$productId,$customerId)) {
+            $_SESSION['shop_review_notice']='Chỉ có thể đánh giá sản phẩm thuộc đơn hàng đã hoàn thành của bạn.';
+        } elseif ($reviews->GetCustomerReview($productId,$customerId) !== null) {
+            $_SESSION['shop_review_notice']='Bạn đã đánh giá sản phẩm này và không thể đánh giá lại.';
+        } else {
+            if ($reviews->SaveForOrder($orderId,$productId,$customerId,$stars,$comment)) {
+                $_SESSION['shop_review_notice']='Đã lưu đánh giá của bạn.';
+            } else {
+                $_SESSION['shop_review_notice']=$reviews->GetCustomerReview($productId,$customerId) !== null
+                    ? 'Bạn đã đánh giá sản phẩm này và không thể đánh giá lại.'
+                    : 'Không thể lưu đánh giá. Vui lòng thử lại.';
+            }
+        }
+        header('Location: '.$redirect); exit;
     }
     public function Cancel($id) {
         $this->signedIn(); $this->postGuard();
