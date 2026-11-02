@@ -108,20 +108,16 @@ class Khohang extends controller {
         $rowCount = 1;
 
         
-        $sheet->setCellValue('A1', 'MÃ£ Phiáº¿u');
-        $sheet->setCellValue('B1', 'NhÃ  Cung Cáº¥p');
-        $sheet->setCellValue('C1', 'Chi Tiáº¿t Nháº­p (Sáº£n pháº©m - SL - GiÃ¡)');
-        $sheet->setCellValue('D1', 'NgÃ y Nháº­p');
-        $sheet->setCellValue('E1', 'Tá»•ng Tiá»n');
+        $sheet->setCellValue('A1', 'Mã phiếu');
+        $sheet->setCellValue('B1', 'Chi tiết nhập (Sản phẩm - SL - Giá)');
+        $sheet->setCellValue('C1', 'Tổng tiền');
 
         
         $sheet->getColumnDimension('A')->setWidth(10);
-        $sheet->getColumnDimension('B')->setWidth(25);
-        $sheet->getColumnDimension('C')->setWidth(60);
-        $sheet->getColumnDimension('D')->setWidth(20);
-        $sheet->getColumnDimension('E')->setWidth(15);
-        $sheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $sheet->getStyle('A1:E1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('00BFFF');
+        $sheet->getColumnDimension('B')->setWidth(60);
+        $sheet->getColumnDimension('C')->setWidth(20);
+        $sheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:C1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('00BFFF');
 
         // Data
         $data = $this->khoModel->GetLichSuNhap("");
@@ -131,19 +127,17 @@ class Khohang extends controller {
             // Xá»­ lÃ½ cá»™t chi tiáº¿t: Chuyá»ƒn HTML thÃ nh text xuá»‘ng dÃ²ng
             // HTML gá»‘c: <div><b>TÃªn</b>...</div>
             // Chuyá»ƒn thÃ nh: TÃªn... \n
-            $chitiet = str_replace('</div>', "\n", $row['ChiTietNhap']); 
+            $chitiet = str_replace('</div>', "\n", $row['ChiTietNhap'] ?? '');
             $chitiet = strip_tags($chitiet); // Loáº¡i bá» tháº» html cÃ²n láº¡i
             $chitiet = trim($chitiet);
 
             $sheet->setCellValue('A' . $rowCount, '#' . $row['MaPN']);
-            $sheet->setCellValue('B' . $rowCount, $row['TenNCC']);
-            $sheet->setCellValue('C' . $rowCount, $chitiet);
-            $sheet->setCellValue('D' . $rowCount, date('d/m/Y H:i', strtotime($row['NgayNhap'])));
-            $sheet->setCellValue('E' . $rowCount, $row['TongTien']);
+            $sheet->setCellValue('B' . $rowCount, $chitiet);
+            $sheet->setCellValue('C' . $rowCount, $row['TongTien']);
             
             
-            $sheet->getStyle('C' . $rowCount)->getAlignment()->setWrapText(true);
-            $sheet->getStyle('A' . $rowCount . ':E' . $rowCount)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+            $sheet->getStyle('B' . $rowCount)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('A' . $rowCount . ':C' . $rowCount)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
         }
 
         
@@ -166,20 +160,29 @@ class Khohang extends controller {
                     $TotalRow = $sheet->getHighestRow();
 
                     $count = 0;
-                    
+                    $legacyFormat = PHPExcel_Cell::columnIndexFromString($sheet->getHighestColumn()) >= 5;
+                    $defaultSupplier = $this->khoModel->GetDefaultNhaCungCapId();
+                    $employeeId = $this->khoModel->GetDefaultNhanVienId();
+                    if ($defaultSupplier === null || $employeeId === null) {
+                        throw new RuntimeException('Chưa có nhà cung cấp hoặc nhân viên để ghi nhận phiếu nhập kho.');
+                    }
+
                     for ($i = 2; $i <= $TotalRow; $i++) {
-                        // Cáº¥u trÃºc cá»™t: A:MÃ£ | B:NCC | C:Chi Tiáº¿t | D:NgÃ y | E:Tá»•ng tiá»n
-                        $tenNCC = $sheet->getCell('B' . $i)->getValue();
-                        $strChiTiet = $sheet->getCell('C' . $i)->getValue();
-                        $ngay = $sheet->getCell('D' . $i)->getValue();
-                        $tongtien = $sheet->getCell('E' . $i)->getValue();
-
-                        
-                        if(is_numeric($ngay)) $ngay = date('Y-m-d H:i:s', PHPExcel_Shared_Date::ExcelToPHP($ngay));
-
-                        
-                        $mancc = $this->khoModel->GetMaNCCByTen($tenNCC);
-                        if(!$mancc) $mancc = 1; // Náº¿u khÃ´ng tÃ¬m tháº¥y, gÃ¡n táº¡m NCC máº·c Ä‘á»‹nh lÃ  1
+                        $strChiTiet = $sheet->getCell(($legacyFormat ? 'C' : 'B') . $i)->getValue();
+                        $tongtien = $sheet->getCell(($legacyFormat ? 'E' : 'C') . $i)->getValue();
+                        $ngay = date('Y-m-d H:i:s');
+                        $mancc = $defaultSupplier;
+                        if ($legacyFormat) {
+                            $tenNCC = (string)$sheet->getCell('B' . $i)->getValue();
+                            $mancc = $this->khoModel->GetMaNCCByTen($tenNCC) ?: $defaultSupplier;
+                            $ngayCu = $sheet->getCell('D' . $i)->getValue();
+                            if (is_numeric($ngayCu)) {
+                                $ngay = date('Y-m-d H:i:s', PHPExcel_Shared_Date::ExcelToPHP($ngayCu));
+                            } elseif (is_string($ngayCu) && trim($ngayCu) !== '') {
+                                $parsedDate = DateTime::createFromFormat('d/m/Y H:i', trim($ngayCu));
+                                if ($parsedDate !== false) $ngay = $parsedDate->format('Y-m-d H:i:s');
+                            }
+                        }
 
                         // 2. PhÃ¢n tÃ­ch cá»™t Chi tiáº¿t (Quan trá»ng!)
                         // Äá»‹nh dáº¡ng text: "MÃ¬ Háº£o Háº£o - SL: 10 - GiÃ¡: 3,500Ä‘"
@@ -191,7 +194,7 @@ class Khohang extends controller {
                                 // (.*?) : Láº¥y tÃªn (báº¥t ká»³ kÃ½ tá»± nÃ o)
                                 // - SL: (\d+) : Láº¥y sá»‘ lÆ°á»£ng (sá»‘)
                                 // - GiÃ¡: ([\d,]+) : Láº¥y giÃ¡ (sá»‘ vÃ  dáº¥u pháº©y)
-                                if(preg_match('/^(.*?) - SL: (\d+) - GiÃ¡: ([\d,]+)/', trim($line), $matches)) {
+                                if(preg_match('/^(.*?) - SL: (\d+) - Giá: ([\d,]+)/u', trim($line), $matches)) {
                                     $tenSP = trim($matches[1]);
                                     $sl = $matches[2];
                                     $gia = str_replace(',', '', $matches[3]); // Bá» dáº¥u pháº©y trong giÃ¡
@@ -208,8 +211,7 @@ class Khohang extends controller {
                         
                         if (!empty($arrChiTiet)) {
                             
-                            $this->khoModel->ImportPhieuLichSuFull($mancc, 1, $ngay, $tongtien, $arrChiTiet);
-                            $count++;
+                            if ($this->khoModel->ImportPhieuLichSuFull($mancc, $employeeId, $ngay, $tongtien, $arrChiTiet)) $count++;
                         }
                     }
                     $this->redirectWithMessage('/Baitaplon/Khohang', "Đã import thành công $count phiếu nhập từ file Excel!", 'success', 'Import thành công');
@@ -339,7 +341,7 @@ class Khohang extends controller {
         while ($row = mysqli_fetch_array($data)) {
             $rowCount++;
             
-            $chitiet = str_replace('</div>', "\n", $row['ChiTietKiem']);
+            $chitiet = str_replace('</div>', "\n", $row['ChiTietKiem'] ?? '');
             $chitiet = strip_tags($chitiet);
             $chitiet = trim($chitiet);
 

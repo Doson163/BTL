@@ -73,16 +73,27 @@ class KhohangModel extends connectDB {
     }
 
     public function GetLichSuNhap($keyword = "") {
-        $searchID = preg_replace('/[^0-9]/', '', $keyword);
-        $sql = "SELECT phieunhap.MaPN, phieunhap.NgayNhap, phieunhap.TongTien, nhacungcap.TenNCC,
-                       GROUP_CONCAT(CONCAT('<div style=\"border-bottom:1px dashed #eee; padding:3px 0;\">','<b>', sanpham.TenSP, '</b>',' - SL: <b style=\"color:blue\">', chitietphieunhap.SoLuong, '</b>',' - Giá: ', FORMAT(chitietphieunhap.DonGia, 0), 'đ','</div>') SEPARATOR '') as ChiTietNhap
+        $sql = "SELECT phieunhap.MaPN, phieunhap.TongTien,
+                       GROUP_CONCAT(CONCAT('<div style=\"border-bottom:1px dashed #eee; padding:3px 0;\">','<b>', COALESCE(sanpham.TenSP, chitietphieunhap.MaSP), '</b>',' - SL: <b style=\"color:blue\">', chitietphieunhap.SoLuong, '</b>',' - Giá: ', FORMAT(chitietphieunhap.DonGia, 0), 'đ','</div>') SEPARATOR '') as ChiTietNhap
                 FROM phieunhap
-                LEFT JOIN nhacungcap ON phieunhap.MaNCC = nhacungcap.MaNCC
                 LEFT JOIN chitietphieunhap ON phieunhap.MaPN = chitietphieunhap.MaPN
                 LEFT JOIN sanpham ON chitietphieunhap.MaSP = sanpham.MaSP";
-        if($keyword != "") $sql .= " WHERE phieunhap.MaPN LIKE '%$searchID%' OR nhacungcap.TenNCC LIKE '%$keyword%'";
-        $sql .= " GROUP BY phieunhap.MaPN ORDER BY phieunhap.NgayNhap DESC";
-        return mysqli_query($this->con, $sql);
+        $keyword = trim((string)$keyword);
+        if ($keyword !== '') {
+            $sql .= " WHERE CAST(phieunhap.MaPN AS CHAR) LIKE ? OR EXISTS (
+                SELECT 1 FROM chitietphieunhap ct_search
+                JOIN sanpham sp_search ON sp_search.MaSP = ct_search.MaSP
+                WHERE ct_search.MaPN = phieunhap.MaPN AND sp_search.TenSP LIKE ?
+            )";
+        }
+        $sql .= " GROUP BY phieunhap.MaPN ORDER BY phieunhap.MaPN DESC";
+        if ($keyword === '') return mysqli_query($this->con, $sql);
+        $stmt = mysqli_prepare($this->con, $sql);
+        if (!$stmt) return false;
+        $pattern = '%' . $keyword . '%';
+        mysqli_stmt_bind_param($stmt, 'ss', $pattern, $pattern);
+        mysqli_stmt_execute($stmt);
+        return mysqli_stmt_get_result($stmt);
     }
 
     public function ImportPhieuLichSuFull($mancc, $manv, $ngay, $tongtien, $chitiet_array) {
@@ -145,13 +156,13 @@ class KhohangModel extends connectDB {
                        GROUP_CONCAT(
                            CONCAT(
                                '<div style=\"border-bottom:1px dashed #eee; padding:3px 0;\">',
-                               '<b>', sanpham.TenSP, '</b>',
+                               '<b>', COALESCE(sanpham.TenSP, chitietkiem.MaSP), '</b>',
                                ' | Máy: ', chitietkiem.TonMay,
                                ' -> <b style=\"color:blue\">Thực: ', chitietkiem.TonThuc, '</b>',
-                               ' <i style=\"color:#777\">(', chitietkiem.LyDo, ')</i>',
+                               ' <i style=\"color:#777\">(', COALESCE(chitietkiem.LyDo, '--'), ')</i>',
                                '</div>'
                            )
-                       SEPARATOR '') as chitietkiem,
+                       SEPARATOR '') as ChiTietKiem,
 
                        GROUP_CONCAT(
                        CONCAT(

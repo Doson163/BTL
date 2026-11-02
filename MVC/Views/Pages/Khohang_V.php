@@ -153,8 +153,8 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <form action="/Baitaplon/Khohang/Get_data" method="POST" style="display:flex; gap: 10px; flex: 1;">
-                        <input type="text" name="txtTimKiem" class="form-control" placeholder="Tìm theo Mã phiếu hoặc Nhà cung cấp..." 
-                               value="<?php echo isset($data['keyword']) ? $data['keyword'] : '' ?>" style="max-width: 300px;">
+                        <input type="text" name="txtTimKiem" class="form-control" placeholder="Tìm theo mã phiếu hoặc sản phẩm..."
+                               value="<?php echo htmlspecialchars((string)($data['keyword'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" style="max-width: 300px;">
                         <button type="submit" name="btnTimKiem" class="btn-action btn-search"><i class="fas fa-search"></i> Tìm</button>
                         <a href="/Baitaplon/Khohang" class="btn-action" style="background:#777; width: auto; padding: 8px 15px;"><i class="fas fa-sync"></i></a>
                     </form>
@@ -169,8 +169,7 @@
                     <thead>
                         <tr>
                             <th style="width: 80px;">Mã Phiếu</th>
-                            <th style="width: 150px;">Nhà Cung Cấp</th>
-                            <th>Chi Tiết Nhập (Sản phẩm - SL - Giá)</th> <th style="width: 130px;">Ngày Nhập</th>
+                            <th>Chi Tiết Nhập (Sản phẩm - SL - Giá)</th>
                             <th style="width: 120px; text-align: right;">Tổng Tiền</th>
                         </tr>
                     </thead>
@@ -184,19 +183,11 @@
                                     #<?php echo $row['MaPN']; ?>
                                 </td>
                                 
-                                <td style="vertical-align: top; font-weight: 500;">
-    <?php echo $row['TenNCC']; ?>
-</td>
-                                
                                 <td style="vertical-align: top; font-size: 13px; color: #333;">
                                     <?php 
                                         // Hiển thị chuỗi HTML đã tạo từ Model
                                         echo $row['ChiTietNhap']; 
                                     ?>
-                                </td>
-                                
-                                <td style="vertical-align: top; color: #666; font-size: 13px;">
-                                    <?php echo date('d/m/Y H:i', strtotime($row['NgayNhap'])); ?>
                                 </td>
                                 
                                 <td style="vertical-align: top; font-weight: bold; color: #d32f2f; text-align: right;">
@@ -206,7 +197,7 @@
                         <?php 
                             }
                         } else {
-                            echo "<tr><td colspan='5' style='text-align:center; padding:30px; color:#999;'>
+                            echo "<tr><td colspan='3' style='text-align:center; padding:30px; color:#999;'>
                                     Không tìm thấy phiếu nhập nào!
                                   </td></tr>";
                         }
@@ -223,7 +214,7 @@
     <div style="background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 450px; border-radius: 8px; position: relative;">
         <span onclick="document.getElementById('modalImport').style.display='none'" style="float: right; font-size: 28px; cursor: pointer;">&times;</span>
         <h3 style="color: #217346; margin-top: 0;">Nhập Lịch Sử Từ Excel</h3>
-        <p style="font-size: 13px; color: #666;">File Excel cần 4 cột: <b>A: Mã (Bỏ qua) | B: Tên NCC | C: Chi tiết SP | D: Ngày | E: Tổng tiền</b></p>
+        <p style="font-size: 13px; color: #666;">File Excel gồm 3 cột: <b>Mã phiếu | Chi tiết sản phẩm | Tổng tiền</b>. Hệ thống cũng nhận tệp 5 cột cũ.</p>
         <form action="/Baitaplon/Khohang/NhapExcelLichSu" method="post" enctype="multipart/form-data">
             <input type="file" name="fileExcel" required accept=".xlsx, .xls" style="margin-bottom: 15px; width: 100%; padding: 10px; border: 1px solid #ccc;">
             <button type="submit" name="btnNhapExcel" class="btn-action btn-import" style="width: 100%;">Tải lên hệ thống</button>

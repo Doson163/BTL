@@ -171,7 +171,7 @@
                                     <br><small style="color:#777;">(NV: <?php echo $row['HoTen']; ?>)</small>
                                 </td>
                                 <td style="vertical-align: top; font-size: 13px; color: #333;">
-                                    <?php echo $row['ChiTietKiem']; ?>
+                                    <?php echo !empty($row['ChiTietKiem']) ? $row['ChiTietKiem'] : 'Không có chi tiết kiểm kê.'; ?>
                                 </td>
 
                                 <td style="vertical-align: top; font-size: 13px; color: #333;">
